@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 33
-        versionCode 4
-        versionName "1.0.4"
+        versionCode 5
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -39,6 +39,13 @@ android {
 
     kotlinOptions {
         jvmTarget = '11'
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 
@@ -66,15 +73,17 @@ dependencies {
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            release(MavenPublication) {
+publishing {
+    publications {
+        release(MavenPublication) {
+            groupId = 'com.github.network-international'
+            artifactId = 'card-management-sdk-android'
+            version = '1.0.5'
+
+            afterEvaluate {
                 from components.release
-                groupId = 'com.github.network-international'
-                artifactId = 'card-management-sdk-android'
-                version = '1.0.4'
             }
         }
     }
 }
+
