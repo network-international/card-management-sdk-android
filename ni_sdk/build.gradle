@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdk 23
         targetSdk 33
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -71,9 +71,9 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'ae.network'
-                artifactId = 'nicardmanagementsdk'
-                version = '1.0.3'
+                groupId = 'com.github.network-international'
+                artifactId = 'card-management-sdk-android'
+                version = '1.0.4'
             }
         }
     }
