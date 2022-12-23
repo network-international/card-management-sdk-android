@@ -20,23 +20,6 @@ plugins {
     id 'com.android.library' version '7.3.0' apply false
     id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
     id 'org.jetbrains.kotlin.jvm' version '1.7.10' apply false
-    id 'maven-publish'
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'ae.network'
-            artifactId = 'nicardmanagementsdk'
-            version = "1.0.0"
-            from components.java
-
-            pom {
-                description = 'A description of my library'
-                ...
-            }
-        }
-    }
 }
 
 task clean(type: Delete) {
