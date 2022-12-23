@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- This file contains general purpose dimensions value -->
+    <dimen name="pin_number_button_width">64dp</dimen>
+
+</resources>

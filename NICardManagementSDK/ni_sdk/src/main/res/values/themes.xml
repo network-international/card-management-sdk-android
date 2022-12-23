@@ -1,0 +1,45 @@
+<resources>
+
+    <!-- This file contains Themes and ThemeOverlays -->
+
+    <!-- Base application theme. -->
+    <style name="Theme.NICardManagementSDK" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Customize your base theme here. -->
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.NICardManagementSDK.MaterialAlertDialog</item>
+    </style>
+
+    <!--Default Top Level application theme-->
+    <style name="Theme.NICardManagementSDK.DayNight">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Custom attributes -->
+        <item name="colorDisabledImageButton">@color/gray3</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="">
+        // the button text color
+        <item name="colorPrimary">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton" parent="">
+        // the button background tint color
+        <item name="colorButtonNormal">?attr/colorSurface</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.ProgressBar" parent="">
+        <item name="colorSecondary">?attr/colorOnPrimarySurface</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogBodyTextStyle">@style/Widget.NICardManagementSDK.MaterialAlertDialog.Body.Text</item>
+    </style>
+
+</resources>

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewModel"
+            type="ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        tools:context=".presentation.ui.card_details.fragments.CardDetailsFragment">
+
+        <ImageView
+            android:id="@+id/cardMarginImageView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/background_card_image"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/bg_default_visa"
+            tools:ignore="ImageContrastCheck" />
+
+        <TextView
+            android:id="@+id/cardNumberLabelTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_number"
+            android:textSize="8sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@+id/guideline1_horizontal"
+            app:layout_constraintStart_toStartOf="@id/guideline1_vertical"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/cardNumberTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:text="@{viewModel.cardDetailsLiveData.pan}"
+            android:textColor="@color/gray1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/guideline2_horizontal"
+            app:layout_constraintStart_toStartOf="@+id/cardNumberLabelTextView"
+            tools:ignore="TextContrastCheck"
+            tools:text="1234 5678 2345 3456" />
+
+        <ImageView
+            android:id="@+id/copyCardNumberImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/copy_to_clipboard_pictogram"
+            android:padding="8dp"
+            android:visibility="@{viewModel.isShowDetailsLiveData ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/cardNumberTextView"
+            app:layout_constraintStart_toEndOf="@id/cardNumberTextView"
+            app:layout_constraintTop_toTopOf="@+id/cardNumberTextView"
+            app:srcCompat="@drawable/ic_baseline_content_copy"
+            tools:ignore="ImageContrastCheck" />
+
+
+        <TextView
+            android:id="@+id/expiryDateLabelTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/expiry_date"
+            android:textSize="8sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@id/guideline3_horizontal"
+            app:layout_constraintStart_toStartOf="@+id/guideline1_vertical"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/expiryDateTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.expiry}"
+            android:textColor="@color/gray1"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4_horizontal"
+            app:layout_constraintStart_toStartOf="@+id/expiryDateLabelTextView"
+            tools:text="05/ 2024" />
+
+
+        <TextView
+            android:id="@+id/cvvCodeLabelTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:text="@string/cvv"
+            android:textSize="8sp"
+            android:textStyle="normal"
+            app:layout_constraintBaseline_toBaselineOf="@id/expiryDateLabelTextView"
+            app:layout_constraintStart_toEndOf="@id/expiryDateLabelTextView"
+            tools:ignore="TextContrastCheck" />
+
+        <TextView
+            android:id="@+id/cvvCodeTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.cVV2}"
+            android:textColor="@color/gray1"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@+id/expiryDateTextView"
+            app:layout_constraintStart_toStartOf="@id/cvvCodeLabelTextView"
+            tools:ignore="TextContrastCheck"
+            tools:text="303" />
+
+        <ImageView
+            android:id="@+id/hideShowDetailsImageView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:contentDescription="@string/credentials_toggle_pictogram"
+            android:padding="8dp"
+            android:visibility="@{(viewModel.isShowDetailsLiveData == null || viewModel.defaultShouldDisplayValue) ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/cvvCodeTextView"
+            app:layout_constraintStart_toEndOf="@id/guideline2_vertical"
+            app:layout_constraintTop_toTopOf="@+id/cvvCodeTextView"
+            app:srcCompat="@{viewModel.isShowDetailsLiveData ? @drawable/ic_hide_details : @drawable/ic_reveal_details}"
+            tools:ignore="ImageContrastCheck"
+            tools:srcCompat="@drawable/ic_hide_details" />
+
+        <TextView
+            android:id="@+id/cardHolderNameLabelTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textSize="8sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toTopOf="@id/guideline5_horizontal"
+            app:layout_constraintStart_toStartOf="@id/guideline1_vertical" />
+
+        <TextView
+            android:id="@+id/cardHolderNameTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
+            android:textColor="@color/gray1"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6_horizontal"
+            app:layout_constraintStart_toStartOf="@id/cardHolderNameLabelTextView"
+            tools:ignore="TextContrastCheck"
+            tools:text="Lee M. Cardholder" />
+
+        <ImageView
+            android:id="@+id/copyCardHolderNameImageView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="8dp"
+            android:contentDescription="@string/copy_to_clipboard_pictogram"
+            android:padding="8dp"
+            android:visibility="@{viewModel.isShowDetailsLiveData ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@+id/cardHolderNameTextView"
+            app:layout_constraintStart_toEndOf="@id/cardHolderNameTextView"
+            app:layout_constraintTop_toTopOf="@+id/cardHolderNameTextView"
+            app:srcCompat="@drawable/ic_baseline_content_copy"
+            tools:ignore="ImageContrastCheck" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.41" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.52" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.61" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.79" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.89" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.044" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.381" />
+
+        <FrameLayout
+            android:id="@+id/overlayFrameLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/cardMarginImageView"
+            app:layout_constraintEnd_toEndOf="@id/cardMarginImageView"
+            app:layout_constraintStart_toStartOf="@id/cardMarginImageView"
+            app:layout_constraintTop_toTopOf="@id/cardMarginImageView"
+            tools:visibility="gone">
+
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar" />
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+
