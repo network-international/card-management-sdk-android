@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">NICardManagementSDK</string>
+    <string name="back">back</string>
+    <string name="set_pin_txt">Set PIN</string>
+    <string name="card_details_txt">Card details form</string>
+    <string name="set_pin_screen_title">Please enter the desired PIN for\n your card</string>
+    <string name="change_pin_current_pin_screen_title">Please enter your current PIN</string>
+    <string name="change_pin_new_pin_screen_title">Please enter the new PIN</string>
+    <string name="backspace_button">Backspace button</string>
+    <string name="done_button">Done button</string>
+    <string name="empty" translatable="false" />
+    <string name="recyclerViewBulletsDescription">Completion bullets list</string>
+    <string name="_1">1</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="_7">7</string>
+    <string name="_8">8</string>
+    <string name="_9">9</string>
+    <string name="_0">0</string>
+    <string name="set_pin">Set PIN </string>
+    <string name="change_pin">Change PIN </string>
+    <string name="set_pin_successful">Set PIN successful</string>
+    <string name="change_pin_successful">Change PIN successful</string>
+    <string name="set_pin_failed">Set PIN failed, please try again</string>
+    <string name="change_pin_failed">Change PIN failed, please try again</string>
+    <string name="card_details_fetch_failed">Sorry, something went wrong!</string>
+    <string name="ok">OK</string>
+    <string name="background_card_image">background card image</string>
+    <string name="card_number">CARD NUMBER</string>
+    <string name="copy_to_clipboard_pictogram">copy to clipboard pictogram</string>
+    <string name="expiry_date">VALID THRU</string>
+    <string name="cvv">CVV</string>
+    <string name="credentials_toggle_pictogram">credentials toggle pictogram</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="name">NAME</string>
+</resources>
