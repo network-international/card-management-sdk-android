@@ -8,7 +8,6 @@ plugins {
 apply from: 'publishLocal.gradle'
 
 android {
-    namespace 'ae.network.nicardmanagementsdk'
     compileSdk 33
 
     defaultConfig {
@@ -40,13 +39,6 @@ android {
     kotlinOptions {
         jvmTarget = '11'
     }
-
-    publishing {
-        singleVariant("release") {
-            withSourcesJar()
-            withJavadocJar()
-        }
-    }
 }
 
 dependencies {
@@ -73,17 +65,16 @@ dependencies {
     implementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
 }
 
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = 'com.github.network-international'
-            artifactId = 'card-management-sdk-android'
-            version = '1.0.5'
-
-            afterEvaluate {
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
                 from components.release
+                groupId = 'com.github.network-international'
+                artifactId = 'card-management-sdk-android'
+                version = '1.0'
             }
         }
     }
 }
-
