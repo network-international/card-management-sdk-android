@@ -5,8 +5,6 @@ plugins {
     id 'maven-publish'
 }
 
-apply from: 'publishLocal.gradle'
-
 android {
     compileSdk 33
 
