@@ -23,6 +23,22 @@ plugins {
     id 'maven-publish'
 }
 
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'ae.network'
+            artifactId = 'nicardmanagementsdk'
+            version = "1.0.0"
+            from components.java
+
+            pom {
+                description = 'A description of my library'
+                ...
+            }
+        }
+    }
+}
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
