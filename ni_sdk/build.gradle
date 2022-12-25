@@ -3,16 +3,25 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'maven-publish'
+    id 'com.android.application'
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
+
+apply from: 'publishLocal.gradle'
+
 android {
+    namespace 'ae.network.nicardmanagementsdk'
     compileSdk 33
 
     defaultConfig {
-        minSdk 23
-        targetSdk 33
-        versionCode 5
-        versionName "1.0.5"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -40,6 +49,8 @@ android {
 }
 
 dependencies {
+
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
 
     implementation "androidx.core:core-ktx:1.9.0"
     implementation "androidx.appcompat:appcompat:1.5.1"
