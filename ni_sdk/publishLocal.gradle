@@ -9,7 +9,7 @@ project.afterEvaluate {
     publishToMavenLocal {
         def groupId = "ae.network.nicardmanagementsdk"
         def artifactId = "ni-sdk"
-        def versionName = "1.0.3" + "-local"
+        def versionName = "1.0.8" + "-local"
         def debugSuffix = "-debug"
         def releaseSuffix = "-release"
         publishing {
