@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Default Top Level application theme-->
     <style name="Theme.NICardManagementSDK.DayNight">
@@ -11,8 +11,18 @@
         <item name="colorSecondaryVariant">@color/teal_200</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:statusBarColor">@color/black</item>
         <!-- Custom attributes -->
-        <item name="colorDisabledImageButton">@color/gray4</item>
+        <item name="colorDisabledImageButton">@color/gray3</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="">
+        <!-- the button text color -->
+        <item name="colorPrimary">@color/black</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton" parent="">
+        <!-- the button background tint color -->
+        <item name="colorButtonNormal">@color/gray3</item>
     </style>
 </resources>
