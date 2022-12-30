@@ -3,12 +3,12 @@
     <!--Default Top Level application theme-->
     <style name="Theme.NICardManagementSDK.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorControlActivated">@color/black</item>
+        <item name="colorControlActivated">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorAccent">@color/teal_200</item>
-        <item name="colorBackgroundFloating">@color/teal_200</item>
+        <item name="colorBackgroundFloating">@color/teal_700</item>
         <item name="colorControlNormal">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimary</item>

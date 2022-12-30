@@ -37,7 +37,7 @@
             android:layout_marginTop="32dp"
             android:text="@{context.getString(viewModel.screenTitle)}"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -225,17 +225,18 @@
             android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:visibility="invisible">
 
             <ProgressBar
                 style="?android:attr/progressBarStyle"
-                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
