@@ -80,3 +80,83 @@ afterEvaluate {
         }
     }
 }
+
+//plugins {
+//    id 'com.android.library'
+//    id 'org.jetbrains.kotlin.android'
+//    id 'kotlin-kapt'
+//    id 'maven-publish'
+//}
+//
+//android {
+//    namespace 'ae.network.nicardmanagementsdk'
+//    compileSdk 33
+//
+//    defaultConfig {
+//        minSdk 21
+//        targetSdk 31
+//        versionCode 5
+//        versionName "1.0.5"
+//
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        vectorDrawables.useSupportLibrary = true
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+//        }
+//    }
+//
+//    dataBinding {
+//        enabled true
+//    }
+//
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_11
+//        targetCompatibility JavaVersion.VERSION_11
+//    }
+//
+//    kotlinOptions {
+//        jvmTarget = '11'
+//    }
+//}
+//
+//dependencies {
+//
+//    implementation "androidx.core:core-ktx:1.9.0"
+//    implementation "androidx.appcompat:appcompat:1.5.1"
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+//    implementation "androidx.recyclerview:recyclerview:1.2.1"
+//    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.5.1"
+//    // Retrofit2
+//    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+//    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+//
+//    // Coroutines
+//    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
+//
+//    // ViewModel
+//    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+//
+//    // BouncyCastle
+//    implementation 'org.bouncycastle:bcpkix-jdk15on:1.67'
+//}
+//
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            // Creates a Maven publication called "release".
+//            release(MavenPublication) {
+//                from components.release
+//                groupId = 'com.github.network-international'
+//                artifactId = 'card-management-sdk-android'
+//                version = '1.0'
+//            }
+//        }
+//    }
+//}
