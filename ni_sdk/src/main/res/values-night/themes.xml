@@ -1,36 +1,7 @@
-<!--<resources xmlns:tools="http://schemas.android.com/tools">-->
-
-<!--    &lt;!&ndash;Default Top Level application theme&ndash;&gt;-->
-<!--    <style name="Theme.NICardManagementSDK.DayNight">-->
-<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
-<!--        <item name="colorPrimary">@color/purple_200</item>-->
-<!--        <item name="colorPrimaryDark">@color/purple_700</item>-->
-<!--        <item name="titleTextColor">@color/black</item>-->
-<!--        &lt;!&ndash; Secondary brand color. &ndash;&gt;-->
-<!--        <item name="colorAccent">@color/teal_200</item>-->
-<!--        <item name="colorControlActivated">@color/teal_200</item>-->
-<!--        <item name="colorControlNormal">@color/black</item>-->
-<!--        &lt;!&ndash; Status bar color. &ndash;&gt;-->
-<!--        <item name="android:statusBarColor">@color/black</item>-->
-<!--        &lt;!&ndash; Custom attributes &ndash;&gt;-->
-<!--        <item name="colorDisabledImageButton">@color/gray3</item>-->
-<!--    </style>-->
-
-<!--    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="">-->
-<!--        &lt;!&ndash; the button text color &ndash;&gt;-->
-<!--        <item name="colorPrimary">@color/black</item>-->
-<!--    </style>-->
-
-<!--    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton" parent="">-->
-<!--        &lt;!&ndash; the button background tint color &ndash;&gt;-->
-<!--        <item name="colorButtonNormal">@color/gray3</item>-->
-<!--    </style>-->
-<!--</resources>-->
-
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Default Top Level application theme-->
-    <style name="Theme.NICardManagementSDK.DayNight" parent="Theme.AppCompat">
+    <style name="Theme.NICardManagementSDK.DayNight">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_200</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
@@ -41,7 +12,17 @@
         <item name="colorControlNormal">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
-        <!-- Customize your theme here. -->
+        <!-- Custom attributes -->
+        <item name="colorDisabledImageButton">@color/gray3</item>
     </style>
 
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="">
+        <!-- the button text color -->
+        <item name="colorPrimary">@color/black</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton" parent="">
+        <!-- the button background tint color -->
+        <item name="colorButtonNormal">@color/gray3</item>
+    </style>
 </resources>
