@@ -8,5 +8,3 @@ pluginManagement {
 
 rootProject.name = "NICardManagementSDK"
 include ':ni_sdk'
-
-include ':myapplication'
