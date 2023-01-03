@@ -36,6 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@{context.getString(viewModel.screenTitle)}"
+            android:textSize="22dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat"
             app:layout_constraintEnd_toEndOf="parent"
