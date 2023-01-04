@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.core.graphics.green
 import androidx.databinding.BindingAdapter
 
 
@@ -23,14 +24,14 @@ fun setImageTint(imageView: ImageView, @ColorInt color: Int) {
 @BindingAdapter("useDisabledColor")
 fun setImageViewDisabledColor(imageButton: ImageButton, isDisabled: Boolean) {
     val disabledColor = imageButton.context.getThemeColor(R.attr.colorDisabledImageButton)
-    val enabledColor = imageButton.context.getColor(android.R.color.white)
+    val enabledColor = imageButton.context.getThemeColor(androidx.appcompat.R.attr.colorButtonNormal)
     imageButton.setColorFilter(if (isDisabled) disabledColor else enabledColor)
 }
 
 @BindingAdapter("useDisabledBgTint")
 fun setImageViewDisabledBgTint(imageButton: ImageButton, isDisabled: Boolean) {
-    val disabledColor = imageButton.context.getColor(android.R.color.transparent)
-    val enabledColor = imageButton.context.getColor(R.color.green1)
+    val disabledColor = imageButton.context.getThemeColor(androidx.appcompat.R.attr.colorButtonNormal)
+    val enabledColor = imageButton.context.getThemeColor(androidx.appcompat.R.attr.color.green)
     imageButton.backgroundTintList = ColorStateList.valueOf(
         if (isDisabled) disabledColor else enabledColor
     )
