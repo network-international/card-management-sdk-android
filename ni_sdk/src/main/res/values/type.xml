@@ -2,7 +2,12 @@
 <resources>
 
     <!-- This file contains TextAppearances, text size dimensions -->
-    <style name="TextAppearance.NICardManagementSDK.Button.Pin.Number" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.NICardManagementSDK.Button.Pin.Number" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.NICardManagementSDK.Button.Pin.ImageButton" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
     </style>
