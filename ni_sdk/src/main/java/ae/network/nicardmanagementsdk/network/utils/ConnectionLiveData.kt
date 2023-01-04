@@ -5,8 +5,10 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.NetworkRequest
+import android.os.Build
 import android.util.Log
 import androidx.annotation.MainThread
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -36,9 +38,11 @@ interface IConnection<T> {
     fun observe(owner: LifecycleOwner, observer: Observer<in T?>)
 }
 
+@RequiresApi(Build.VERSION_CODES.M)
 class ConnectionLiveData(context: Context) : MutableLiveData<ConnectionModel>(),
     IConnection<ConnectionModel> {
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private val connectivityManager: ConnectivityManager = context.getSystemService(ConnectivityManager::class.java)
     private val validNetworks: MutableList<Network> = mutableListOf()
     private var wasConnectedBefore: Boolean = true
