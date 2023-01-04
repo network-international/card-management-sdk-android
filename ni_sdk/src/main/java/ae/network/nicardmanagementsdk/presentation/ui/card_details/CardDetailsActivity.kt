@@ -9,7 +9,9 @@ import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseActivity
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -22,6 +24,7 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     private lateinit var binding: ActivityCardDetailsBinding
     override lateinit var viewModel: CardDetailsViewModel
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setArchitectureComponents()
@@ -29,6 +32,7 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents() {
         val factory = Injector.getInstance(this).provideCardDetailsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[CardDetailsViewModel::class.java]
