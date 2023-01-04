@@ -3,31 +3,33 @@
 
     <!-- This file contains Widgets styles only -->
 
-    <style name="Widget.NICardManagementSDK.Button.Pin.Number" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="materialThemeOverlay">@style/ThemeOverlay.NICardManagementSDK.Button.Pin.Number</item>
+    <style name="Widget.NICardManagementSDK.Button.Pin.Number" parent="Widget.AppCompat.Button">
+        <item name="android:theme">@style/ThemeOverlay.NICardManagementSDK.Button.Pin.Number</item>
         <item name="android:textAppearance">@style/TextAppearance.NICardManagementSDK.Button.Pin.Number</item>
         <item name="android:layout_width">@dimen/pin_number_button_width</item>
         <item name="android:layout_height">@dimen/pin_number_button_width</item>
     </style>
 
-    <style name="Widget.NICardManagementSDK.Button.Pin.ImageButton" parent="Widget.AppCompat.ImageButton">
+    <style name="Widget.NICardManagementSDK.Button.Pin.ImageButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:theme">@style/ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton</item>
+        <item name="android:textAppearance">@style/TextAppearance.NICardManagementSDK.Button.Pin.ImageButton</item>
         <item name="android:layout_width">@dimen/pin_number_button_width</item>
         <item name="android:layout_height">@dimen/pin_number_button_width</item>
         <item name="android:tint">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="Widget.NICardManagementSDK.MaterialAlertDialog.Body.Text" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+    <style name="Widget.NICardManagementSDK.MaterialAlertDialog.Body.Text" parent="Widget.AppCompat.TextView">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="Widget.NICardManagementSDK.TextView.Shadow" parent="Widget.MaterialComponents.TextView">
+    <style name="Widget.NICardManagementSDK.TextView.Shadow" parent="Widget.AppCompat.TextView">
         <item name="android:shadowColor">@color/gray_text_shadow</item>
         <item name="android:shadowDx">1</item>
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">2</item>
     </style>
 
-    <style name="Widget.NICardManagementSDK.TextView.Transparency" parent="Widget.MaterialComponents.TextView">
+    <style name="Widget.NICardManagementSDK.TextView.Transparency" parent="Widget.AppCompat.TextView">
         <item name="android:textColor">@color/white_transparency</item>
     </style>
 

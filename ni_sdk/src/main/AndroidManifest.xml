@@ -17,7 +17,7 @@
             android:name=".presentation.ui.change_pin.ChangePinActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
+            android:theme="@style/Theme.AppCompat.DayNight">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -26,7 +26,7 @@
             android:name=".presentation.ui.set_pin.SetPinActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
+            android:theme="@style/Theme.AppCompat.DayNight">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -35,7 +35,7 @@
             android:name=".presentation.ui.card_details.CardDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
+            android:theme="@style/Theme.AppCompat.DayNight">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
