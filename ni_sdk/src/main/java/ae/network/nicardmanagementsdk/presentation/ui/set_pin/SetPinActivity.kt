@@ -5,7 +5,9 @@ import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
@@ -15,6 +17,7 @@ class SetPinActivity : SetPinActivityBase<SetPinViewModel>() {
 
     override lateinit var viewModel: SetPinViewModel
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setArchitectureComponents(niInput)
@@ -22,6 +25,7 @@ class SetPinActivity : SetPinActivityBase<SetPinViewModel>() {
         super.setViewModelData()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents(niInput : NIInput) {
         val factory = Injector.getInstance(this).provideSetPinViewModelFactory(niInput)
         viewModel = ViewModelProvider(this, factory)[SetPinViewModel::class.java]
