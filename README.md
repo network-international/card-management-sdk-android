@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
             setPinButton.setOnClickListener {
                 // Build NIInput Object & PIN Length
-                niCardManagementForms.setPinForm( niInput, pinLength)
+                niCardManagementForms.setPinForm(niInput, pinLength)
             }
 
             changePinButton.setOnClickListener {
@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         const val TAG = "MainActivity"
     }
+}
 ```
 
 ### Types
@@ -196,6 +197,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmen
             commit()
         }
     }
+}
 ```
 The UI of the activity should offer a container described here by R.id.card_container, which have the appropiate width dimension. The fragment component will take the width of the container to resize itself, and the height is enforced by the aspect ratio of 16:10 (width:height), which guarantee a good user experience related to card UI.
 
