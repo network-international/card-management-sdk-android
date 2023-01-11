@@ -53,7 +53,7 @@ class CardDetailsFragmentViewModel(
         clipboardManager.setPrimaryClip(clip)
 
         // Only show a toast for Android 12 and lower.
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S) {
             copiedTextMessageSingleLiveEvent.value = resId
         }
     }
