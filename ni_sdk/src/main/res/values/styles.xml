@@ -18,10 +18,6 @@
         <item name="android:tint">?android:attr/textColorPrimary</item>
     </style>
 
-    <style name="Widget.NICardManagementSDK.MaterialAlertDialog.Body.Text" parent="Widget.AppCompat.TextView">
-        <item name="android:textSize">18sp</item>
-    </style>
-
     <style name="Widget.NICardManagementSDK.TextView.Shadow" parent="Widget.AppCompat.TextView">
         <item name="android:shadowColor">@color/gray_text_shadow</item>
         <item name="android:shadowDx">1</item>

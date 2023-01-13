@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:theme="@style/Theme.NICardManagementSDK.DayNight"
         tools:context=".presentation.ui.card_details.fragments.CardDetailsFragment">
 
         <ImageView
