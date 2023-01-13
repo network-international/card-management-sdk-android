@@ -3,13 +3,13 @@
     <!-- This file contains Themes and ThemeOverlays -->
 
     <!-- Base application theme. -->
-    <style name="Theme.NICardManagementSDK" parent="Theme.AppCompat">
+    <style name="Theme.NICardManagementSDK" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your base theme here. -->
         <item name="alertDialogTheme">@style/ThemeOverlay.NICardManagementSDK.MaterialAlertDialog</item>
     </style>
 
     <!--Default Top Level application theme-->
-    <style name="Theme.NICardManagementSDK.DayNight" parent="Theme.AppCompat">
+    <style name="Theme.NICardManagementSDK.DayNight" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
