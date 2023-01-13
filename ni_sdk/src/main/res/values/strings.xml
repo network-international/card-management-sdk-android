@@ -29,11 +29,11 @@
     <string name="card_details_fetch_failed">Sorry, something went wrong!</string>
     <string name="ok">OK</string>
     <string name="background_card_image">background card image</string>
-    <string name="card_number">CARD NUMBER</string>
+    <string name="card_number_label">CARD NUMBER</string>
     <string name="copy_to_clipboard_pictogram">copy to clipboard pictogram</string>
-    <string name="expiry_date">VALID THRU</string>
-    <string name="cvv">CVV</string>
+    <string name="expiry_date_label">VALID THRU</string>
+    <string name="cvv_label">CVV</string>
     <string name="credentials_toggle_pictogram">credentials toggle pictogram</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-    <string name="name">NAME</string>
+    <string name="name_label">NAME</string>
 </resources>

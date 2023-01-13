@@ -30,11 +30,11 @@
     <string name="card_details_fetch_failed">Sorry, something went wrong!</string>
     <string name="ok">OK</string>
     <string name="background_card_image">background card image</string>
-    <string name="card_number">رقم البطاقة</string>
+    <string name="card_number_label">رقم البطاقة</string>
     <string name="copy_to_clipboard_pictogram">copy to clipboard pictogram</string>
-    <string name="expiry_date">تاريخ الانتهاء</string>
-    <string name="cvv">رقم التحقق من البطاقة</string>
+    <string name="expiry_date_label">تاريخ الانتهاء</string>
+    <string name="cvv_label">رقم التحقق من البطاقة</string>
     <string name="credentials_toggle_pictogram">credentials toggle pictogram</string>
-    <string name="name">الإسم</string>
+    <string name="name_label">الإسم</string>
     <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
 </resources>
