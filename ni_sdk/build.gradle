@@ -81,7 +81,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.network-international'
             artifactId = 'card-management-sdk-android'
-            version = '1.0.16'
+            version = '1.0.17'
             afterEvaluate {
                 from components.release
             }
