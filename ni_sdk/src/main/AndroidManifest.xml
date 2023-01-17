@@ -12,24 +12,6 @@
         android:label="@string/app_name"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.ui.change_pin.ChangePinActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".presentation.ui.set_pin.SetPinActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".presentation.ui.card_details.CardDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
