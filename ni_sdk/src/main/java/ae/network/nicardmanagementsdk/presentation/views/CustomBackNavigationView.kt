@@ -9,7 +9,6 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.DrawableRes
-import androidx.appcompat.app.AppCompatActivity
 
 class CustomBackNavigationView @JvmOverloads constructor(
     context: Context,
@@ -20,6 +19,9 @@ class CustomBackNavigationView @JvmOverloads constructor(
 
      private val imageButton: ImageButton
      private val textView: TextView
+     private var onClickListener : () -> Unit = {
+         (context as ComponentActivity).onBackPressedDispatcher.onBackPressed()
+     }
 
     init {
         inflate(context, R.layout.custom_back_navigation_view, this)
@@ -45,8 +47,12 @@ class CustomBackNavigationView @JvmOverloads constructor(
         title?.let { textView.text = it }
 
         imageButton.setOnClickListener {
-            (context as ComponentActivity).onBackPressedDispatcher.onBackPressed()
+            onClickListener()
         }
+    }
+
+    fun setOnBackButtonClickListener(onClick: () -> Unit) {
+        onClickListener = onClick
     }
 
     fun setTitle(message: String) {
