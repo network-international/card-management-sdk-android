@@ -43,9 +43,9 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
         viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
             successErrorResponse?.let {
                 lifecycleScope.launch {
-                    listener?.onSetPinFragmentCompletion(it)
                     delay(500)
                     dismiss()
+                    listener?.onSetPinFragmentCompletion(it)
                 }
             }
         }
