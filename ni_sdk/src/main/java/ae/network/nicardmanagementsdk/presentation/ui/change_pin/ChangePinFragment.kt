@@ -1,8 +1,9 @@
-package ae.network.nicardmanagementsdk.presentation.ui.set_pin
+package ae.network.nicardmanagementsdk.presentation.ui.change_pin
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.di.Injector
+import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinDialogFragmentBase
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -12,9 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
+abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>() {
 
-    override lateinit var viewModel: SetPinViewModel
+    override lateinit var viewModel: ChangePinViewModel
     protected var listener: OnFragmentInteractionListener? = null
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -31,8 +32,8 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents(niInput : NIInput) {
-        val factory = Injector.getInstance(requireContext()).provideSetPinViewModelFactory(niInput)
-        viewModel = ViewModelProvider(this, factory)[SetPinViewModel::class.java]
+        val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput)
+        viewModel = ViewModelProvider(this, factory)[ChangePinViewModel::class.java]
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.context = requireContext()
@@ -45,13 +46,13 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
                 lifecycleScope.launch {
                     delay(500)
                     dismiss()
-                    listener?.onSetPinFragmentCompletion(it)
+                    listener?.onChangePinFragmentCompletion(it)
                 }
             }
         }
     }
 
     interface OnFragmentInteractionListener {
-        fun onSetPinFragmentCompletion(response: SuccessErrorResponse)
+        fun onChangePinFragmentCompletion(response: SuccessErrorResponse)
     }
 }

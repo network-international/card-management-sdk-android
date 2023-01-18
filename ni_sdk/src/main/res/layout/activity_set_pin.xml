@@ -16,8 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        tools:context=".presentation.ui.set_pin.SetPinActivity">
+        android:animateLayoutChanges="true">
 
 
         <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
@@ -35,14 +34,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
             android:text="@{context.getString(viewModel.screenTitle)}"
-            android:textSize="22dp"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView" />
+            app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
+            tools:text="@string/set_pin_screen_title" />
 
         <Button
             android:id="@+id/oneButton"
@@ -227,14 +228,14 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="invisible">
+            tools:visibility="gone">
 
             <ProgressBar
                 style="?android:attr/progressBarStyle"
-                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
