@@ -38,7 +38,6 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStyle(STYLE_NO_FRAME, R.style.Theme_NICardManagementSDK_DayNight)
         arguments?.getSerializableCompat(Extra.EXTRA_NI_PIN_FORM_TYPE, NIPinFormType::class.java)?.let {
             niPinFormType = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
@@ -60,16 +59,21 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         initializeUI()
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     protected open fun initializeUI() {
-        binding.customBackNavigationView.setOnBackButtonClickListener {
-            dismiss()
-        }
         binding.apply {
+            closeButton.setOnClickListener {
+                dismiss()
+            }
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = BulletListAdapter()
