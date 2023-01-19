@@ -18,31 +18,39 @@
         android:layout_height="match_parent"
         android:animateLayoutChanges="true">
 
-
-        <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
-            android:id="@+id/customBackNavigationView"
-            android:layout_width="0dp"
+        <ImageButton
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/close_dialog_message"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:title="@{context.getString(viewModel.navTitle)}" />
+            app:srcCompat="@drawable/ic_baseline_highlight_off_24"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
             android:gravity="center_horizontal"
             android:text="@{context.getString(viewModel.screenTitle)}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="22sp"
+            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
+            app:layout_constraintTop_toBottomOf="@+id/closeButton"
             tools:text="@string/set_pin_screen_title" />
 
         <Button
@@ -206,6 +214,8 @@
             android:id="@+id/recyclerView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
             android:contentDescription="@string/recyclerViewBulletsDescription"
             app:layout_constraintBottom_toTopOf="@+id/oneButton"
             app:layout_constraintEnd_toEndOf="parent"

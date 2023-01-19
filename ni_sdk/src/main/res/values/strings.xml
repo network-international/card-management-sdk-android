@@ -3,7 +3,7 @@
     <string name="back">back</string>
     <string name="set_pin_txt">Set PIN</string>
     <string name="card_details_txt">Card details form</string>
-    <string name="set_pin_screen_title">Please enter the desired PIN for\n your card</string>
+    <string name="set_pin_screen_title">Please enter the desired PIN for your card</string>
     <string name="change_pin_current_pin_screen_title">Please enter your current PIN</string>
     <string name="change_pin_new_pin_screen_title">Please enter the new PIN</string>
     <string name="backspace_button">Backspace button</string>
@@ -36,4 +36,5 @@
     <string name="credentials_toggle_pictogram">credentials toggle pictogram</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
     <string name="name_label">NAME</string>
+    <string name="close_dialog_message">"Close dialog"</string>
 </resources>
