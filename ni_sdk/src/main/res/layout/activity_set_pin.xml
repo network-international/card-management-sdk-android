@@ -16,6 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.Number"
         android:animateLayoutChanges="true">
 
         <ImageButton
@@ -45,15 +46,14 @@
             android:gravity="center_horizontal"
             android:text="@{context.getString(viewModel.screenTitle)}"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="20sp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/closeButton"
             tools:text="@string/set_pin_screen_title" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/oneButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:layout_marginBottom="16dp"
@@ -69,7 +69,7 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/twoButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(2)}"
@@ -81,7 +81,7 @@
             app:layout_constraintTop_toTopOf="@+id/oneButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/threeButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(3)}"
@@ -93,7 +93,7 @@
             app:layout_constraintTop_toTopOf="@+id/twoButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fourButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:layout_marginBottom="16dp"
@@ -106,7 +106,7 @@
             app:layout_constraintTop_toBottomOf="@+id/oneButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/fiveButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(5)}"
@@ -118,7 +118,7 @@
             app:layout_constraintTop_toTopOf="@+id/fourButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sixButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(6)}"
@@ -130,7 +130,7 @@
             app:layout_constraintTop_toTopOf="@+id/fiveButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sevenButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:layout_marginBottom="16dp"
@@ -143,7 +143,7 @@
             app:layout_constraintTop_toBottomOf="@+id/fourButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/eightButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(8)}"
@@ -155,7 +155,7 @@
             app:layout_constraintTop_toTopOf="@+id/sevenButton"
             tools:ignore="TextContrastCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/nineButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(9)}"
@@ -170,21 +170,23 @@
         <ImageButton
             android:id="@+id/doneImageButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.ImageButton"
+            android:layout_marginBottom="24dp"
+            android:clickable="@{viewModel.validationSendButton}"
             android:contentDescription="@string/done_button"
+            android:focusable="@{viewModel.validationSendButton}"
             android:onClick="@{() -> viewModel.onDoneImageButtonTap()}"
             android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintEnd_toStartOf="@+id/zeroButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/sevenButton"
-            android:layout_marginBottom="24dp"
             app:srcCompat="@drawable/ic_baseline_check_24"
-            android:clickable="@{viewModel.validationSendButton}"
-            android:focusable="@{viewModel.validationSendButton}"
+            app:useDisabledBgTint="@{!viewModel.validationSendButton}"
+            app:useDisabledColor="@{!viewModel.validationSendButton}"
             tools:ignore="RedundantDescriptionCheck" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/zeroButton"
             style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
             android:onClick="@{() -> viewModel.onNumberKeyTap(0)}"
@@ -238,7 +240,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ProgressBar
                 style="?android:attr/progressBarStyle"
