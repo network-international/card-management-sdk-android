@@ -30,7 +30,7 @@
     </style>
 
     <style name="ThemeOverlay.NICardManagementSDK.ProgressBar" parent="">
-        <item name="colorAccent">?attr/colorPrimary</item>
+        <item name="colorAccent">@color/white_transparency</item>
     </style>
 
 </resources>
