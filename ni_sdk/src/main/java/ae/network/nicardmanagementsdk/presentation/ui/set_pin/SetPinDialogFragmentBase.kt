@@ -1,8 +1,10 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
 import ae.network.nicardmanagementsdk.R
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
@@ -25,6 +27,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         get() = _binding!!
 
     private lateinit var niPinFormType: NIPinFormType
+    protected var successErrorResponse: SuccessErrorResponse? = null
     lateinit var niInput: NIInput
     abstract var viewModel: T
 
@@ -38,6 +41,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setStyle(STYLE_NO_FRAME, R.style.Theme_NICardManagementSDK_DayNight)
         arguments?.getSerializableCompat(Extra.EXTRA_NI_PIN_FORM_TYPE, NIPinFormType::class.java)?.let {
             niPinFormType = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
@@ -59,21 +63,16 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         initializeUI()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     protected open fun initializeUI() {
+        binding.customBackNavigationView.setOnBackButtonClickListener {
+            dismiss()
+        }
         binding.apply {
-            closeButton.setOnClickListener {
-                dismiss()
-            }
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = BulletListAdapter()
@@ -91,6 +90,18 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
                         (adapter as BulletListAdapter).notifyUpdate(it)
                     }
                 }
+            }
+        }
+    }
+
+    protected fun showSuccessErrorFragment(pinMessageAttributes: PinMessageAttributes, isSuccess: Boolean) {
+        pinMessageAttributes.let {
+            val layoutId = if (isSuccess) it.successAttributes.layoutId else it.errorAttributes.layoutId
+            val buttonId = if (isSuccess) it.errorAttributes.buttonResId else it.errorAttributes.buttonResId
+            val fragment = SuccessErrorFragment.newInstance(layoutId, buttonId)
+            childFragmentManager.beginTransaction().apply {
+                replace(R.id.setPinRootLayout, fragment, SuccessErrorFragment.TAG)
+                commit()
             }
         }
     }
