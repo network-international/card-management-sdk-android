@@ -19,7 +19,7 @@
         <item name="colorDisabledImageButton">@color/gray3</item>
     </style>
 
-    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="Theme.NICardManagementSDK.DayNight">
+    <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.Number" parent="">
         // the button text color
         <item name="colorAccent">?android:attr/textColorPrimary</item>
     </style>
