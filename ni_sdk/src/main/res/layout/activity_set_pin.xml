@@ -24,22 +24,15 @@
             android:animateLayoutChanges="true"
             android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.Number">
 
-            <ImageButton
-                android:id="@+id/closeButton"
-                android:layout_width="wrap_content"
+            <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
+                android:id="@+id/customBackNavigationView"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:backgroundTint="@android:color/transparent"
-                android:contentDescription="@string/close_dialog_message"
-                android:minWidth="48dp"
-                android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_highlight_off_24"
-                tools:ignore="SpeakableTextPresentCheck" />
+                app:title="@{context.getString(viewModel.navTitle)}"/>
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -51,11 +44,12 @@
                 android:gravity="center_horizontal"
                 android:text="@{context.getString(viewModel.screenTitle)}"
                 android:textAlignment="center"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/closeButton"
+                app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
                 tools:text="@string/set_pin_screen_title" />
 
             <com.google.android.material.button.MaterialButton
@@ -245,7 +239,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
                 <ProgressBar
                     style="?android:attr/progressBarStyle"
