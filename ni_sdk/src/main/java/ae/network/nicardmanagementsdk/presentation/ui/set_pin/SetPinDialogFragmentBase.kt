@@ -63,21 +63,16 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         initializeUI()
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-//        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
     protected open fun initializeUI() {
+        binding.customBackNavigationView.setOnBackButtonClickListener {
+            dismiss()
+        }
         binding.apply {
-            closeButton.setOnClickListener {
-                dismiss()
-            }
             recyclerView.apply {
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 adapter = BulletListAdapter()
