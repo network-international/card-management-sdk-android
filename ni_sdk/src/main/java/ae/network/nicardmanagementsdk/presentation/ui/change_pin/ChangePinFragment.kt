@@ -1,9 +1,13 @@
 package ae.network.nicardmanagementsdk.presentation.ui.change_pin
 
+import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinDialogFragmentBase
+import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SuccessErrorFragment
+import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -42,14 +46,21 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
     override fun initializeUI() {
         super.initializeUI()
         viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
-            successErrorResponse?.let {
+            successErrorResponse?.let { response ->
                 lifecycleScope.launch {
                     delay(500)
-                    dismiss()
-                    listener?.onChangePinFragmentCompletion(it)
+                    this@ChangePinFragment.successErrorResponse = response
+                    niInput.displayAttributes?.changePinMessageAttributes?.let {
+                        showSuccessErrorFragment(it,response.isSuccess != null)
+                    } ?: dismiss()
                 }
             }
         }
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        successErrorResponse?.let { listener?.onChangePinFragmentCompletion(it) }
     }
 
     interface OnFragmentInteractionListener {
