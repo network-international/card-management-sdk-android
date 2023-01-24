@@ -1,5 +1,6 @@
 package ae.network.nicardmanagementsdk.api.models.input
 
+import androidx.annotation.StyleRes
 import java.io.Serializable
 
 data class NIDisplayAttributes(
@@ -9,4 +10,5 @@ data class NIDisplayAttributes(
     val cardAttributes: NICardAttributes? = null,
     val setPinMessageAttributes: PinMessageAttributes? = null,
     val changePinMessageAttributes: PinMessageAttributes? = null,
+    @StyleRes val theme: Int? = null
 ): Serializable

@@ -14,8 +14,7 @@
         <activity
             android:name=".presentation.ui.card_details.CardDetailsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
