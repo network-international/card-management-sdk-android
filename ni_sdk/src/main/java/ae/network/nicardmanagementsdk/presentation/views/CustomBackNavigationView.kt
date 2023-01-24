@@ -19,9 +19,7 @@ class CustomBackNavigationView @JvmOverloads constructor(
 
      private val imageButton: ImageButton
      private val textView: TextView
-     private var onClickListener : () -> Unit = {
-         (context as ComponentActivity).onBackPressedDispatcher.onBackPressed()
-     }
+     private var onClickListener : (() -> Unit)? = null
 
     init {
         inflate(context, R.layout.custom_back_navigation_view, this)
@@ -47,7 +45,7 @@ class CustomBackNavigationView @JvmOverloads constructor(
         title?.let { textView.text = it }
 
         imageButton.setOnClickListener {
-            onClickListener()
+            onClickListener?.let { onClick -> onClick() }
         }
     }
 

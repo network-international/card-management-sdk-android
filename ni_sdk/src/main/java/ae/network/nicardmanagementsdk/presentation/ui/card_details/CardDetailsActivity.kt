@@ -43,6 +43,9 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     }
 
     private fun initializeUI() {
+        binding.customBackNavigationView.setOnBackButtonClickListener {
+            finish()
+        }
         val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput)
         supportFragmentManager.beginTransaction().apply {
             add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
