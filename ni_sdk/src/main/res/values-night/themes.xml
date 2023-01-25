@@ -6,8 +6,6 @@
         <item name="colorPrimary">@color/purple_200</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <!-- Custom attributes -->
         <item name="colorDisabledImageButton">@color/gray4</item>
     </style>

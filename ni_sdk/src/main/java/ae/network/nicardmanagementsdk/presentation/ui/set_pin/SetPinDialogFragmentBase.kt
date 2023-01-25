@@ -40,14 +40,15 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        setStyle(STYLE_NO_FRAME, R.style.Theme_NICardManagementSDK_DayNight)
         arguments?.getSerializableCompat(Extra.EXTRA_NI_PIN_FORM_TYPE, NIPinFormType::class.java)?.let {
             niPinFormType = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
         arguments?.getSerializableCompat(Extra.EXTRA_NI_INPUT, NIInput::class.java)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
+
+        val theme = niInput.displayAttributes?.theme ?: R.style.Theme_NICardManagementSDK_DayNight
+        setStyle(STYLE_NO_FRAME, theme)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
