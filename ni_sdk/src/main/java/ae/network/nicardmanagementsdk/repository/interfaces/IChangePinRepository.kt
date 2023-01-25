@@ -9,15 +9,18 @@ interface IChangePinRepository {
 
     suspend fun getCardsLookUp(
         authToken: String,
+        bankCode: String,
         cardIdentifierBody: CardIdentifierBodyDto
     ): CardIdentifierModel
 
     suspend fun getCertificateFromApiGateway(
-        authToken: String
+        authToken: String,
+        bankCode: String,
     ): PinCertificateModel
 
     suspend fun changePin(
         authToken: String,
+        bankCode: String,
         changePinBody: ChangePinBodyDto
     )
 

@@ -25,6 +25,7 @@ class SetPinUseCases(private val setPinRepository: ISetPinRepository) : ISetPinU
         //get the object that holds the encrypted PAN
         val cardIdentifierModel = setPinRepository.getCardsLookUp(
             input.connectionProperties.token,
+            input.bankCode,
             CardIdentifierBodyDto(
                 input.cardIdentifierType,
                 input.cardIdentifierId,
@@ -33,7 +34,7 @@ class SetPinUseCases(private val setPinRepository: ISetPinRepository) : ISetPinU
         )
 
         // get their generated x.509.Certificate
-        val certificateModel = setPinRepository.getPinCertificate(input.connectionProperties.token)
+        val certificateModel = setPinRepository.getPinCertificate(input.connectionProperties.token, input.bankCode)
 
         // decrypt encrypted PAN to clear PAN
         val clearPan = decryptToClearPan(cardIdentifierModel, keyPair.private)
@@ -47,6 +48,7 @@ class SetPinUseCases(private val setPinRepository: ISetPinRepository) : ISetPinU
         //call API to Set Pin (send encrypted pin block) ("encrypted_pin":"encrypted pin block")
         setPinRepository.setPin(
             input.connectionProperties.token,
+            input.bankCode,
             SetPinBodyDto(
                 input.cardIdentifierId,
                 encryptedPinBlock,

@@ -7,6 +7,7 @@ interface ICardDetailsRepository {
 
     suspend fun getSecuredCardDetails(
         token: String,
+        bankCode: String,
         cardIdentifierId: String,
         cardIdentifierType: String,
         certificate: X509CertificateBodyDto
