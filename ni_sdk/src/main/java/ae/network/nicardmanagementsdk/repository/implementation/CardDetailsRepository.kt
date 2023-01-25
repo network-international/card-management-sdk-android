@@ -7,13 +7,13 @@ import ae.network.nicardmanagementsdk.network.dto.card_details.asDomainModel
 import ae.network.nicardmanagementsdk.network.retrofit_api.CardDetailsApi
 import ae.network.nicardmanagementsdk.repository.interfaces.ICardDetailsRepository
 
-const val FINANCIAL_ID = "EAND"
 const val CHANNEL_ID = "sdk"
 
 class CardDetailsRepository(private val cardDetailsApi: CardDetailsApi) : ICardDetailsRepository {
 
     override suspend fun getSecuredCardDetails(
         token: String,
+        bankCode: String,
         cardIdentifierId: String,
         cardIdentifierType: String,
         certificate: X509CertificateBodyDto
@@ -25,7 +25,7 @@ class CardDetailsRepository(private val cardDetailsApi: CardDetailsApi) : ICardD
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             ),
             cardIdentifierId,

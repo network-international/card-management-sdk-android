@@ -12,6 +12,7 @@ import ae.network.nicardmanagementsdk.repository.interfaces.IChangePinRepository
 class ChangePinRepository(private val changePinApi: ChangePinApi) : IChangePinRepository {
     override suspend fun getCardsLookUp(
         authToken: String,
+        bankCode: String,
         cardIdentifierBody: CardIdentifierBodyDto
     ): CardIdentifierModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
@@ -21,14 +22,14 @@ class ChangePinRepository(private val changePinApi: ChangePinApi) : IChangePinRe
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             ),
             cardIdentifierBody
         ).asDomainModel()
     }
 
-    override suspend fun getCertificateFromApiGateway(authToken: String): PinCertificateModel {
+    override suspend fun getCertificateFromApiGateway(authToken: String, bankCode: String): PinCertificateModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
         return changePinApi.getPinCertificate(
             mapOf(
@@ -36,13 +37,13 @@ class ChangePinRepository(private val changePinApi: ChangePinApi) : IChangePinRe
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             )
         ).asDomainModel()
     }
 
-    override suspend fun changePin(authToken: String, changePinBody: ChangePinBodyDto) {
+    override suspend fun changePin(authToken: String, bankCode: String, changePinBody: ChangePinBodyDto) {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
         changePinApi.changePin(
             mapOf(
@@ -50,7 +51,7 @@ class ChangePinRepository(private val changePinApi: ChangePinApi) : IChangePinRe
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             ),
             changePinBody

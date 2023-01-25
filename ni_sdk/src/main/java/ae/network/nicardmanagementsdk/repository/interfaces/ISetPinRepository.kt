@@ -9,15 +9,18 @@ interface ISetPinRepository {
 
     suspend fun getCardsLookUp(
         token: String,
+        bankCode: String,
         cardIdentifierBody: CardIdentifierBodyDto
     ): CardIdentifierModel
 
     suspend fun getPinCertificate(
-        token: String
+        token: String,
+        bankCode: String
     ): PinCertificateModel
 
     suspend fun setPin(
         token: String,
+        bankCode: String,
         setPinBody: SetPinBodyDto
     )
 
