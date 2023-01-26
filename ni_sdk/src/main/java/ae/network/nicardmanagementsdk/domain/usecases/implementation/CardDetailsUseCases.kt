@@ -23,12 +23,21 @@ class CardDetailsUseCases(private val cardDetailsRepository: CardDetailsReposito
         val keyPair = CryptoManager.generateRsaKeyPair(CryptoManager.KEY_LENGTH_BITS_4K)
         val cardDetailsResponse = cardDetailsRepository.getSecuredCardDetails(
             input.connectionProperties.token,
+            input.bankCode,
             input.cardIdentifierId,
             input.cardIdentifierType,
             getX509CertificateDto(keyPair)
         )
 
         return decodeToNICardDetailsResponse(cardDetailsResponse, keyPair)
+    }
+
+    private fun getX509CertificateDto(keyPair: KeyPair): X509CertificateBodyDto {
+        val certificate = SelfSignedCertificate(
+            fqdn = BuildConfig.LIBRARY_PACKAGE_NAME,
+            keyPair = keyPair
+        )
+        return X509CertificateBodyDto(certificate.certificateBase64String)
     }
 
     private fun decodeToNICardDetailsResponse(response: CardDetailsResponse, keyPair: KeyPair): NICardDetailsResponse {
@@ -52,14 +61,6 @@ class CardDetailsUseCases(private val cardDetailsRepository: CardDetailsReposito
             clearCvv,
             response.clearCardholderName
         )
-    }
-
-    private fun getX509CertificateDto(keyPair: KeyPair): X509CertificateBodyDto {
-        val certificate = SelfSignedCertificate(
-            fqdn = BuildConfig.LIBRARY_PACKAGE_NAME,
-            keyPair = keyPair
-        )
-        return X509CertificateBodyDto(certificate.certificateBase64String)
     }
 
 }
