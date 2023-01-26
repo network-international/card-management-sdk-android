@@ -26,6 +26,7 @@ class ChangePinUseCases(private val changePinRepository: IChangePinRepository) :
         // get the object that holds the encrypted PAN
         val cardIdentifierModel = changePinRepository.getCardsLookUp(
             input.connectionProperties.token,
+            input.bankCode,
             CardIdentifierBodyDto(
                 input.cardIdentifierType,
                 input.cardIdentifierId,
@@ -34,7 +35,7 @@ class ChangePinUseCases(private val changePinRepository: IChangePinRepository) :
         )
 
         // get generated x.509.Certificate from NI API Gateway
-        val certificateModel = changePinRepository.getCertificateFromApiGateway(input.connectionProperties.token)
+        val certificateModel = changePinRepository.getCertificateFromApiGateway(input.connectionProperties.token, input.bankCode)
 
         // decrypt encrypted PAN to clear PAN
         val clearPan = decryptToClearPan(cardIdentifierModel, keyPair.private)
@@ -54,6 +55,7 @@ class ChangePinUseCases(private val changePinRepository: IChangePinRepository) :
         // call API to Change Pin (send encrypted pin blocks) ("encrypted_old_pin":"encrypted old pin block", "encrypted_new_pin":"encrypted new pin block")
         changePinRepository.changePin(
             input.connectionProperties.token,
+            input.bankCode,
             ChangePinBodyDto(
                 input.cardIdentifierId,
                 encryptedOldPinBlock,

@@ -13,6 +13,7 @@ class SetPinRepository(private val setPinApi: SetPinApi) : ISetPinRepository {
 
     override suspend fun getCardsLookUp(
         token: String,
+        bankCode: String,
         cardIdentifierBody: CardIdentifierBodyDto
     ): CardIdentifierModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
@@ -22,14 +23,14 @@ class SetPinRepository(private val setPinApi: SetPinApi) : ISetPinRepository {
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             ),
             cardIdentifierBody
         ).asDomainModel()
     }
 
-    override suspend fun getPinCertificate(token: String): PinCertificateModel {
+    override suspend fun getPinCertificate(token: String, bankCode: String): PinCertificateModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
         return setPinApi.getPinCertificate(
             mapOf(
@@ -37,13 +38,13 @@ class SetPinRepository(private val setPinApi: SetPinApi) : ISetPinRepository {
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             )
         ).asDomainModel()
     }
 
-    override suspend fun setPin(token: String, setPinBody: SetPinBodyDto) {
+    override suspend fun setPin(token: String, bankCode: String, setPinBody: SetPinBodyDto) {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
         setPinApi.setPin(
             mapOf(
@@ -51,7 +52,7 @@ class SetPinRepository(private val setPinApi: SetPinApi) : ISetPinRepository {
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", FINANCIAL_ID),
+                Pair("Financial-Id", bankCode),
                 Pair("Channel-Id", CHANNEL_ID),
             ),
             setPinBody
