@@ -26,6 +26,10 @@ data class NIErrorResponse(
                     it.value = e.localizedMessage as String
                 }
 
+                is EmptyBodyException -> NISDKErrors.NO_DATA_ERROR.also {
+                    it.value = e.localizedMessage as String
+                }
+
                 else -> NISDKErrors.GENERAL_ERROR.also {
                     it.value = e.localizedMessage as String
                 }
@@ -43,6 +47,7 @@ enum class NISDKErrors(var value: String): Serializable {
 
     NETWORK_ERROR("Network Error"),
     PARSING_ERROR("SDK Parsing Error"),
+    NO_DATA_ERROR("No Data Found"),
 
     RSAKEY_ERROR("Couldn't  get or generate Public Key"),
     PINBLOCK_ERROR("PIN Block Error"),

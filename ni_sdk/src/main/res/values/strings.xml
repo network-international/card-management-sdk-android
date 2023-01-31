@@ -9,6 +9,7 @@
     <string name="backspace_button">Backspace button</string>
     <string name="done_button">Done button</string>
     <string name="empty" translatable="false" />
+    <string name="no_data_placeholder" translatable="false">-</string>
     <string name="recyclerViewBulletsDescription">Completion bullets list</string>
     <string name="_1">1</string>
     <string name="_2">2</string>

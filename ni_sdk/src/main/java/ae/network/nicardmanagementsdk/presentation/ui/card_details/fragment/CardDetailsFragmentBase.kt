@@ -121,6 +121,9 @@ abstract class CardDetailsFragmentBase : Fragment() {
 
         viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
             successErrorResponse?.let {
+                it.isError?.let {
+                    viewModel.setEmptyResponseValues(getString(R.string.no_data_placeholder))
+                }
                 listener?.onCardDetailsFragmentCompletion(it)
             }
         }

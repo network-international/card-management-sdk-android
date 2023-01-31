@@ -1,9 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
-import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
 import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
@@ -35,7 +33,7 @@ class CardDetailsFragmentViewModel(
         get() = clearPanNonSpaced
 
     val getClearCardHolderName: String
-        get() = cardDetailsClear.cardholderName.toString()
+        get() = cardDetailsClear.cardholderName
 
     var defaultShouldDisplayValue = false
     val isShowDetailsLiveData = MutableLiveData<Boolean>()
@@ -67,11 +65,24 @@ class CardDetailsFragmentViewModel(
                 result.details?.let {
                     cardDetailsClear = it.asClearViewModel()
                     cardDetailsMasked = it.asMaskedViewModel()
-                    clearPanNonSpaced = it.asClearPanNonSpaced()
+                    clearPanNonSpaced = it.clearPan
                     isShowDetailsLiveData.value = defaultShouldDisplayValue
                 }
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
             }
         }
+    }
+
+    fun setEmptyResponseValues(placeHolder: String) {
+        val cardDetailsModel = CardDetailsModel(
+            placeHolder,
+            placeHolder,
+            placeHolder,
+            placeHolder
+        )
+        cardDetailsClear = cardDetailsModel
+        cardDetailsMasked = cardDetailsModel
+        clearPanNonSpaced = placeHolder
+        isShowDetailsLiveData.value = false
     }
 }
