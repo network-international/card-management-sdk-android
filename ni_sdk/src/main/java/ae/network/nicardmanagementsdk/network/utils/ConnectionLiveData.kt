@@ -38,12 +38,10 @@ interface IConnection<T> {
     fun observe(owner: LifecycleOwner, observer: Observer<in T?>)
 }
 
-@RequiresApi(Build.VERSION_CODES.M)
 class ConnectionLiveData(context: Context) : MutableLiveData<ConnectionModel>(),
     IConnection<ConnectionModel> {
 
-    @RequiresApi(Build.VERSION_CODES.M)
-    private val connectivityManager: ConnectivityManager = context.getSystemService(ConnectivityManager::class.java)
+    private val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val validNetworks: MutableList<Network> = mutableListOf()
     private var wasConnectedBefore: Boolean = true
     private var isFirstTimeRunning: Boolean = true
@@ -66,15 +64,29 @@ class ConnectionLiveData(context: Context) : MutableLiveData<ConnectionModel>(),
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun getNetworkRequestApi23(): NetworkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
+        .build()
+
+    private fun getNetworkRequestApi21(): NetworkRequest = NetworkRequest.Builder()
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
+        .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
+        .build()
+
     init {
         Log.d("ConnectionLiveData", "init block called")
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_RESTRICTED)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_TRUSTED)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
-            .build()
+        val networkRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getNetworkRequestApi23()
+        } else {
+            getNetworkRequestApi21()
+        }
         Log.d("ConnectionLiveData", "registerNetworkCallback")
         connectivityManager.registerNetworkCallback(networkRequest, networkCallback)
     }

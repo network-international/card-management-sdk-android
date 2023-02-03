@@ -22,7 +22,6 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
     override lateinit var viewModel: ChangePinViewModel
     protected var listener: OnFragmentInteractionListener? = null
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setArchitectureComponents(niInput)
         initializeUI()
@@ -34,7 +33,6 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
         listener = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents(niInput : NIInput) {
         val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput)
         viewModel = ViewModelProvider(this, factory)[ChangePinViewModel::class.java]
