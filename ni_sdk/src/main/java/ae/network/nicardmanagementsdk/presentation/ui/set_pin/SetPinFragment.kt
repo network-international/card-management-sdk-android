@@ -20,7 +20,6 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
     override lateinit var viewModel: SetPinViewModel
     protected var listener: OnFragmentInteractionListener? = null
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setArchitectureComponents(niInput)
         initializeUI()
@@ -32,7 +31,6 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
         listener = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents(niInput : NIInput) {
         val factory = Injector.getInstance(requireContext()).provideSetPinViewModelFactory(niInput)
         viewModel = ViewModelProvider(this, factory)[SetPinViewModel::class.java]

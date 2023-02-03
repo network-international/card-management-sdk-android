@@ -25,7 +25,6 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     private lateinit var binding: ActivityCardDetailsBinding
     override lateinit var viewModel: CardDetailsViewModel
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setArchitectureComponents()
@@ -33,7 +32,6 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun setArchitectureComponents() {
         val factory = Injector.getInstance(this).provideCardDetailsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[CardDetailsViewModel::class.java]
