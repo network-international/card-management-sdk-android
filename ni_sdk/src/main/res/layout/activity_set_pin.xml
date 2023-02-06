@@ -209,7 +209,8 @@
                 app:layout_constraintStart_toEndOf="@+id/zeroButton"
                 app:layout_constraintTop_toTopOf="@+id/zeroButton"
                 app:srcCompat="@drawable/ic_outline_backspace_24"
-                tools:ignore="RedundantDescriptionCheck,ImageContrastCheck" />
+                tools:ignore="RedundantDescriptionCheck,ImageContrastCheck"
+                app:tint="?android:attr/textColorPrimary" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

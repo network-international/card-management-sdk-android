@@ -16,7 +16,7 @@ abstract class BaseActivity<T: BaseViewModel> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setResult(Activity.RESULT_CANCELED)
-        intent.getSerializableExtraCompat(Extra.EXTRA_NI_INPUT, NIInput::class.java)?.let {
+        intent.getSerializableExtraCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_INPUT} is missing")
 

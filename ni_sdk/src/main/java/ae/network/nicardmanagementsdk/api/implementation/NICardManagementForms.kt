@@ -46,12 +46,10 @@ class NICardManagementForms(
             Activity.RESULT_OK -> {
                 onCompletion(
                     result.data?.getSerializableExtraCompat(
-                        Extra.EXTRA_NI_SUCCESS_RESPONSE,
-                        NISuccessResponse::class.java
+                        Extra.EXTRA_NI_SUCCESS_RESPONSE
                     ),
                     result.data?.getSerializableExtraCompat(
-                        Extra.EXTRA_NI_ERROR_RESPONSE,
-                        NIErrorResponse::class.java
+                        Extra.EXTRA_NI_ERROR_RESPONSE
                     ),
                     false
                 )

@@ -10,12 +10,10 @@ import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,10 +38,10 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.getSerializableCompat(Extra.EXTRA_NI_PIN_FORM_TYPE, NIPinFormType::class.java)?.let {
+        arguments?.getSerializableCompat<NIPinFormType>(Extra.EXTRA_NI_PIN_FORM_TYPE)?.let {
             niPinFormType = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
-        arguments?.getSerializableCompat(Extra.EXTRA_NI_INPUT, NIInput::class.java)?.let {
+        arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
 
@@ -51,7 +49,6 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         setStyle(STYLE_NO_FRAME, theme)
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
