@@ -28,17 +28,14 @@ class Injector private constructor(context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private val connectionLiveData = ConnectionLiveData(context)
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun provideCardDetailsViewModelFactory(): ViewModelFactory<CardDetailsViewModel> {
         return ViewModelFactory {
             CardDetailsViewModel(connectionLiveData)
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun provideCardDetailsFragmentViewModelFactory(niInput : NIInput): ViewModelFactory<CardDetailsFragmentViewModel> {
         return ViewModelFactory {
             val getCardDetailsCoreComponent = GetCardDetailsCoreComponent.fromFactory(niInput)
@@ -46,7 +43,6 @@ class Injector private constructor(context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun provideSetPinViewModelFactory(niInput : NIInput): ViewModelFactory<SetPinViewModel> {
         return ViewModelFactory {
             val setPinCoreComponent = SetPinCoreComponent.fromFactory(niInput)
@@ -54,7 +50,6 @@ class Injector private constructor(context: Context) {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     fun provideChangePinViewModelFactory(niInput : NIInput): ViewModelFactory<ChangePinViewModel> {
         return ViewModelFactory {
             val changePinCoreComponent = ChangePinCoreComponent.fromFactory(niInput)

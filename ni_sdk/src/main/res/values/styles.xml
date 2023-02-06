@@ -12,7 +12,6 @@
     <style name="Widget.NICardManagementSDK.Button.Pin.ImageButton" parent="Widget.AppCompat.ImageButton">
         <item name="android:layout_width">@dimen/pin_number_button_width</item>
         <item name="android:layout_height">@dimen/pin_number_button_width</item>
-        <item name="android:tint">?android:attr/textColorPrimary</item>
     </style>
 
     <style name="Widget.NICardManagementSDK.TextView.Shadow" parent="TextAppearance.MaterialComponents.Body1">
