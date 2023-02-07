@@ -3,14 +3,13 @@ package ae.network.nicardmanagementsdk.presentation.binding_adapters
 import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getThemeColor
 import android.content.res.ColorStateList
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.widget.ImageViewCompat.setImageTintList
 import androidx.databinding.BindingAdapter
 
 
@@ -34,13 +33,14 @@ fun setImageViewDisabledColor(imageButton: ImageButton, isDisabled: Boolean) {
 @BindingAdapter("useDisabledBgTint")
 fun setImageViewDisabledBgTint(imageButton: ImageButton, isDisabled: Boolean) {
     val disabledColor = ContextCompat.getColor(imageButton.context, android.R.color.transparent)
-    val enabledColor = ContextCompat.getColor(imageButton.context, R.color.green1)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        val enabledColor = ContextCompat.getColor(imageButton.context, R.color.green1)
         imageButton.backgroundTintList = ColorStateList.valueOf(if (isDisabled) disabledColor else enabledColor)
     } else {
-        imageButton.setBackgroundColor(if (isDisabled) disabledColor else enabledColor)
+        val disabledDrawable = ColorDrawable(disabledColor)
+        val normalDrawable = ContextCompat.getDrawable(imageButton.context, R.drawable.done_button_custom_ripple_drawable)
+        imageButton.background = ((if (isDisabled) disabledDrawable else normalDrawable))
     }
-
 }
 
 
