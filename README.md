@@ -11,7 +11,7 @@ The current supported features are:
 ## Integration
 
 ### Basics
-After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your iOS app and used it.
+After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
 ### Sample usage:
 Kotlin:
 ```kotlin
@@ -260,4 +260,19 @@ Below is an example of layout from the demo activity:
         app:layout_constraintGuide_percent="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+```
+### ProGuard rules
+If you are using minifyEnabled true for your build configuration:
+```groovy
+buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+```
+you have to add the following line of code to your proguard-rules.pro configuration file, in order to successfully generate the X.509 certificate:
+
+```groovy
+-keep class org.bouncycastle.** { *; }
 ```
