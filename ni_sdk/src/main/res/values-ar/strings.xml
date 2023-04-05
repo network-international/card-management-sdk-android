@@ -22,6 +22,7 @@
     <string name="_9">9</string>
     <string name="_0">0</string>
     <string name="set_pin">تعيين الرقم السر </string>
+    <string name="verify_pin">"Verify PIN "</string>
     <string name="change_pin">تغيير الرقم السري</string>
     <string name="set_pin_successful">Set PIN successful</string>
     <string name="change_pin_successful">Change PIN successful</string>
@@ -38,4 +39,5 @@
     <string name="name_label">الإسم</string>
     <string name="copied_to_clipboard">تم النسخ إلى الحافظة</string>
     <string name="close_dialog_message">"Close dialog"</string>
+    <string name="verify_pin_screen_title">Please enter your card PIN for verification</string>
 </resources>

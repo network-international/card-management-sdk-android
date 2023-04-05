@@ -4,6 +4,7 @@
     <string name="set_pin_txt">Set PIN</string>
     <string name="card_details_txt">Card details form</string>
     <string name="set_pin_screen_title">Please enter the desired PIN for your card</string>
+    <string name="verify_pin_screen_title">Please enter your card PIN for verification</string>
     <string name="change_pin_current_pin_screen_title">Please enter your current PIN</string>
     <string name="change_pin_new_pin_screen_title">Please enter the new PIN</string>
     <string name="backspace_button">Backspace button</string>
@@ -21,6 +22,7 @@
     <string name="_9">9</string>
     <string name="_0">0</string>
     <string name="set_pin">Set PIN </string>
+    <string name="verify_pin">Verify PIN </string>
     <string name="change_pin">Change PIN </string>
     <string name="set_pin_successful">Set PIN successful</string>
     <string name="change_pin_successful">Change PIN successful</string>
