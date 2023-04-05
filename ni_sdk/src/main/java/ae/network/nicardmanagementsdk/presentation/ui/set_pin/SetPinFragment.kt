@@ -1,15 +1,11 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
-import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.di.Injector
 import android.content.DialogInterface
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay

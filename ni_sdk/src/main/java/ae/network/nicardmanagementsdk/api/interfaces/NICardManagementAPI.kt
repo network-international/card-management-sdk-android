@@ -17,6 +17,11 @@ interface NICardManagementAPI {
         input: NIInput
     ): SuccessErrorResponse
 
+    suspend fun verifyPin(
+        pin: String,
+        input: NIInput
+    ): SuccessErrorResponse
+
     suspend fun changePin(
         oldPin: String,
         newPin: String,

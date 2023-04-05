@@ -7,6 +7,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.core.ChangePinCoreComponent
 import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
 import ae.network.nicardmanagementsdk.core.SetPinCoreComponent
+import ae.network.nicardmanagementsdk.core.VerifyPinCoreComponent
 
 object NICardManagement : NICardManagementAPI {
 
@@ -23,6 +24,17 @@ object NICardManagement : NICardManagementAPI {
         input: NIInput
     ): SuccessErrorResponse {
         return SetPinCoreComponent.fromFactory(input).run {
+            makeNetworkRequest(
+                pin
+            )
+        }
+    }
+
+    override suspend fun verifyPin(
+        pin: String,
+        input: NIInput
+    ): SuccessErrorResponse {
+        return VerifyPinCoreComponent.fromFactory(input).run {
             makeNetworkRequest(
                 pin
             )

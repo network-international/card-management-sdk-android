@@ -11,14 +11,10 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import kotlin.properties.Delegates
 
-private const val LAYOUT_ID = "layout_id"
-private const val BUTTON_ID = "button_id"
-
 class SuccessErrorFragment : Fragment() {
 
     private var layoutId by Delegates.notNull<Int>()
     private var buttonId by Delegates.notNull<Int>()
-    lateinit var doneButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,5 +50,8 @@ class SuccessErrorFragment : Fragment() {
                         putInt(BUTTON_ID, buttonId)
                     }
                 }
+
+        private const val LAYOUT_ID = "layout_id"
+        private const val BUTTON_ID = "button_id"
     }
 }
