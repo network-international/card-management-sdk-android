@@ -1,4 +1,4 @@
-package ae.network.nicardmanagementsdk.presentation.ui.change_pin
+package ae.network.nicardmanagementsdk.presentation.ui.verify_pin
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
@@ -12,9 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>() {
+abstract class VerifyPinFragment : SetPinDialogFragmentBase<VerifyPinViewModel>() {
 
-    override lateinit var viewModel: ChangePinViewModel
+    override lateinit var viewModel: VerifyPinViewModel
     protected var listener: OnFragmentInteractionListener? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,8 +29,8 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
     }
 
     private fun setArchitectureComponents(niInput : NIInput) {
-        val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput)
-        viewModel = ViewModelProvider(this, factory)[ChangePinViewModel::class.java]
+        val factory = Injector.getInstance(requireContext()).provideVerifyPinViewModelFactory(niInput)
+        viewModel = ViewModelProvider(this, factory)[VerifyPinViewModel::class.java]
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.context = requireContext()
@@ -42,8 +42,8 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
             successErrorResponse?.let { response ->
                 lifecycleScope.launch {
                     delay(500)
-                    this@ChangePinFragment.successErrorResponse = response
-                    niInput.displayAttributes?.changePinMessageAttributes?.let {
+                    this@VerifyPinFragment.successErrorResponse = response
+                    niInput.displayAttributes?.verifyPinMessageAttributes?.let {
                         showSuccessErrorFragment(it,response.isSuccess != null)
                     } ?: dismiss()
                 }
@@ -53,10 +53,10 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        successErrorResponse?.let { listener?.onChangePinFragmentCompletion(it) }
+        successErrorResponse?.let { listener?.onVerifyPinFragmentCompletion(it) }
     }
 
     interface OnFragmentInteractionListener {
-        fun onChangePinFragmentCompletion(response: SuccessErrorResponse)
+        fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse)
     }
 }
