@@ -12,6 +12,7 @@ abstract class SetPinViewModelBase : BaseViewModel() {
 
     abstract val navTitle: LiveData<Int>
     abstract val screenTitle: LiveData<Int>
+    abstract fun onDoneImageButtonTap()
 
     private var _inputString = ""
     val inputString: String
@@ -38,8 +39,6 @@ abstract class SetPinViewModelBase : BaseViewModel() {
         }
     }
 
-
-
     private fun setBulletItems(bulletItems: List<PinBulletModel>) {
         _bulletItemModels = bulletItems
         _bulletItemsLiveData.value = bulletItems
@@ -51,8 +50,6 @@ abstract class SetPinViewModelBase : BaseViewModel() {
             updateBulletStateAdd()
         }
     }
-
-    abstract fun onDoneImageButtonTap()
 
     fun onBackspaceImageButtonTap() {
         if (_inputString.isNotEmpty()) {
