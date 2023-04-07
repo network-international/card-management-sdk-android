@@ -4,14 +4,14 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.core.ChangePinCoreComponent
 import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
 import ae.network.nicardmanagementsdk.core.SetPinCoreComponent
+import ae.network.nicardmanagementsdk.core.VerifyPinCoreComponent
+import ae.network.nicardmanagementsdk.network.utils.ConnectionLiveData
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.CardDetailsViewModel
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinViewModel
-import ae.network.nicardmanagementsdk.network.utils.ConnectionLiveData
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel
+import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinViewModel
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 
 class Injector private constructor(context: Context) {
 
@@ -47,6 +47,13 @@ class Injector private constructor(context: Context) {
         return ViewModelFactory {
             val setPinCoreComponent = SetPinCoreComponent.fromFactory(niInput)
             SetPinViewModel(setPinCoreComponent, connectionLiveData)
+        }
+    }
+
+    fun provideVerifyPinViewModelFactory(niInput : NIInput): ViewModelFactory<VerifyPinViewModel> {
+        return ViewModelFactory {
+            val verifyPinCoreComponent = VerifyPinCoreComponent.fromFactory(niInput)
+            VerifyPinViewModel(verifyPinCoreComponent, connectionLiveData)
         }
     }
 

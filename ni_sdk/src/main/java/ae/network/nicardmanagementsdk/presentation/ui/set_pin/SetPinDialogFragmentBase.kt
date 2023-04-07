@@ -95,7 +95,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     protected fun showSuccessErrorFragment(pinMessageAttributes: PinMessageAttributes, isSuccess: Boolean) {
         pinMessageAttributes.let {
             val layoutId = if (isSuccess) it.successAttributes.layoutId else it.errorAttributes.layoutId
-            val buttonId = if (isSuccess) it.errorAttributes.buttonResId else it.errorAttributes.buttonResId
+            val buttonId = if (isSuccess) it.successAttributes.buttonResId else it.errorAttributes.buttonResId
             val fragment = SuccessErrorFragment.newInstance(layoutId, buttonId)
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.setPinRootLayout, fragment, SuccessErrorFragment.TAG)
