@@ -14,8 +14,8 @@ class ChangePinViewModel (
     private val connectionLiveData: IConnection<ConnectionModel>
 ) : SetPinViewModelBase() {
 
-    override val navTitle = MutableLiveData(R.string.change_pin)
-    override val screenTitle = MutableLiveData(R.string.change_pin_current_pin_screen_title)
+    override val navTitle = MutableLiveData(R.string.change_pin_title)
+    override val screenTitle = MutableLiveData(R.string.change_pin_description_step1)
     private var oldPin = ""
     private var newPin = ""
     private var isCurrentPinSetup = true
@@ -25,7 +25,7 @@ class ChangePinViewModel (
         if (isCurrentPinSetup) {
             oldPin = inputString
             resetState()
-            screenTitle.value = R.string.change_pin_new_pin_screen_title
+            screenTitle.value = R.string.change_pin_description_step2
             isCurrentPinSetup = false
         } else {
             newPin = inputString
@@ -47,7 +47,7 @@ class ChangePinViewModel (
         oldPin = ""
         newPin = ""
         isCurrentPinSetup = true
-        screenTitle.value = R.string.change_pin_current_pin_screen_title
+        screenTitle.value = R.string.change_pin_description_step1
         resetState()
     }
 
