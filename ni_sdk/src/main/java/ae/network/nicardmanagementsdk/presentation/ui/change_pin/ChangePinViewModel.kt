@@ -15,7 +15,7 @@ class ChangePinViewModel (
 ) : SetPinViewModelBase() {
 
     override val navTitle = MutableLiveData(R.string.change_pin_title)
-    override val screenTitle = MutableLiveData(R.string.change_pin_description_step1)
+    override val screenTitle = MutableLiveData(R.string.change_pin_description_enter_current_pin)
     private var oldPin = ""
     private var newPin = ""
     private var isCurrentPinSetup = true
@@ -25,7 +25,7 @@ class ChangePinViewModel (
         if (isCurrentPinSetup) {
             oldPin = inputString
             resetState()
-            screenTitle.value = R.string.change_pin_description_step2
+            screenTitle.value = R.string.change_pin_description_enter_new_pin
             isCurrentPinSetup = false
         } else {
             newPin = inputString
@@ -47,7 +47,7 @@ class ChangePinViewModel (
         oldPin = ""
         newPin = ""
         isCurrentPinSetup = true
-        screenTitle.value = R.string.change_pin_description_step1
+        screenTitle.value = R.string.change_pin_description_enter_current_pin
         resetState()
     }
 

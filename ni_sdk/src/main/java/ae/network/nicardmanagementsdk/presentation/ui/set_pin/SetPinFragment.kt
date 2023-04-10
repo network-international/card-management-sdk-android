@@ -37,6 +37,7 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
 
     override fun initializeUI() {
         super.initializeUI()
+
         viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
             successErrorResponse?.let { response ->
                 lifecycleScope.launch {

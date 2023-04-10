@@ -1,7 +1,4 @@
 <resources>
-    // app name
-    <string name="app_name">NICardManagementSDK</string>
-
     // card details activity
     <string name="card_details_title">Card details</string>
 
@@ -14,7 +11,9 @@
 
     // set pin screen
     <string name="set_pin_title">Set PIN </string>
-    <string name="set_pin_description">Please enter the desired PIN for your card</string>
+    <string name="set_pin_description_enter_pin">Please enter the desired PIN for your card</string>
+    <string name="set_pin_description_re_enter_pin">Please re-enter the desired card PIN</string>
+    <string name="set_pin_description_pin_not_match">PIN does not match.\nPlease re-enter the card PIN</string>
 
     // verify pin screen
     <string name="verify_pin_title">Verify PIN </string>
@@ -22,10 +21,11 @@
 
     // change pin screen
     <string name="change_pin_title">Change PIN </string>
-    <string name="change_pin_description_step1">Please enter your current PIN</string>
-    <string name="change_pin_description_step2">Please enter the new PIN</string>
+    <string name="change_pin_description_enter_current_pin">Please enter your current PIN</string>
+    <string name="change_pin_description_enter_new_pin">Please enter the new PIN</string>
 
     // non translatable strings
+    <string name="app_name" translatable="false">NICardManagementSDK</string>
     <string name="_1" translatable="false">1</string>
     <string name="_2" translatable="false">2</string>
     <string name="_3" translatable="false">3</string>
