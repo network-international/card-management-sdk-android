@@ -8,11 +8,12 @@ import ae.network.nicardmanagementsdk.core.security.CryptoManager
 import ae.network.nicardmanagementsdk.core.security.SelfSignedCertificate
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.ICardDetailsUseCases
 import ae.network.nicardmanagementsdk.network.dto.card_details.X509CertificateBodyDto
-import ae.network.nicardmanagementsdk.repository.implementation.CardDetailsRepository
+import ae.network.nicardmanagementsdk.repository.interfaces.ICardDetailsRepository
 import java.security.KeyPair
 
-class CardDetailsUseCases(private val cardDetailsRepository: CardDetailsRepository) :
-    ICardDetailsUseCases {
+class CardDetailsUseCases(
+    private val cardDetailsRepository: ICardDetailsRepository
+    ) : ICardDetailsUseCases {
 
     // The domain layer contains all the use cases of your application.
     // You can consider the use cases as class responsible of containing the business logic

@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 
-interface SetVerifyPinApi {
+interface PinApi {
 
     @POST("cards/lookup")
     suspend fun getCardsLookUp(

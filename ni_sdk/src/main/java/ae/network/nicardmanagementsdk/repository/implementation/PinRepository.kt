@@ -5,10 +5,10 @@ import ae.network.nicardmanagementsdk.domain.models.CardIdentifierModel
 import ae.network.nicardmanagementsdk.domain.models.PinCertificateModel
 import ae.network.nicardmanagementsdk.network.dto.set_pin.CardIdentifierBodyDto
 import ae.network.nicardmanagementsdk.network.dto.set_pin.asDomainModel
-import ae.network.nicardmanagementsdk.network.retrofit_api.SetVerifyPinApi
-import ae.network.nicardmanagementsdk.repository.interfaces.ISetVerifyPinRepository
+import ae.network.nicardmanagementsdk.network.retrofit_api.PinApi
+import ae.network.nicardmanagementsdk.repository.interfaces.IPinRepository
 
-abstract class SetVerifyPinBaseRepository(private val setVerifyPinApi: SetVerifyPinApi) : ISetVerifyPinRepository {
+abstract class PinRepository(private val pinApi: PinApi) : IPinRepository {
 
     override suspend fun getCardsLookUp(
         token: String,
@@ -16,7 +16,7 @@ abstract class SetVerifyPinBaseRepository(private val setVerifyPinApi: SetVerify
         cardIdentifierBody: CardIdentifierBodyDto
     ): CardIdentifierModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
-        return setVerifyPinApi.getCardsLookUp(
+        return pinApi.getCardsLookUp(
             mapOf(
                 Pair("Authorization", "Bearer $token"),
                 Pair("Content-Type", "application/json"),
@@ -29,9 +29,12 @@ abstract class SetVerifyPinBaseRepository(private val setVerifyPinApi: SetVerify
         ).asDomainModel()
     }
 
-    override suspend fun getPinCertificate(token: String, bankCode: String): PinCertificateModel {
+    override suspend fun getPinCertificate(
+        token: String,
+        bankCode: String
+    ): PinCertificateModel {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
-        return setVerifyPinApi.getPinCertificate(
+        return pinApi.getPinCertificate(
             mapOf(
                 Pair("Authorization", "Bearer $token"),
                 Pair("Content-Type", "application/json"),
