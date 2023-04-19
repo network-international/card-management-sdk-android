@@ -7,16 +7,17 @@ import ae.network.nicardmanagementsdk.core.security.CryptoManager
 import ae.network.nicardmanagementsdk.core.security.SelfSignedCertificate
 import ae.network.nicardmanagementsdk.domain.models.CardIdentifierModel
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.IChangePinUseCases
-import ae.network.nicardmanagementsdk.network.dto.change_pin.CardIdentifierBodyDto
-import ae.network.nicardmanagementsdk.network.dto.change_pin.CardIdentifierTypeEnum
 import ae.network.nicardmanagementsdk.network.dto.change_pin.ChangePinBodyDto
-import ae.network.nicardmanagementsdk.network.dto.change_pin.EncryptionMethodEnum
+import ae.network.nicardmanagementsdk.network.dto.set_pin.CardIdentifierBodyDto
+import ae.network.nicardmanagementsdk.network.dto.set_pin.CardIdentifierTypeEnum
+import ae.network.nicardmanagementsdk.network.dto.set_pin.EncryptionMethodEnum
 import ae.network.nicardmanagementsdk.repository.interfaces.IChangePinRepository
 import java.security.KeyPair
 import java.security.PrivateKey
 
-class ChangePinUseCases(private val changePinRepository: IChangePinRepository) :
-    IChangePinUseCases {
+class ChangePinUseCases(
+    private val changePinRepository: IChangePinRepository
+    ) : IChangePinUseCases {
 
     override suspend fun changePin(input: NIInput, oldPin: String, newPin: String): NISuccessResponse {
 
@@ -34,8 +35,8 @@ class ChangePinUseCases(private val changePinRepository: IChangePinRepository) :
             )
         )
 
-        // get generated x.509.Certificate from NI API Gateway
-        val certificateModel = changePinRepository.getCertificateFromApiGateway(input.connectionProperties.token, input.bankCode)
+        // get their generated x.509.Certificate
+        val certificateModel = changePinRepository.getPinCertificate(input.connectionProperties.token, input.bankCode)
 
         // decrypt encrypted PAN to clear PAN
         val clearPan = decryptToClearPan(cardIdentifierModel, keyPair.private)

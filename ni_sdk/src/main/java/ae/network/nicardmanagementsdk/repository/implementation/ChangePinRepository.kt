@@ -1,53 +1,22 @@
 package ae.network.nicardmanagementsdk.repository.implementation
 
 import ae.network.nicardmanagementsdk.core.security.CryptoManager
-import ae.network.nicardmanagementsdk.domain.models.CardIdentifierModel
-import ae.network.nicardmanagementsdk.domain.models.PinCertificateModel
-import ae.network.nicardmanagementsdk.network.dto.change_pin.CardIdentifierBodyDto
 import ae.network.nicardmanagementsdk.network.dto.change_pin.ChangePinBodyDto
-import ae.network.nicardmanagementsdk.network.dto.change_pin.asDomainModel
 import ae.network.nicardmanagementsdk.network.retrofit_api.ChangePinApi
 import ae.network.nicardmanagementsdk.repository.interfaces.IChangePinRepository
 
-class ChangePinRepository(private val changePinApi: ChangePinApi) : IChangePinRepository {
-    override suspend fun getCardsLookUp(
-        authToken: String,
+class ChangePinRepository(private val changePinApi: ChangePinApi) :
+    PinRepository(changePinApi), IChangePinRepository {
+
+    override suspend fun changePin(
+        token: String,
         bankCode: String,
-        cardIdentifierBody: CardIdentifierBodyDto
-    ): CardIdentifierModel {
-        val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
-        return changePinApi.getCardsLookUp(
-            mapOf(
-                Pair("Authorization", "Bearer $authToken"),
-                Pair("Content-Type", "application/json"),
-                Pair("Accept", "application/json"),
-                Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", bankCode),
-                Pair("Channel-Id", CHANNEL_ID),
-            ),
-            cardIdentifierBody
-        ).asDomainModel()
-    }
-
-    override suspend fun getCertificateFromApiGateway(authToken: String, bankCode: String): PinCertificateModel {
-        val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
-        return changePinApi.getPinCertificate(
-            mapOf(
-                Pair("Authorization", "Bearer $authToken"),
-                Pair("Content-Type", "application/json"),
-                Pair("Accept", "application/json"),
-                Pair("Unique-Reference-Code", uniqueReferenceCode),
-                Pair("Financial-Id", bankCode),
-                Pair("Channel-Id", CHANNEL_ID),
-            )
-        ).asDomainModel()
-    }
-
-    override suspend fun changePin(authToken: String, bankCode: String, changePinBody: ChangePinBodyDto) {
+        changePinBody: ChangePinBodyDto
+    ) {
         val uniqueReferenceCode = CryptoManager.uniqueReferenceCodeRandom()
         changePinApi.changePin(
             mapOf(
-                Pair("Authorization", "Bearer $authToken"),
+                Pair("Authorization", "Bearer $token"),
                 Pair("Content-Type", "application/json"),
                 Pair("Accept", "application/json"),
                 Pair("Unique-Reference-Code", uniqueReferenceCode),

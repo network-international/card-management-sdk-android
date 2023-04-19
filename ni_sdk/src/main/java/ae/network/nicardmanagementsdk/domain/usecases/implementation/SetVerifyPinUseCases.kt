@@ -15,14 +15,16 @@ import ae.network.nicardmanagementsdk.repository.interfaces.ISetVerifyPinReposit
 import java.security.KeyPair
 import java.security.PrivateKey
 
-class SetVerifyPinUseCases(private val setVerifyPinRepository: ISetVerifyPinRepository) : ISetVerifyPinUseCases {
+class SetVerifyPinUseCases(
+    private val setVerifyPinRepository: ISetVerifyPinRepository
+    ) : ISetVerifyPinUseCases {
 
     override suspend fun setVerifyPin(input: NIInput, pin: String): NISuccessResponse {
 
-        //generate the KeyPair
+        // generate RSA KeyPair
         val keyPair = CryptoManager.generateRsaKeyPair(CryptoManager.KEY_LENGTH_BITS_4K)
 
-        //get the object that holds the encrypted PAN
+        // get the object that holds the encrypted PAN
         val cardIdentifierModel = setVerifyPinRepository.getCardsLookUp(
             input.connectionProperties.token,
             input.bankCode,
