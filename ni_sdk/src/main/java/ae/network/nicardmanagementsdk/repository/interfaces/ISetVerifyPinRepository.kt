@@ -1,13 +1,12 @@
 package ae.network.nicardmanagementsdk.repository.interfaces
 
-import ae.network.nicardmanagementsdk.network.dto.set_pin.SetVerifyPinBodyDto
+import ae.network.nicardmanagementsdk.api.models.input.NIInput
 
 interface ISetVerifyPinRepository : IPinRepository {
 
     suspend fun setVerifyPin(
-        token: String,
-        bankCode: String,
-        setVerifyPinBody: SetVerifyPinBodyDto
+        input: NIInput,
+        encryptedPinBlock: String
     )
 
 }

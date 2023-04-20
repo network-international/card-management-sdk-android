@@ -1,44 +1,35 @@
 package ae.network.nicardmanagementsdk.domain.usecases.implementation
 
-import ae.network.nicardmanagementsdk.BuildConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.output.CardDetailsResponse
 import ae.network.nicardmanagementsdk.api.models.output.NICardDetailsResponse
 import ae.network.nicardmanagementsdk.core.security.CryptoManager
-import ae.network.nicardmanagementsdk.core.security.SelfSignedCertificate
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.ICardDetailsUseCases
-import ae.network.nicardmanagementsdk.network.dto.card_details.X509CertificateBodyDto
 import ae.network.nicardmanagementsdk.repository.interfaces.ICardDetailsRepository
 import java.security.KeyPair
 
 class CardDetailsUseCases(
     private val cardDetailsRepository: ICardDetailsRepository
-    ) : ICardDetailsUseCases {
+    ) : BaseUseCases(), ICardDetailsUseCases {
 
     // The domain layer contains all the use cases of your application.
     // You can consider the use cases as class responsible of containing the business logic
-    // of your application.
-    // i.e. encrypt data and make several calls to the backend in order to get the final result
+    // of your application : i.e. encrypt data and make several calls to the backend
+    // in order to get the final result
 
     override suspend fun getSecuredCardDetails(input: NIInput): NICardDetailsResponse {
+
+        // generate RSA KeyPair
         val keyPair = CryptoManager.generateRsaKeyPair(CryptoManager.KEY_LENGTH_BITS_4K)
-        val cardDetailsResponse = cardDetailsRepository.getSecuredCardDetails(
-            input.connectionProperties.token,
-            input.bankCode,
-            input.cardIdentifierId,
-            input.cardIdentifierType,
-            getX509CertificateDto(keyPair)
-        )
 
+        // generate the publicKey
+        val publicKey =  getCertificateBase64String(keyPair)
+
+        // call API to get card details
+        val cardDetailsResponse = cardDetailsRepository.getSecuredCardDetails(input, publicKey)
+
+        // decode to clear PAN and clear CVV
         return decodeToNICardDetailsResponse(cardDetailsResponse, keyPair)
-    }
-
-    private fun getX509CertificateDto(keyPair: KeyPair): X509CertificateBodyDto {
-        val certificate = SelfSignedCertificate(
-            fqdn = BuildConfig.LIBRARY_PACKAGE_NAME,
-            keyPair = keyPair
-        )
-        return X509CertificateBodyDto(certificate.certificateBase64String)
     }
 
     private fun decodeToNICardDetailsResponse(response: CardDetailsResponse, keyPair: KeyPair): NICardDetailsResponse {
