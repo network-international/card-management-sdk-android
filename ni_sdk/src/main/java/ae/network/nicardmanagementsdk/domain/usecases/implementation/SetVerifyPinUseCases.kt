@@ -1,42 +1,30 @@
 package ae.network.nicardmanagementsdk.domain.usecases.implementation
 
-import ae.network.nicardmanagementsdk.BuildConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
 import ae.network.nicardmanagementsdk.core.security.CryptoManager
-import ae.network.nicardmanagementsdk.core.security.SelfSignedCertificate
 import ae.network.nicardmanagementsdk.domain.models.CardIdentifierModel
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.ISetVerifyPinUseCases
-import ae.network.nicardmanagementsdk.network.dto.set_pin.CardIdentifierBodyDto
-import ae.network.nicardmanagementsdk.network.dto.set_pin.CardIdentifierTypeEnum
-import ae.network.nicardmanagementsdk.network.dto.set_pin.EncryptionMethodEnum
-import ae.network.nicardmanagementsdk.network.dto.set_pin.SetVerifyPinBodyDto
 import ae.network.nicardmanagementsdk.repository.interfaces.ISetVerifyPinRepository
-import java.security.KeyPair
 import java.security.PrivateKey
 
 class SetVerifyPinUseCases(
     private val setVerifyPinRepository: ISetVerifyPinRepository
-    ) : ISetVerifyPinUseCases {
+    ) : BaseUseCases(), ISetVerifyPinUseCases {
 
     override suspend fun setVerifyPin(input: NIInput, pin: String): NISuccessResponse {
 
         // generate RSA KeyPair
         val keyPair = CryptoManager.generateRsaKeyPair(CryptoManager.KEY_LENGTH_BITS_4K)
 
+        // generate the publicKey
+        val publicKey =  getCertificateBase64String(keyPair)
+
         // get the object that holds the encrypted PAN
-        val cardIdentifierModel = setVerifyPinRepository.getCardsLookUp(
-            input.connectionProperties.token,
-            input.bankCode,
-            CardIdentifierBodyDto(
-                input.cardIdentifierType,
-                input.cardIdentifierId,
-                getCertificateBase64String(keyPair)
-            )
-        )
+        val cardIdentifierModel = setVerifyPinRepository.getCardsLookUp(input, publicKey)
 
         // get their generated x.509.Certificate
-        val certificateModel = setVerifyPinRepository.getPinCertificate(input.connectionProperties.token, input.bankCode)
+        val certificateModel = setVerifyPinRepository.getPinCertificate(input)
 
         // decrypt encrypted PAN to clear PAN
         val clearPan = decryptToClearPan(cardIdentifierModel, keyPair.private)
@@ -49,14 +37,8 @@ class SetVerifyPinUseCases(
 
         //call API to Set or Verify Pin (send encrypted pin block) ("encrypted_pin":"encrypted pin block")
         setVerifyPinRepository.setVerifyPin(
-            input.connectionProperties.token,
-            input.bankCode,
-            SetVerifyPinBodyDto(
-                input.cardIdentifierId,
-                encryptedPinBlock,
-                EncryptionMethodEnum.ASYMMETRIC_ENC.name,
-                CardIdentifierTypeEnum.EXID.name
-            )
+            input,
+            encryptedPinBlock
         )
 
         return NISuccessResponse()
@@ -81,14 +63,6 @@ class SetVerifyPinUseCases(
 
     private fun createPinBlock(pin: String, clearPan: String): String {
         return CryptoManager.format0Encode(pin, clearPan)
-    }
-
-    private fun getCertificateBase64String(keyPair: KeyPair): String {
-        val certificate = SelfSignedCertificate(
-            fqdn = BuildConfig.LIBRARY_PACKAGE_NAME,
-            keyPair = keyPair
-        )
-        return certificate.certificateBase64String
     }
 
 }
