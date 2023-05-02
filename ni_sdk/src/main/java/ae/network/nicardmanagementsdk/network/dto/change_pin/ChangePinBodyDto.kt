@@ -9,12 +9,3 @@ data class ChangePinBodyDto(
     @SerializedName("encryption_method") val encryptionMethod: String,
     @SerializedName("card_identifier_type") val cardIdentifierType: String,
 )
-
-enum class EncryptionMethodEnum {
-    ASYMMETRIC_ENC,
-    SYMMETRIC_ENC
-}
-
-enum class CardIdentifierTypeEnum {
-    EXID, CONTRACT_NUMBER
-}
