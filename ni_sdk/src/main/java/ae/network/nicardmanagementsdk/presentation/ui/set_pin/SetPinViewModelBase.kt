@@ -10,8 +10,8 @@ import androidx.lifecycle.Transformations
 
 abstract class SetPinViewModelBase : BaseViewModel() {
 
-    abstract val navTitle: LiveData<Int>
-    abstract val screenTitle: LiveData<Int>
+    abstract val navTitle: MutableLiveData<Int>
+    abstract val screenTitle: MutableLiveData<Int>
     abstract fun onDoneImageButtonTap()
 
     private var _inputString = ""
