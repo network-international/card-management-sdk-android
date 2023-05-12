@@ -20,7 +20,7 @@
         tools:context=".presentation.ui.card_details.fragments.CardDetailsFragment">
 
         <ImageView
-            android:id="@+id/cardMarginImageView"
+            android:id="@+id/cardBackgroundImageView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:contentDescription="@string/background_card_image_content_description"
@@ -40,8 +40,8 @@
             android:text="@string/card_number"
             android:textSize="8sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@+id/guideline1_horizontal"
-            app:layout_constraintStart_toStartOf="@id/guideline1_vertical"
+            app:layout_constraintBottom_toTopOf="@+id/cardNumberTextView"
+            app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
 
         <TextView
@@ -54,7 +54,7 @@
             android:textColor="@color/gray1"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/guideline2_horizontal"
+            app:layout_constraintBottom_toTopOf="@id/card_number_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@+id/cardNumberLabelTextView"
             tools:ignore="TextContrastCheck"
             tools:text="1234 5678 2345 3456" />
@@ -82,8 +82,8 @@
             android:text="@string/card_expiry"
             android:textSize="8sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@id/guideline3_horizontal"
-            app:layout_constraintStart_toStartOf="@+id/guideline1_vertical"
+            app:layout_constraintBottom_toTopOf="@+id/expiryDateTextView"
+            app:layout_constraintStart_toStartOf="@+id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
 
         <TextView
@@ -95,8 +95,9 @@
             android:textColor="@color/gray1"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guideline4_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/date_cvv_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@+id/expiryDateLabelTextView"
+            tools:ignore="TextContrastCheck"
             tools:text="05/ 2024" />
 
 
@@ -131,11 +132,12 @@
             android:id="@+id/hideShowDetailsImageView"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginStart="8dp"
             android:contentDescription="@string/credentials_toggle_image_content_description"
             android:padding="8dp"
             android:visibility="@{(viewModel.isShowDetailsLiveData == null || viewModel.defaultShouldDisplayValue) ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/cvvCodeTextView"
-            app:layout_constraintStart_toEndOf="@id/guideline2_vertical"
+            app:layout_constraintStart_toEndOf="@+id/cvvCodeTextView"
             app:layout_constraintTop_toTopOf="@+id/cvvCodeTextView"
             app:srcCompat="@{viewModel.isShowDetailsLiveData ? @drawable/ic_hide_details : @drawable/ic_reveal_details}"
             tools:ignore="ImageContrastCheck"
@@ -149,8 +151,9 @@
             android:text="@string/card_name"
             android:textSize="8sp"
             android:textStyle="normal"
-            app:layout_constraintBottom_toTopOf="@id/guideline5_horizontal"
-            app:layout_constraintStart_toStartOf="@id/guideline1_vertical" />
+            app:layout_constraintBottom_toTopOf="@+id/cardHolderNameTextView"
+            app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
+            tools:ignore="TextContrastCheck" />
 
         <TextView
             android:id="@+id/cardHolderNameTextView"
@@ -161,7 +164,7 @@
             android:textColor="@color/gray1"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/guideline6_horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/holder_name_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@id/cardHolderNameLabelTextView"
             tools:ignore="TextContrastCheck"
             tools:text="Lee M. Cardholder" />
@@ -182,60 +185,32 @@
             tools:ignore="ImageContrastCheck" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.41" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2_horizontal"
+            android:id="@+id/card_number_guideline_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.52" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.61" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline4_horizontal"
+            android:id="@+id/date_cvv_guideline_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.7" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline5_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.79" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline6_horizontal"
+            android:id="@+id/holder_name_guideline_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.89" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline1_vertical"
+            android:id="@+id/left_align_guide_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.044" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2_vertical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.381" />
 
         <FrameLayout
             android:id="@+id/overlayFrameLayout"
@@ -244,10 +219,10 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/cardMarginImageView"
-            app:layout_constraintEnd_toEndOf="@id/cardMarginImageView"
-            app:layout_constraintStart_toStartOf="@id/cardMarginImageView"
-            app:layout_constraintTop_toTopOf="@id/cardMarginImageView"
+            app:layout_constraintBottom_toBottomOf="@id/cardBackgroundImageView"
+            app:layout_constraintEnd_toEndOf="@id/cardBackgroundImageView"
+            app:layout_constraintStart_toStartOf="@id/cardBackgroundImageView"
+            app:layout_constraintTop_toTopOf="@id/cardBackgroundImageView"
             tools:visibility="gone">
 
             <ProgressBar
