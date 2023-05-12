@@ -90,7 +90,13 @@ abstract class CardDetailsFragmentBase : Fragment() {
             }
             niDisplayAttributes.cardAttributes?.let { niCardAttributes ->
                 viewModel.defaultShouldDisplayValue = !niCardAttributes.shouldHide
-                niCardAttributes.backgroundImage?.let { it -> binding.cardMarginImageView.setImageResource(it) }
+                niCardAttributes.backgroundImage?.let { it -> binding.cardBackgroundImageView.setImageResource(it) }
+                niCardAttributes.textPositioning?.let { positioning ->
+                    positioning.leftAlignment?.let { it -> binding.leftAlignGuideVertical.setGuidelinePercent(it) }
+                    positioning.cardNumberGroupTopAlignment?.let { it -> binding.cardNumberGuidelineHorizontal.setGuidelinePercent(it) }
+                    positioning.dateCvvGroupTopAlignment?.let { it -> binding.dateCvvGuidelineHorizontal.setGuidelinePercent(it) }
+                    positioning.cardHolderNameGroupTopAlignment?.let { it -> binding.holderNameGuidelineHorizontal.setGuidelinePercent(it) }
+                }
             }
         }
 
