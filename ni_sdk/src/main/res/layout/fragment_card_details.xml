@@ -34,12 +34,10 @@
 
         <TextView
             android:id="@+id/cardNumberLabelTextView"
-            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_number"
-            android:textSize="8sp"
-            android:textStyle="normal"
             app:layout_constraintBottom_toTopOf="@+id/cardNumberTextView"
             app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
@@ -47,13 +45,11 @@
         <TextView
             android:id="@+id/cardNumberTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="2dp"
             android:text="@{viewModel.cardDetailsLiveData.pan}"
-            android:textColor="@color/gray1"
-            android:textSize="16sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@id/card_number_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@+id/cardNumberLabelTextView"
             tools:ignore="TextContrastCheck"
@@ -76,12 +72,10 @@
 
         <TextView
             android:id="@+id/expiryDateLabelTextView"
-            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_expiry"
-            android:textSize="8sp"
-            android:textStyle="normal"
             app:layout_constraintBottom_toTopOf="@+id/expiryDateTextView"
             app:layout_constraintStart_toStartOf="@+id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
@@ -89,12 +83,10 @@
         <TextView
             android:id="@+id/expiryDateTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.expiry}"
-            android:textColor="@color/gray1"
-            android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/date_cvv_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@+id/expiryDateLabelTextView"
             tools:ignore="TextContrastCheck"
@@ -103,13 +95,11 @@
 
         <TextView
             android:id="@+id/cvvCodeLabelTextView"
-            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:text="@string/card_cvv"
-            android:textSize="8sp"
-            android:textStyle="normal"
             app:layout_constraintBaseline_toBaselineOf="@id/expiryDateLabelTextView"
             app:layout_constraintStart_toEndOf="@id/expiryDateLabelTextView"
             tools:ignore="TextContrastCheck" />
@@ -117,12 +107,10 @@
         <TextView
             android:id="@+id/cvvCodeTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.cVV2}"
-            android:textColor="@color/gray1"
-            android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBaseline_toBaselineOf="@+id/expiryDateTextView"
             app:layout_constraintStart_toStartOf="@id/cvvCodeLabelTextView"
             tools:ignore="TextContrastCheck"
@@ -145,12 +133,10 @@
 
         <TextView
             android:id="@+id/cardHolderNameLabelTextView"
-            style="@style/Widget.NICardManagementSDK.TextView.Transparency"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_name"
-            android:textSize="8sp"
-            android:textStyle="normal"
             app:layout_constraintBottom_toTopOf="@+id/cardHolderNameTextView"
             app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
@@ -158,12 +144,10 @@
         <TextView
             android:id="@+id/cardHolderNameTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
-            android:textColor="@color/gray1"
-            android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/holder_name_guideline_horizontal"
             app:layout_constraintStart_toStartOf="@id/cardHolderNameLabelTextView"
             tools:ignore="TextContrastCheck"
@@ -171,7 +155,6 @@
 
         <ImageView
             android:id="@+id/copyCardHolderNameImageView"
-            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="8dp"
