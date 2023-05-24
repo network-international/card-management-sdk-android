@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.Number">
+            android:theme="@style/Theme.NICardManagementSDK.DayNight">
 
             <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
                 android:id="@+id/customBackNavigationView"
@@ -52,7 +52,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
                 tools:text="@string/set_pin_description_enter_pin" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/oneButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:layout_marginBottom="16dp"
@@ -68,7 +68,7 @@
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/twoButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(2)}"
@@ -80,7 +80,7 @@
                 app:layout_constraintTop_toTopOf="@+id/oneButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/threeButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(3)}"
@@ -92,7 +92,7 @@
                 app:layout_constraintTop_toTopOf="@+id/twoButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/fourButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:layout_marginBottom="16dp"
@@ -105,7 +105,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/oneButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/fiveButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(5)}"
@@ -117,7 +117,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fourButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/sixButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(6)}"
@@ -129,7 +129,7 @@
                 app:layout_constraintTop_toTopOf="@+id/fiveButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/sevenButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:layout_marginBottom="16dp"
@@ -142,7 +142,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/fourButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/eightButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(8)}"
@@ -154,7 +154,7 @@
                 app:layout_constraintTop_toTopOf="@+id/sevenButton"
                 tools:ignore="TextContrastCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/nineButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(9)}"
@@ -185,7 +185,7 @@
                 app:useDisabledColor="@{!viewModel.validationSendButton}"
                 tools:ignore="RedundantDescriptionCheck" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/zeroButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.Number"
                 android:onClick="@{() -> viewModel.onNumberKeyTap(0)}"

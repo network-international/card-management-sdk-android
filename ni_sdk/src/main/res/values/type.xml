@@ -2,9 +2,29 @@
 <resources>
 
     <!-- This file contains TextAppearances, text size dimensions -->
-    <style name="TextAppearance.NICardManagementSDK.Button.Pin.Number" parent="TextAppearance.MaterialComponents.Button">
+    <style name="TextAppearance.NICardManagementSDK.Button.Pin.Number" parent="TextAppearance.AppCompat.Button">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextAppearance.NICardManagementSDK.Body" parent="TextAppearance.AppCompat.Body2">
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0.03125</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/gray1</item>
+    </style>
+
+    <style name="TextAppearance.NICardManagementSDK.Body.Strong">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.NICardManagementSDK.Body.SlimTransparency">
+        <item name="android:textSize">8sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/white_transparency</item>
     </style>
 
 </resources>
