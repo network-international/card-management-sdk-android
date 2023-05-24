@@ -2,11 +2,11 @@
 
     <!--Default Top Level application theme-->
     <style name="Theme.NICardManagementSDK.DayNight">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <!-- Custom attributes -->
-        <item name="colorDisabledImageButton">@color/gray4</item>
+        <item name="colorDisabledImageButton">@color/gray3</item>
     </style>
 </resources>
