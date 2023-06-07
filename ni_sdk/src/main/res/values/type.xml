@@ -24,7 +24,7 @@
     <style name="TextAppearance.NICardManagementSDK.Body.SlimTransparency">
         <item name="android:textSize">8sp</item>
         <item name="android:textStyle">normal</item>
-        <item name="android:textColor">@color/white_transparency</item>
+        <item name="android:textColor">@color/white_80</item>
     </style>
 
 </resources>

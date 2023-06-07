@@ -2,4 +2,6 @@
 <resources>
     <!-- This file contains custom theme attributes -->
     <attr name="colorDisabledImageButton" format="color" />
+    <attr name="textColorCustom" format="color" />
+    <attr name="backgroundColorCustom" format="color" />
 </resources>
