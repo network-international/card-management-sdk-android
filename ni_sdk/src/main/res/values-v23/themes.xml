@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- This file contains Themes and ThemeOverlays -->
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.Day" parent="ThemeOverlay.NICardManagementSDK.DialogTheme.DayBase">
+        // status bar color for day mode
+        <item name="android:statusBarColor">@color/gray_5</item>
+        // dark text on status bar
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.NightAppCompat" parent="ThemeOverlay.NICardManagementSDK.DialogTheme.NightBase">
+        // white text on status bar
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+</resources>
