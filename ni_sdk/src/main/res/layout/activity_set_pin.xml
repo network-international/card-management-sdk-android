@@ -16,13 +16,14 @@
     <FrameLayout
         android:id="@+id/setPinRootLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
-            android:theme="@style/Theme.NICardManagementSDK.DayNight">
+            android:background="?backgroundColorCustom"
+            android:animateLayoutChanges="true">
 
             <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
                 android:id="@+id/customBackNavigationView"
@@ -45,6 +46,7 @@
                 android:text="@{context.getString(viewModel.screenTitle)}"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="?textColorCustom"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -169,12 +171,12 @@
             <ImageButton
                 android:id="@+id/doneImageButton"
                 style="@style/Widget.NICardManagementSDK.Button.Pin.ImageButton"
+                android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton"
                 android:layout_marginBottom="24dp"
                 android:clickable="@{viewModel.validationSendButton}"
                 android:contentDescription="@string/done_image_content_description"
                 android:focusable="@{viewModel.validationSendButton}"
                 android:onClick="@{() -> viewModel.onDoneImageButtonTap()}"
-                android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/zeroButton"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -202,7 +204,6 @@
                 style="@style/Widget.NICardManagementSDK.Button.Pin.ImageButton"
                 android:contentDescription="@string/backspace_image_content_description"
                 android:onClick="@{() -> viewModel.onBackspaceImageButtonTap()}"
-                android:theme="@style/ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton"
                 app:layout_constraintBottom_toBottomOf="@+id/zeroButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -210,7 +211,8 @@
                 app:layout_constraintTop_toTopOf="@+id/zeroButton"
                 app:srcCompat="@drawable/ic_outline_backspace_24"
                 tools:ignore="RedundantDescriptionCheck,ImageContrastCheck"
-                app:tint="?android:attr/textColorPrimary" />
+                android:backgroundTint="@android:color/transparent"
+                app:tint="?textColorCustom" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

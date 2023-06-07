@@ -5,6 +5,9 @@
 
     <style name="Widget.NICardManagementSDK.Button.Pin.Number" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:textAppearance">@style/TextAppearance.NICardManagementSDK.Button.Pin.Number</item>
+        <item name="android:textColor">?textColorCustom</item>
+        <item name="android:backgroundTint">@android:color/transparent</item>
+        <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:layout_width">@dimen/pin_number_button_width</item>
         <item name="android:layout_height">@dimen/pin_number_button_width</item>
     </style>
