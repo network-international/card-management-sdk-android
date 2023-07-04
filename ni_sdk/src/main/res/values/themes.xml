@@ -5,6 +5,8 @@
     <!-- Base application theme. -->
     <style name="Theme.NICardManagementSDK" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your base theme here. -->
+        // bullets and inactive "done" button state color
+        <item name="colorDisabledImageButton">@color/gray3</item>
     </style>
 
     <!--Default Top Level application theme-->
@@ -14,7 +16,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Custom attributes -->
-        <item name="colorDisabledImageButton">@color/gray3</item>
     </style>
 
     <style name="ThemeOverlay.NICardManagementSDK.Button.Pin.ImageButton" parent="">
@@ -24,7 +25,46 @@
 
     <style name="ThemeOverlay.NICardManagementSDK.ProgressBar" parent="">
         // the spinner color
-        <item name="colorAccent">@color/white_transparency</item>
+        <item name="colorAccent">@color/white_80</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme" parent="">
+        // bullets and inactive "done" button state color
+        <item name="colorDisabledImageButton">@color/gray3</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
+        // text color
+        <item name="textColorCustom">?android:textColorPrimary</item>
+        // page background color
+        <item name="backgroundColorCustom">?android:colorBackground</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.DayBase">
+        // text color
+        <item name="textColorCustom">@color/black_85</item>
+        // page background color
+        <item name="backgroundColorCustom">@color/gray_5</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.Day" parent="ThemeOverlay.NICardManagementSDK.DialogTheme.DayBase" />
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.NightBase">
+        // text color
+        <item name="textColorCustom">@color/white</item>
+        // page background color
+        <item name="backgroundColorCustom">@color/gray_850</item>
+        // status bar color for nigh mode
+        <item name="android:statusBarColor">@color/gray_850</item>
+    </style>
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.NightAppCompat" parent="ThemeOverlay.NICardManagementSDK.DialogTheme.NightBase" />
+
+    <style name="ThemeOverlay.NICardManagementSDK.DialogTheme.NightMaterial" parent="ThemeOverlay.NICardManagementSDK.DialogTheme.NightAppCompat">
+        // page background color
+        <item name="backgroundColorCustom">@color/black_material</item>
+        // status bar color for nigh mode
+        <item name="android:statusBarColor">@color/black_material</item>
     </style>
 
 </resources>
