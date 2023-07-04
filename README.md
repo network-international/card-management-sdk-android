@@ -134,10 +134,16 @@ data class NIDisplayAttributes(
     val verifyPinMessageAttributes: PinMessageAttributes? = null,
     val changePinMessageAttributes: PinMessageAttributes? = null,
 
-    // this parameter is optional
-    // if set the status bar will follow your current app theme visual aspect
-    @StyleRes val theme: Int? = null
+    // This parameter is optional.
+    // If not set the SDK will follow your parent app day/night mode based on OS settings or as requested by your app.
+    // The recommended way for using this parameter is to leave it unset, unless you have some special requirements.
+    // If a value is set, the SDK will emulate (force) day/night mode, regardless of the system settings.
+    val theme: NITheme? = null
 ): Serializable
+
+enum class NITheme: Serializable {
+    LIGHT, DARK_APP_COMPAT, DARK_MATERIAL
+}
 
 data class NIFontLabelPair(
     val uiFont: UIFont,

@@ -6,6 +6,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
+import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
@@ -38,6 +39,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.getSerializableCompat<NIPinFormType>(Extra.EXTRA_NI_PIN_FORM_TYPE)?.let {
             niPinFormType = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
@@ -45,8 +47,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
 
-        val theme = niInput.displayAttributes?.theme ?: R.style.Theme_NICardManagementSDK_DayNight
-        setStyle(STYLE_NO_FRAME, theme)
+        setStyle(STYLE_NO_FRAME, ThemeHelper().getThemeResId(niInput))
     }
 
     override fun onCreateView(

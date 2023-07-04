@@ -14,7 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:theme="@style/Theme.NICardManagementSDK.DayNight"
+        android:background="?backgroundColorCustom"
+        tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto"
         tools:context=".presentation.ui.card_details.CardDetailsActivity">
 
         <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
@@ -32,6 +33,7 @@
             android:layout_height="210dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
+            android:background="?backgroundColorCustom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -3,19 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?backgroundColorCustom"
+    tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
 
     <ImageButton
         android:id="@+id/imageButton"
+        style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@android:color/transparent"
         android:contentDescription="@string/back_image_content_description"
         android:minHeight="48dp"
         android:src="@drawable/back_arrow_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="?android:attr/textColorPrimary" />
+        android:backgroundTint="@android:color/transparent"
+        app:tint="?textColorCustom" />
 
     <TextView
         android:id="@+id/textView"
@@ -23,6 +26,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="18sp"
+        android:textColor="?textColorCustom"
         app:layout_constraintBottom_toBottomOf="@+id/imageButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
