@@ -2,6 +2,7 @@ package ae.network.nicardmanagementsdk.api.interfaces
 
 import ae.network.nicardmanagementsdk.api.models.output.NICardDetailsResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
 import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
 import java.lang.Exception
@@ -28,6 +29,12 @@ interface NICardManagementAPI {
         input: NIInput
     ): SuccessErrorResponse
 }
+
+data class SuccessErrorCancelResponse(
+    val isSuccess: NISuccessResponse?,
+    val isError: NIErrorResponse?,
+    val isCancelled: NICancelledResponse?
+)
 
 data class SuccessErrorResponse(
     val isSuccess: NISuccessResponse?,
@@ -63,5 +70,13 @@ fun DetailsErrorResponse.asSuccessErrorResponse(): SuccessErrorResponse {
            NISuccessResponse()
         },
         isError
+    )
+}
+
+fun SuccessErrorResponse.asSuccessErrorCancelResponse(): SuccessErrorCancelResponse {
+    return SuccessErrorCancelResponse(
+        isSuccess,
+        isError,
+        null
     )
 }
