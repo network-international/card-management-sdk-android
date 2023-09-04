@@ -1,10 +1,11 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
 import ae.network.nicardmanagementsdk.R
-import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
+import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
@@ -26,7 +27,11 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         get() = _binding!!
 
     private lateinit var niPinFormType: NIPinFormType
-    protected var successErrorResponse: SuccessErrorResponse? = null
+    protected var successErrorCancelResponse = SuccessErrorCancelResponse(
+        isSuccess = null,
+        isError = null,
+        isCancelled = NICancelledResponse()
+    )
     lateinit var niInput: NIInput
     abstract var viewModel: T
 
