@@ -1,6 +1,8 @@
 package ae.network.nicardmanagementsdk.presentation.ui.change_pin
 
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinDialogFragmentBase
@@ -42,7 +44,7 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
             successErrorResponse?.let { response ->
                 lifecycleScope.launch {
                     delay(500)
-                    this@ChangePinFragment.successErrorResponse = response
+                    this@ChangePinFragment.successErrorCancelResponse = response.asSuccessErrorCancelResponse()
                     niInput.displayAttributes?.changePinMessageAttributes?.let {
                         showSuccessErrorFragment(it,response.isSuccess != null)
                     } ?: dismiss()
@@ -53,10 +55,10 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        successErrorResponse?.let { listener?.onChangePinFragmentCompletion(it) }
+        listener?.onChangePinFragmentCompletion(successErrorCancelResponse)
     }
 
     interface OnFragmentInteractionListener {
-        fun onChangePinFragmentCompletion(response: SuccessErrorResponse)
+        fun onChangePinFragmentCompletion(response: SuccessErrorCancelResponse)
     }
 }
