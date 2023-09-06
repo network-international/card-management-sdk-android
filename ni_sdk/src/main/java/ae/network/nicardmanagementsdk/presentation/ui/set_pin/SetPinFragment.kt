@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
-import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
+import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.di.Injector
 import android.content.DialogInterface
@@ -42,7 +43,7 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
             successErrorResponse?.let { response ->
                 lifecycleScope.launch {
                     delay(500)
-                    this@SetPinFragment.successErrorResponse = response
+                    this@SetPinFragment.successErrorCancelResponse = response.asSuccessErrorCancelResponse()
                     niInput.displayAttributes?.setPinMessageAttributes?.let {
                         showSuccessErrorFragment(it,response.isSuccess != null)
                     } ?: dismiss()
@@ -53,10 +54,10 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        successErrorResponse?.let { listener?.onSetPinFragmentCompletion(it) }
+        listener?.onSetPinFragmentCompletion(successErrorCancelResponse)
     }
 
     interface OnFragmentInteractionListener {
-        fun onSetPinFragmentCompletion(response: SuccessErrorResponse)
+        fun onSetPinFragmentCompletion(response: SuccessErrorCancelResponse)
     }
 }

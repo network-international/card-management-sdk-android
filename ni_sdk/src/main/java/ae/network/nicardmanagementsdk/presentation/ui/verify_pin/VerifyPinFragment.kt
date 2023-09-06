@@ -1,6 +1,8 @@
 package ae.network.nicardmanagementsdk.presentation.ui.verify_pin
 
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinDialogFragmentBase
@@ -42,7 +44,7 @@ abstract class VerifyPinFragment : SetPinDialogFragmentBase<VerifyPinViewModel>(
             successErrorResponse?.let { response ->
                 lifecycleScope.launch {
                     delay(500)
-                    this@VerifyPinFragment.successErrorResponse = response
+                    this@VerifyPinFragment.successErrorCancelResponse = response.asSuccessErrorCancelResponse()
                     niInput.displayAttributes?.verifyPinMessageAttributes?.let {
                         showSuccessErrorFragment(it,response.isSuccess != null)
                     } ?: dismiss()
@@ -53,10 +55,10 @@ abstract class VerifyPinFragment : SetPinDialogFragmentBase<VerifyPinViewModel>(
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        successErrorResponse?.let { listener?.onVerifyPinFragmentCompletion(it) }
+        listener?.onVerifyPinFragmentCompletion(successErrorCancelResponse)
     }
 
     interface OnFragmentInteractionListener {
-        fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse)
+        fun onVerifyPinFragmentCompletion(response: SuccessErrorCancelResponse)
     }
 }
