@@ -2,10 +2,7 @@ package ae.network.nicardmanagementsdk.network
 
 import ae.network.nicardmanagementsdk.api.models.input.NIConnectionProperties
 import ae.network.nicardmanagementsdk.helpers.UrlHelper
-import ae.network.nicardmanagementsdk.network.retrofit_api.CardDetailsApi
-import ae.network.nicardmanagementsdk.network.retrofit_api.ChangePinApi
-import ae.network.nicardmanagementsdk.network.retrofit_api.SetPinApi
-import ae.network.nicardmanagementsdk.network.retrofit_api.VerifyPinApi
+import ae.network.nicardmanagementsdk.network.retrofit_api.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -30,6 +27,7 @@ class Network(connectionProperties: NIConnectionProperties) {
     val setPinApi: SetPinApi by lazy { retrofit.create(SetPinApi::class.java) }
     val verifyPinApi: VerifyPinApi by lazy { retrofit.create(VerifyPinApi::class.java) }
     val changePinApi: ChangePinApi by lazy { retrofit.create(ChangePinApi::class.java) }
+    val viewPinApi: ViewPinApi by lazy { retrofit.create(ViewPinApi::class.java) }
 
     companion object {
         private const val TAG = "NetworkRepository"

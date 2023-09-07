@@ -5,6 +5,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
 import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
+import ae.network.nicardmanagementsdk.api.models.output.ViewPinResponse
 import java.lang.Exception
 
 interface NICardManagementAPI {
@@ -28,6 +29,10 @@ interface NICardManagementAPI {
         newPin: String,
         input: NIInput
     ): SuccessErrorResponse
+
+    suspend fun viewPin(
+        input: NIInput,
+    ) : ViewPinErrorResponse
 }
 
 data class SuccessErrorCancelResponse(
@@ -70,6 +75,29 @@ fun DetailsErrorResponse.asSuccessErrorResponse(): SuccessErrorResponse {
            NISuccessResponse()
         },
         isError
+    )
+}
+
+data class ViewPinErrorResponse(
+    val pin: ViewPinResponse?,
+    val error: NIErrorResponse?
+) {
+    companion object {
+        fun fromException(e: Exception): ViewPinErrorResponse {
+            return ViewPinErrorResponse(
+                null,
+                NIErrorResponse.fromException(e)
+            )
+        }
+    }
+}
+
+fun ViewPinErrorResponse.asSuccessErrorResponse(): SuccessErrorResponse {
+    return SuccessErrorResponse(
+        isSuccess = pin?.let {
+            NISuccessResponse()
+        },
+        isError = error
     )
 }
 
