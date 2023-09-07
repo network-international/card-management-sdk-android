@@ -3,11 +3,9 @@ package ae.network.nicardmanagementsdk.api.implementation
 import ae.network.nicardmanagementsdk.api.interfaces.DetailsErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.NICardManagementAPI
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.interfaces.ViewPinErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
-import ae.network.nicardmanagementsdk.core.ChangePinCoreComponent
-import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
-import ae.network.nicardmanagementsdk.core.SetPinCoreComponent
-import ae.network.nicardmanagementsdk.core.VerifyPinCoreComponent
+import ae.network.nicardmanagementsdk.core.*
 
 object NICardManagement : NICardManagementAPI {
 
@@ -53,5 +51,11 @@ object NICardManagement : NICardManagementAPI {
             )
         }
     }
+
+    override suspend fun viewPin(input: NIInput): ViewPinErrorResponse =
+        ViewPinCoreComponent.fromFactory(input).run {
+            makeNetworkRequest()
+        }
+        
 
 }
