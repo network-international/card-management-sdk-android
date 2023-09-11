@@ -7,10 +7,12 @@ import ae.network.nicardmanagementsdk.api.models.input.NILabels
 import ae.network.nicardmanagementsdk.api.models.input.UIFont
 import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
+import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +24,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import java.util.*
 
 
 abstract class CardDetailsFragmentBase : Fragment() {
@@ -44,6 +47,8 @@ abstract class CardDetailsFragmentBase : Fragment() {
         arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
+
+        setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
     override fun onCreateView(
@@ -149,5 +154,14 @@ abstract class CardDetailsFragmentBase : Fragment() {
 
     interface OnFragmentInteractionListener {
         fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse)
+    }
+
+    private fun setLanguage(language: String) {
+        val res: Resources = resources
+        val metrics = res.displayMetrics
+        val config = res.configuration
+        config.setLocale(Locale(language))
+        res.updateConfiguration(config, metrics)
+        onConfigurationChanged(config)
     }
 }

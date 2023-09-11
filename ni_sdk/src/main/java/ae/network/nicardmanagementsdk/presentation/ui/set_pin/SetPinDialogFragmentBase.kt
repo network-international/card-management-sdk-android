@@ -7,11 +7,13 @@ import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
+import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import java.util.*
 
 abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragment() {
 
@@ -53,6 +56,8 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
 
         setStyle(STYLE_NO_FRAME, ThemeHelper().getThemeResId(niInput))
+
+        setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
     override fun onCreateView(
@@ -119,5 +124,14 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     protected fun createPinBundle(input: NIInput, type: NIPinFormType): Bundle = Bundle().apply {
         putSerializable(Extra.EXTRA_NI_INPUT, input)
         putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
+    }
+
+    private fun setLanguage(language: String) {
+        val res: Resources = resources
+        val metrics = res.displayMetrics
+        val config = res.configuration
+        config.setLocale(Locale(language))
+        res.updateConfiguration(config, metrics)
+        onConfigurationChanged(config)
     }
 }
