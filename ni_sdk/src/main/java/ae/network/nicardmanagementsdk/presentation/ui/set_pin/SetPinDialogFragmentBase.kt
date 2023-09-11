@@ -34,6 +34,8 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     )
     lateinit var niInput: NIInput
     abstract var viewModel: T
+    private var density = context?.resources?.displayMetrics?.density
+    private var paddingDp: Int = 0
 
     abstract fun checkSubscriber(context: Context)
 
@@ -53,6 +55,10 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
 
         setStyle(STYLE_NO_FRAME, ThemeHelper().getThemeResId(niInput))
+
+        arguments?.getInt(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING)?.let {
+            paddingDp = it
+        } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING} is missing")
     }
 
     override fun onCreateView(
@@ -95,6 +101,8 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
                     }
                 }
             }
+
+            paddingTop = paddingDp
         }
     }
 
@@ -119,5 +127,15 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     protected fun createPinBundle(input: NIInput, type: NIPinFormType): Bundle = Bundle().apply {
         putSerializable(Extra.EXTRA_NI_INPUT, input)
         putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
+    }
+
+    protected fun createPinWithPaddingBundle(
+        input: NIInput,
+        type: NIPinFormType,
+        padding: Int = 0
+    ): Bundle = Bundle().apply {
+        putSerializable(Extra.EXTRA_NI_INPUT, input)
+        putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
+        putSerializable(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING, padding)
     }
 }
