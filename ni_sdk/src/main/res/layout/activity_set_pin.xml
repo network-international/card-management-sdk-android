@@ -11,12 +11,17 @@
         <variable
             name="context"
             type="android.content.Context" />
+
+        <variable
+            name="paddingTop"
+            type="int" />
     </data>
 
     <FrameLayout
         android:id="@+id/setPinRootLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingTop="@{paddingTop}"
         tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
 
         <androidx.constraintlayout.widget.ConstraintLayout
