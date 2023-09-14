@@ -7,11 +7,13 @@ import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
+import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +21,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import java.util.*
 
 abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragment() {
 
@@ -59,6 +62,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         arguments?.getInt(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING)?.let {
             paddingDp = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING} is missing")
+        setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
     override fun onCreateView(
@@ -137,5 +141,14 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         putSerializable(Extra.EXTRA_NI_INPUT, input)
         putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
         putSerializable(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING, padding)
+    }
+
+    private fun setLanguage(language: String) {
+        val res: Resources = resources
+        val metrics = res.displayMetrics
+        val config = res.configuration
+        config.setLocale(Locale(language))
+        res.updateConfiguration(config, metrics)
+        onConfigurationChanged(config)
     }
 }
