@@ -65,6 +65,11 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
+    override fun onResume() {
+        super.onResume()
+        setLanguage(LanguageHelper().getLanguage(niInput))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

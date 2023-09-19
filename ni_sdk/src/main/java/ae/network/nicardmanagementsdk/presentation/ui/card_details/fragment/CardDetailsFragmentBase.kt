@@ -51,6 +51,11 @@ abstract class CardDetailsFragmentBase : Fragment() {
         setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
+    override fun onResume() {
+        super.onResume()
+        setLanguage(LanguageHelper().getLanguage(niInput))
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,6 +94,7 @@ abstract class CardDetailsFragmentBase : Fragment() {
                     NILabels.CVV_LABEL -> setCardFonts(binding.cvvCodeLabelTextView, it.uiFont)
                     NILabels.CVV_VALUE_LABEL -> setCardFonts(binding.cvvCodeTextView, it.uiFont)
                     NILabels.CARD_HOLDER_NAME_LABEL -> setCardFonts(binding.cardHolderNameTextView, it.uiFont)
+                    NILabels.CARD_HOLDER_NAME_VALUE_LABEL -> setCardFonts(binding.cardHolderNameLabelTextView, it.uiFont)
                     else -> { }
                     }
                 }
