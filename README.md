@@ -21,6 +21,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
     private val niInput: NIInput
     private val pinLength: NIPinFormType
+    
+    // Optional paddingTop, can only be applied for Set/Change/Verify PIN screens.
+    // The value (of Int type) must be passed to the get() method
+    // To complete the padding customization, the paddingTop parameter must be passed to desired fragment (alongside niInput and pinLength)
+    // If there's no paddingTop parameter sent, there will be no paddingTop.
+    private val paddingTop: Int
+        get() = 100
 
     // Create an instance of NICardManagement. Callback for completion handler are provided here
     private val niCardManagementForms = NICardManagementForms(
@@ -167,6 +174,7 @@ enum class NILabels: Serializable {
     CVV_LABEL,
     CVV_VALUE_LABEL,
     CARD_HOLDER_NAME_LABEL,
+    CARD_HOLDER_NAME_VALUE_LABEL,
 
     // Set PIN
     SET_DESCRIPTION_LABEL,
