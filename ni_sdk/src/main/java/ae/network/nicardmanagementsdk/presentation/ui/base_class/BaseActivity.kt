@@ -29,6 +29,11 @@ abstract class BaseActivity<T: BaseViewModel> : AppCompatActivity() {
         setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
+    override fun onResume() {
+        super.onResume()
+        setLanguage(LanguageHelper().getLanguage(niInput))
+    }
+
     protected fun navigateBack() {
         onBackPressedDispatcher.onBackPressed()
     }

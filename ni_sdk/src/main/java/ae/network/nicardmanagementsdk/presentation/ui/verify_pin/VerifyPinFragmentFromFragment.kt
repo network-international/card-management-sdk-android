@@ -16,8 +16,8 @@ class VerifyPinFragmentFromFragment: VerifyPinFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(input: NIInput, type: NIPinFormType) = VerifyPinFragmentFromFragment().apply {
-            arguments = createPinBundle(input, type)
+        fun newInstance(input: NIInput, type: NIPinFormType, padding: Int = 0) = VerifyPinFragmentFromFragment().apply {
+            arguments = createPinWithPaddingBundle(input, type, padding)
         }
 
         const val TAG = "VerifyPinFragmentFromFragment"
