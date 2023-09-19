@@ -16,8 +16,8 @@ class ChangePinFragmentFromFragment: ChangePinFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(input: NIInput, type: NIPinFormType) = ChangePinFragmentFromFragment().apply {
-            arguments = createPinBundle(input, type)
+        fun newInstance(input: NIInput, type: NIPinFormType, padding: Int = 0) = ChangePinFragmentFromFragment().apply {
+            arguments = createPinWithPaddingBundle(input, type, padding)
         }
 
         const val TAG = "ChangePinFragmentFromFragment"
