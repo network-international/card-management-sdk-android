@@ -1,28 +1,47 @@
 <resources>
     // card details activity
-    <string name="card_details_title">Card details</string>
+    <string name="card_details_title_en" translatable="false">Card details</string>
+    <string name="card_details_title_ar" translatable="false">معلومات البطاقة</string>
 
     // card details fragment
-    <string name="card_number">CARD NUMBER</string>
-    <string name="card_expiry">VALID THRU</string>
-    <string name="card_cvv">CVV</string>
-    <string name="card_name">NAME</string>
-    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="card_number_en" translatable="false">CARD NUMBER</string>
+    <string name="card_expiry_en" translatable="false">VALID THRU</string>
+    <string name="card_cvv_en" translatable="false">CVV</string>
+    <string name="card_name_en" translatable="false">NAME</string>
+    <string name="copied_to_clipboard_en" translatable="false">Copied to clipboard</string>
+
+    <string name="card_number_ar" translatable="false">رقم البطاقة</string>
+    <string name="card_expiry_ar" translatable="false">تاريخ الانتهاء</string>
+    <string name="card_cvv_ar" translatable="false">رقم التحقق من البطاقة (CVV)</string>
+    <string name="card_name_ar" translatable="false">الإسم</string>
+    <string name="copied_to_clipboard_ar" translatable="false">تم النسخ إلى الحافظة</string>
 
     // set pin screen
-    <string name="set_pin_title">Set PIN </string>
-    <string name="set_pin_description_enter_pin">Please enter the desired PIN for your card</string>
-    <string name="set_pin_description_re_enter_pin">Please re-enter the desired card PIN</string>
-    <string name="set_pin_description_pin_not_match">PIN does not match.\nPlease re-enter the card PIN</string>
+    <string name="set_pin_title_en" translatable="false">Set PIN </string>
+    <string name="set_pin_description_enter_pin_en" translatable="false">Please enter the desired PIN for your card</string>
+    <string name="set_pin_description_re_enter_pin_en" translatable="false">Please re-enter the desired card PIN</string>
+    <string name="set_pin_description_pin_not_match_en" translatable="false">PIN does not match.\nPlease re-enter the card PIN</string>
+
+    <string name="set_pin_title_ar" translatable="false">تعيين الرقم السري (PIN)</string>
+    <string name="set_pin_description_enter_pin_ar" translatable="false">الرجاء ادخال الرقم السري للبطاقة (PIN)</string>
+    <string name="set_pin_description_re_enter_pin_ar" translatable="false">يرجى إعادة إدخال رقم السري لبطاقتك (PIN)</string>
+    <string name="set_pin_description_pin_not_match_ar" translatable="false">الرقم السري لبطاقتك غير متطابق\nيرجى إعادة إدخال رقم السري لبطاقتك (PIN)</string>
 
     // verify pin screen
-    <string name="verify_pin_title">Verify PIN </string>
-    <string name="verify_pin_description">Please enter your card PIN for verification</string>
+    <string name="verify_pin_title_en" translatable="false">Verify PIN </string>
+    <string name="verify_pin_description_en" translatable="false">Please enter your card PIN for verification</string>
+
+    <string name="verify_pin_title_ar" translatable="false">"التحقق من رقم السري لبطاقتك (PIN)"</string>
+    <string name="verify_pin_description_ar" translatable="false">الرجاء إدخال رقم السري لبطاقتك للتحقق (PIN)</string>
 
     // change pin screen
-    <string name="change_pin_title">Change PIN </string>
-    <string name="change_pin_description_enter_current_pin">Please enter your current PIN</string>
-    <string name="change_pin_description_enter_new_pin">Please enter the new PIN</string>
+    <string name="change_pin_title_en" translatable="false">Change PIN </string>
+    <string name="change_pin_description_enter_current_pin_en" translatable="false">Please enter your current PIN</string>
+    <string name="change_pin_description_enter_new_pin_en" translatable="false">Please enter the new PIN</string>
+
+    <string name="change_pin_title_ar" translatable="false">تغيير الرقم السري (PIN)</string>
+    <string name="change_pin_description_enter_current_pin_ar" translatable="false">الرجاء ادخال الرقم السري الحالي (PIN)</string>
+    <string name="change_pin_description_enter_new_pin_ar" translatable="false">الرجاء ادخال الرقم السري الجديد (PIN)</string>
 
     // non translatable strings
     <string name="app_name" translatable="false">NICardManagementSDK</string>

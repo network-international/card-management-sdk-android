@@ -4,15 +4,14 @@ import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.databinding.ActivityCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
+import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseActivity
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFromActivity
 import android.app.Activity
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +40,11 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
     }
 
     private fun initializeUI() {
+        binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
+            "ar" -> false
+            else -> true
+        }
+
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
