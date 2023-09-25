@@ -9,6 +9,10 @@
         <variable
             name="viewModel"
             type="ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel" />
+
+        <variable
+            name="shouldDefaultLanguage"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +41,7 @@
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/card_number"
+            android:text="@{shouldDefaultLanguage ? @string/card_number_en : @string/card_number_ar}"
             app:layout_constraintBottom_toTopOf="@+id/cardNumberTextView"
             app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
@@ -75,7 +79,7 @@
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/card_expiry"
+            android:text="@{shouldDefaultLanguage ? @string/card_expiry_en : @string/card_expiry_ar}"
             app:layout_constraintBottom_toTopOf="@+id/expiryDateTextView"
             app:layout_constraintStart_toStartOf="@+id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />
@@ -99,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:text="@string/card_cvv"
+            android:text="@{shouldDefaultLanguage ? @string/card_cvv_en : @string/card_cvv_ar}"
             app:layout_constraintBaseline_toBaselineOf="@id/expiryDateLabelTextView"
             app:layout_constraintStart_toEndOf="@id/expiryDateLabelTextView"
             tools:ignore="TextContrastCheck" />
@@ -136,7 +140,7 @@
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/card_name"
+            android:text="@{shouldDefaultLanguage ? @string/card_name_en : @string/card_name_ar}"
             app:layout_constraintBottom_toTopOf="@+id/cardHolderNameTextView"
             app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
             tools:ignore="TextContrastCheck" />

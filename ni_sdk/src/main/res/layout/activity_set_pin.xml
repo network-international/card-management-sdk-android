@@ -15,6 +15,10 @@
         <variable
             name="paddingTop"
             type="int" />
+
+        <variable
+            name="shouldDefaultLanguage"
+            type="Boolean" />
     </data>
 
     <FrameLayout
@@ -58,7 +62,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
-                tools:text="@string/set_pin_description_enter_pin" />
+                tools:text="@{shouldDefaultLanguage ? @string/set_pin_description_enter_pin_en : @string/set_pin_description_enter_pin_ar}" />
 
             <Button
                 android:id="@+id/oneButton"

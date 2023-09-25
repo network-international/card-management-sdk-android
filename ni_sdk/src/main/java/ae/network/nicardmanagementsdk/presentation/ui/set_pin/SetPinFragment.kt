@@ -50,6 +50,7 @@ abstract class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
                 }
             }
         }
+        viewModel.updateNIInput(niInput)
     }
 
     override fun onDismiss(dialog: DialogInterface) {
