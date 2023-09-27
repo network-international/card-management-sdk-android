@@ -2,6 +2,7 @@ package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
 import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
 import ae.network.nicardmanagementsdk.network.utils.IConnection
 import androidx.lifecycle.viewModelScope
@@ -26,7 +27,10 @@ abstract class SetPinTwoStepViewModelBase(
         if (isStepOnePinSetup) {
             firstTimePinValue = inputString
             resetState()
-            screenTitle.value = R.string.set_pin_description_re_enter_pin
+            when (niInputLiveData.value?.let { LanguageHelper().getLanguage(it) }) {
+                "ar" ->  screenTitle.value = R.string.set_pin_description_re_enter_pin_ar
+                else ->  screenTitle.value = R.string.set_pin_description_re_enter_pin_en
+            }
             isStepOnePinSetup = false
         } else {
             secondTimePinValue = inputString
@@ -40,8 +44,10 @@ abstract class SetPinTwoStepViewModelBase(
                     }
                 }
             } else {
-                screenTitle.value = R.string.set_pin_description_pin_not_match
-                resetStepTwoPinState()
+                when (niInputLiveData.value?.let { LanguageHelper().getLanguage(it) }) {
+                    "ar" ->  screenTitle.value = R.string.set_pin_description_pin_not_match_ar
+                    else ->  screenTitle.value = R.string.set_pin_description_pin_not_match_en
+                }
             }
         }
     }

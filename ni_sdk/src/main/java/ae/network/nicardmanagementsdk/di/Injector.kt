@@ -46,21 +46,21 @@ class Injector private constructor(context: Context) {
     fun provideSetPinViewModelFactory(niInput : NIInput): ViewModelFactory<SetPinViewModel> {
         return ViewModelFactory {
             val setPinCoreComponent = SetPinCoreComponent.fromFactory(niInput)
-            SetPinViewModel(setPinCoreComponent, connectionLiveData)
+            SetPinViewModel(setPinCoreComponent, connectionLiveData, niInput)
         }
     }
 
     fun provideVerifyPinViewModelFactory(niInput : NIInput): ViewModelFactory<VerifyPinViewModel> {
         return ViewModelFactory {
             val verifyPinCoreComponent = VerifyPinCoreComponent.fromFactory(niInput)
-            VerifyPinViewModel(verifyPinCoreComponent, connectionLiveData)
+            VerifyPinViewModel(verifyPinCoreComponent, connectionLiveData, niInput)
         }
     }
 
     fun provideChangePinViewModelFactory(niInput : NIInput): ViewModelFactory<ChangePinViewModel> {
         return ViewModelFactory {
             val changePinCoreComponent = ChangePinCoreComponent.fromFactory(niInput)
-            ChangePinViewModel(changePinCoreComponent, connectionLiveData)
+            ChangePinViewModel(changePinCoreComponent, connectionLiveData, niInput)
         }
     }
 }
