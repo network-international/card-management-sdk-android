@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- This file contains Widgets styles only -->
+
+    <style name="Widget.App.SDKTaskButtons" parent="Widget.AppCompat.Button">
+        <item name="android:textAppearance">@style/TextAppearance.App.SDKTaskButtons</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:minHeight">0dp</item>
+    </style>
+
+    <style name="Widget.App.SDKEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Small.Inverse</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+</resources>
