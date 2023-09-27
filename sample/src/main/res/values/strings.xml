@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">NI SDK Sample</string>
+    <string name="card_management_sample_app">Card Management Sample App</string>
+
+    // Main screen buttons values
+    <string name="change_pin">Change PIN</string>
+    <string name="set_pin">Set PIN</string>
+    <string name="verify_pin">Verify PIN</string>
+    <string name="card_details">Card Details</string>
+    <string name="card_details_fragment">Card Details Fragment</string>
+
+    // Main screen entries labels
+    <string name="card_identifier_id_txt">Card Identifier ID</string>
+    <string name="card_identifier_type_txt">Card Identifier Type</string>
+    <string name="root_url_txt">Root URL</string>
+    <string name="token_txt">Token</string>
+    <string name="bank_code_txt">Bank code</string>
+    <string name="pin_length_txt">PIN length</string>
+
+    // Main screen entries placeholder
+    <string name="pin_length_placeholder">PIN length</string>
+    <string name="custom_component_used_from_host_activity">Custom component used from an Activity</string>
+    <string name="custom_component_used_from_host_fragment">Custom component used from another Fragment</string>
+    <string name="card_details_from_custom_component">Card details</string>
+    <string name="theme_day_night_mode">Theme Day/Night</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="none">None</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_activity">Hello blank Activity</string>
+    <string name="success_message">Success screen!</string>
+    <string name="error_message">Error screen!</string>
+    <string name="done">Done</string>
+    <string name="another_activity_destination">Another Activity destination\n after success/error operation</string>
+
+</resources>

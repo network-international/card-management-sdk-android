@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="ae.network.nicardmanagementsdk.sample.MainFragment">
+
+        <TextView
+            android:id="@+id/firstTitleTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:text="@string/custom_component_used_from_host_fragment"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/setPinButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/fragment_card_container"
+            android:layout_width="336dp"
+            android:layout_height="178dp"
+            android:layout_marginBottom="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:background="@color/light_blue"
+            tools:minHeight="209dp">
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/setPinButton"
+            style="@style/Widget.App.SDKTaskButtons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/set_pin"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_card_container"
+            app:layout_constraintEnd_toStartOf="@+id/verifyPinButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/verifyPinButton"
+            style="@style/Widget.App.SDKTaskButtons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/verify_pin"
+            app:layout_constraintBottom_toBottomOf="@+id/setPinButton"
+            app:layout_constraintEnd_toStartOf="@+id/changePinButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/setPinButton"
+            app:layout_constraintTop_toTopOf="@+id/setPinButton"
+            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+        <Button
+            android:id="@+id/changePinButton"
+            style="@style/Widget.App.SDKTaskButtons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@string/change_pin"
+            app:layout_constraintBottom_toBottomOf="@+id/verifyPinButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/verifyPinButton"
+            app:layout_constraintTop_toTopOf="@+id/verifyPinButton"
+            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
