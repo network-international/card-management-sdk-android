@@ -51,6 +51,8 @@ abstract class VerifyPinFragment : SetPinDialogFragmentBase<VerifyPinViewModel>(
                 }
             }
         }
+
+        viewModel.updateNIInput(niInput)
     }
 
     override fun onDismiss(dialog: DialogInterface) {

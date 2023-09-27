@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.models.PinBulletModel
 import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
@@ -21,6 +22,12 @@ abstract class SetPinViewModelBase : BaseViewModel() {
     private val _inputStringLiveData = MutableLiveData(_inputString)
     private var minPinSize = 4
     private var maxPinSize = 6
+
+    val niInputLiveData: MutableLiveData<NIInput> = MutableLiveData()
+
+    fun updateNIInput(niInput: NIInput) {
+        niInputLiveData.value = niInput
+    }
 
     val updateBulletCellLiveEvent = SingleLiveEvent<Int>()
     val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()

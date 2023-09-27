@@ -62,12 +62,6 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         arguments?.getInt(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING)?.let {
             paddingDp = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING} is missing")
-        setLanguage(LanguageHelper().getLanguage(niInput))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
     override fun onCreateView(
@@ -88,6 +82,11 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     }
 
     protected open fun initializeUI() {
+        binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
+            "ar" -> false
+            else -> true
+        }
+
         binding.customBackNavigationView.setOnBackButtonClickListener {
             dismiss()
         }
@@ -113,6 +112,8 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
             paddingTop = paddingDp
         }
+
+        viewModel.updateNIInput(niInput)
     }
 
     protected fun showSuccessErrorFragment(pinMessageAttributes: PinMessageAttributes, isSuccess: Boolean) {

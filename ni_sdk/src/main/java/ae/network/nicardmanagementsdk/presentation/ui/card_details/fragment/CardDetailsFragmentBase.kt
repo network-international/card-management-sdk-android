@@ -12,7 +12,6 @@ import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializ
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import java.util.*
 
 
 abstract class CardDetailsFragmentBase : Fragment() {
@@ -47,13 +45,6 @@ abstract class CardDetailsFragmentBase : Fragment() {
         arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
-
-        setLanguage(LanguageHelper().getLanguage(niInput))
-    }
-
-    override fun onResume() {
-        super.onResume()
-        setLanguage(LanguageHelper().getLanguage(niInput))
     }
 
     override fun onCreateView(
@@ -116,12 +107,12 @@ abstract class CardDetailsFragmentBase : Fragment() {
 
         binding.copyCardNumberImageView.setOnClickListener {
             val cardNumber = viewModel.getClearPanNonSpaced
-            viewModel.copyToClipboard(cardNumber, clipboardManager, R.string.copied_to_clipboard)
+            viewModel.copyToClipboard(cardNumber, clipboardManager, getClipboardText())
         }
 
         binding.copyCardHolderNameImageView.setOnClickListener {
             val cardHolderName = viewModel.getClearCardHolderName
-            viewModel.copyToClipboard(cardHolderName, clipboardManager, R.string.copied_to_clipboard)
+            viewModel.copyToClipboard(cardHolderName, clipboardManager, getClipboardText())
         }
 
         binding.hideShowDetailsImageView.setOnClickListener {
@@ -145,6 +136,11 @@ abstract class CardDetailsFragmentBase : Fragment() {
         if (viewModel.isShowDetailsLiveData.value == null) {
             viewModel.getData()
         }
+
+        binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
+            "ar" -> false
+            else -> true
+        }
     }
 
     private fun setCardFonts(textView: TextView, uiFont: UIFont?) {
@@ -162,12 +158,9 @@ abstract class CardDetailsFragmentBase : Fragment() {
         fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse)
     }
 
-    private fun setLanguage(language: String) {
-        val res: Resources = resources
-        val metrics = res.displayMetrics
-        val config = res.configuration
-        config.setLocale(Locale(language))
-        res.updateConfiguration(config, metrics)
-        onConfigurationChanged(config)
-    }
+    private fun getClipboardText(): Int =
+        when (LanguageHelper().getLanguage(niInput)) {
+            "ar" -> R.string.copied_to_clipboard_ar
+            else -> R.string.copied_to_clipboard_en
+        }
 }
