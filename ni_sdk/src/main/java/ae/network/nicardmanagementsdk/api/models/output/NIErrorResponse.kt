@@ -18,7 +18,9 @@ data class NIErrorResponse(
                         val errorBodyMessage = e.response()?.errorBody()?.string()?.let { s ->
                             "${e.localizedMessage} : $s"
                         } ?: ""
-                        it.value = "$localizedMessage : $errorBodyMessage"
+                        val startIndex = errorBodyMessage.indexOf("{")
+                        val errorBodyMessageWithoutHttpCode = errorBodyMessage.substring(startIndex)
+                        it.value = errorBodyMessageWithoutHttpCode
                     }
                 }
 
