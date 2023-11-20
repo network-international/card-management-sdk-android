@@ -7,5 +7,5 @@
         android:height="24dp" />
     <stroke
         android:width="2dp"
-        android:color="#8D8D8D" />
+        android:color="?attr/colorDisabledImageButton" />
 </shape>
