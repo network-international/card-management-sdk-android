@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/empty"
             android:src="@drawable/circle_empty"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,6 +27,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            app:setImageDrawableCustom="@{itemModel.checked ? @drawable/circle : @drawable/circle_empty}" />
+            app:setImageDrawableCustom="@{itemModel.checked ? @drawable/circle_solid : @drawable/circle_empty}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
