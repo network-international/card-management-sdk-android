@@ -64,6 +64,7 @@ dependencies {
     // material
     implementation "com.google.android.material:material:1.5.0"
 
+    implementation "com.airbnb.android:lottie:3.4.0"
 
     // NI SDK from local maven repository old project
 //     implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.0.1-local-release'
