@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ae.network.nicardmanagementsdk.sample.MainActivity.Companion.TAG
+import com.airbnb.lottie.LottieAnimationView
 import com.example.nicardmanagementapp.R
 
 class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFragmentInteractionListener {
@@ -56,6 +57,8 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFra
             add(R.id.main_fragment_container, mainFragment, MainFragment.TAG)
             commit()
         }
+
+        findViewById<LottieAnimationView>(R.id.animation_view).playAnimation()
     }
 
     override fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse) {
