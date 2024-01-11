@@ -97,7 +97,7 @@ class SelfSignedCertificate(
         /**
          * FQDN to use if none is specified.
          */
-        private const val DEFAULT_FQDN = "example.com"
+        private const val DEFAULT_FQDN = "NICardManagementSDK_Android"
 
         private val provider: Provider = BouncyCastleProvider()
     }

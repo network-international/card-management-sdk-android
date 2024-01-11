@@ -6,16 +6,20 @@ import ae.network.nicardmanagementsdk.network.retrofit_api.*
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.logging.HttpLoggingInterceptor
 
 class Network(connectionProperties: NIConnectionProperties) {
 
     private var safeBaseUrl: String
-
+    private var logInterceptor = HttpLoggingInterceptor()
+    private val okHttpClient: OkHttpClient
     init {
         safeBaseUrl = UrlHelper().baseUrlCheck(connectionProperties)
+        // change logging level for debugging
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
+        okHttpClient = OkHttpClient.Builder().addInterceptor(logInterceptor).build()
     }
 
-    private val okHttpClient = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
         .client(okHttpClient)
