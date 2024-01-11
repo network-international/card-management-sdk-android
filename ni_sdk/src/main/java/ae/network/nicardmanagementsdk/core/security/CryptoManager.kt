@@ -40,14 +40,14 @@ object CryptoManager {
     }
 
     fun rsaEncryptData(data: String, publicKey: Key?): String {
-        val cipher: Cipher = Cipher.getInstance("RSA/None/PKCS1Padding")
+        val cipher: Cipher = Cipher.getInstance(CipherTransformation.algorithm.toOld())
         cipher.init(Cipher.ENCRYPT_MODE, publicKey)
         val bytes = cipher.doFinal(data.decodeHexToBytes())
         return bytes.toHexString()
     }
 
     fun rsaDecryptData(data: String, privateKey: Key?, blockLength: Int): String {
-        val cipher: Cipher = Cipher.getInstance("RSA/None/PKCS1Padding")
+        val cipher: Cipher = Cipher.getInstance(CipherTransformation.algorithm.toOld())
         cipher.init(Cipher.DECRYPT_MODE, privateKey)
         val secretMessage = data.decodeHexToBytes()
         val decodedData = cipher.doFinal(secretMessage)
@@ -96,6 +96,12 @@ object CryptoManager {
         return CertificateFactory.getInstance("X.509").generateCertificate(inputStream) as? X509Certificate
     }
 
+    private fun String.toOld(): String {
+        var updated = this.replace("-512andMGF", "")
+        updated = updated.replace("OAEPwithSHA", "SCKP".reversed())
+        return updated
+    }
+
     private fun ByteArray.toHexString(separator: CharSequence = "") =
         this.joinToString(separator) {
             String.format("%02X", it)
@@ -116,4 +122,8 @@ object CryptoManager {
             .toByteArray()
             .toString(Charsets.US_ASCII)
     }
+}
+
+object CipherTransformation {
+    const val algorithm = "RSA/None/OAEPwithSHA-512andMGF1Padding"
 }

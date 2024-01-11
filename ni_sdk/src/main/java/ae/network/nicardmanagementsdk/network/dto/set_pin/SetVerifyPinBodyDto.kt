@@ -13,7 +13,3 @@ enum class EncryptionMethodEnum {
     ASYMMETRIC_ENC,
     SYMMETRIC_ENC
 }
-
-enum class CardIdentifierTypeEnum {
-    EXID, CONTRACT_NUMBER
-}
