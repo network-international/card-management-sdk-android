@@ -64,6 +64,8 @@ dependencies {
     // Retrofit2
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    // okhttp3
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
 
     // Coroutines
     api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
@@ -82,7 +84,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.network-international'
             artifactId = 'card-management-sdk-android'
-            version = '1.0.47'
+            version = '1.0.48'
             afterEvaluate {
                 from components.release
             }
