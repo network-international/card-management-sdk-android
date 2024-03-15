@@ -2,11 +2,14 @@ package ae.network.nicardmanagementsdk.sample
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.CardElementPositioning
+import ae.network.nicardmanagementsdk.api.models.input.CardElementsPositioning
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFreeForm
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFromFragment
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragment
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragmentFromFragment
