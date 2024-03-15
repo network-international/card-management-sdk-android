@@ -1,11 +1,14 @@
 package ae.network.nicardmanagementsdk.sample
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.CardElementPositioning
+import ae.network.nicardmanagementsdk.api.models.input.CardElementsPositioning
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFreeForm
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFromActivity
 import ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
 import android.os.Bundle
@@ -13,6 +16,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ae.network.nicardmanagementsdk.sample.MainActivity.Companion.TAG
 import com.example.nicardmanagementapp.R
+import com.example.nicardmanagementapp.R.color.colorPrimary
 
 class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFragmentInteractionListener {
 
@@ -44,9 +48,27 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFra
         }
 
         // add CardDetailsFragmentFromActivity to the UI
-        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput)
+        // val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput)
+        // Use new fragment
+        val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
+            niInput,
+            elementsColor = colorPrimary,
+            positioning = CardElementsPositioning(
+                cardNumberLabel = CardElementPositioning(start = 16, top = 16),
+                cardNumberText = CardElementPositioning(start = 200, top = 16),
+                cardNumberButton = CardElementPositioning(start = 700, top = 16),
+                cardHolderLabel = CardElementPositioning(start = 16, top = 196),
+                cardHolderText = CardElementPositioning(start = 200, top = 196),
+                cardHolderButton = CardElementPositioning(start = 700, top = 196),
+                expiryLabel = CardElementPositioning(start = 16, top = 76),
+                expiryText = CardElementPositioning(start = 200, top = 76),
+                showDetailsButton = CardElementPositioning(start = 700, top = 76),
+                cvvLabel = CardElementPositioning(start = 16, top = 136),
+                cvvText = CardElementPositioning(start = 200, top = 136)
+            )
+        )
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
+            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFreeForm.TAG)
             commit()
         }
 
