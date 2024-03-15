@@ -26,3 +26,22 @@ data class TextPositioning(
     val dateCvvGroupTopAlignment: Float? = null,
     val cardHolderNameGroupTopAlignment: Float? = null
 ): Serializable
+
+data class CardElementPositioning(
+    val start: Int? = null,
+    val top: Int? = null,
+): Serializable
+
+data class CardElementsPositioning(
+    val cardNumberLabel: CardElementPositioning? = null,
+    val cardNumberText: CardElementPositioning? = null,
+    val cardNumberButton: CardElementPositioning? = null,
+    val expiryLabel: CardElementPositioning? = null,
+    val expiryText: CardElementPositioning? = null,
+    val showDetailsButton: CardElementPositioning? = null,
+    val cvvLabel: CardElementPositioning? = null,
+    val cvvText: CardElementPositioning? = null,
+    val cardHolderLabel: CardElementPositioning? = null,
+    val cardHolderText: CardElementPositioning? = null,
+    val cardHolderButton: CardElementPositioning? = null,
+): Serializable

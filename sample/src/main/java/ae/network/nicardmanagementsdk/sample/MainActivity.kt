@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(),
                 EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "52913582188097343008"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
                 EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://apitest.network.ae"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "y8k2cax4u8vj4eevzk38pptp"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "rfk59hvusfbtxas9xjw9ec98"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))
