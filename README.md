@@ -311,6 +311,37 @@ Below is an example of layout from the demo activity:
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
+
+### Display a card details fragment with information about position of each element
+Refer to `CardUsageDemoActivity.kt` with example
+For custom elements position `CardDetailsFragmentFreeForm` can be used
+```kotlin
+val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
+            niInput,
+            elementsColor = colorPrimary,
+            positioning = CardElementsPositioning(
+                cardNumberLabel = CardElementPositioning(start = 16, top = 16),
+                cardNumberText = CardElementPositioning(start = 200, top = 16),
+                cardNumberButton = CardElementPositioning(start = 700, top = 16),
+                cardHolderLabel = CardElementPositioning(start = 16, top = 196),
+                cardHolderText = CardElementPositioning(start = 200, top = 196),
+                cardHolderButton = CardElementPositioning(start = 700, top = 196),
+                expiryLabel = CardElementPositioning(start = 16, top = 76),
+                expiryText = CardElementPositioning(start = 200, top = 76),
+                showDetailsButton = CardElementPositioning(start = 700, top = 76),
+                cvvLabel = CardElementPositioning(start = 16, top = 136),
+                cvvText = CardElementPositioning(start = 200, top = 136)
+            )
+        )
+```
+- `positioning` Each element can be positioned with start/top dimentsions related to parent
+- `elementsColor` set color for card elements
+
+And this fragment should be placed into container
+```kotlin
+add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFreeForm.TAG)
+```
+
 ### Verify PIN from an activity
 ```kotlin
 class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractionListener{

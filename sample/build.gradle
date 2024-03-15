@@ -66,8 +66,8 @@ dependencies {
 
 
     // NI SDK from local maven repository old project
-    //implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.0.48'
-    //implementation 'com.github.network-international:card-management-sdk-android:1.0.48'
+    //implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.0.49'
+    //implementation 'com.github.network-international:card-management-sdk-android:1.0.49'
 
     // NI SDK from local maven repository new project
 //    implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.0.10-local-release'
