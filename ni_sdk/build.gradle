@@ -13,7 +13,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        minSdk 21
+        minSdk 24
         targetSdk 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -84,7 +84,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.network-international'
             artifactId = 'card-management-sdk-android'
-            version = '1.0.49'
+            version = '1.0.50'
             afterEvaluate {
                 from components.release
             }
