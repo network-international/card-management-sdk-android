@@ -22,6 +22,25 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
+// strange but cannot use here either companion object or .entries
+enum class CardMaskableElement {
+    CARDNUMBER, EXPIRY, CVV, CARDHOLDER,
+}
+
+class CardMaskableElementEntries {
+    companion object {
+        fun all() = listOf<CardMaskableElement>(
+            CardMaskableElement.CARDNUMBER,
+            CardMaskableElement.EXPIRY,
+            CardMaskableElement.CVV,
+            CardMaskableElement.CARDHOLDER,
+        )
+    }
+}
+
+
+
+
 class CardDetailsFragmentViewModel(
     private val getCardDetailsCoreComponent: IGetCardDetailsCore,
     private val connectionLiveData: IConnection<ConnectionModel>
@@ -31,17 +50,39 @@ class CardDetailsFragmentViewModel(
     private lateinit var cardDetailsMasked: CardDetailsModel
     private lateinit var clearPanNonSpaced: String
 
+    val cardMaskableElementEntries: List<CardMaskableElement>
+        get() = listOf(
+            CardMaskableElement.CARDNUMBER,
+            CardMaskableElement.EXPIRY,
+            CardMaskableElement.CVV,
+            CardMaskableElement.CARDHOLDER,
+        )
     val getClearPanNonSpaced: String
         get() = clearPanNonSpaced
 
     val getClearCardHolderName: String
         get() = cardDetailsClear.cardholderName.toString()
+    val getClearCVV: String
+        get() = cardDetailsClear.cVV2.toString()
+    val getClearExpiry: String
+        get() = cardDetailsClear.expiry.toString()
 
-    var defaultShouldDisplayValue = false
-    val isShowDetailsLiveData = MutableLiveData<Boolean>()
-    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(isShowDetailsLiveData) {
+    var shouldBeMaskedDefault: List<CardMaskableElement> = CardMaskableElementEntries.all().toMutableList()
+    val showMaskedLiveData = MutableLiveData<List<CardMaskableElement>>()
+    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(showMaskedLiveData) {
         it?.let {
-            if (it) cardDetailsClear else cardDetailsMasked
+            if (it.containsAll(CardMaskableElementEntries.all())) {
+                cardDetailsMasked
+            } else if (it.isEmpty()) {
+                cardDetailsClear
+            } else {
+                CardDetailsModel(
+                    pan = if(it.contains(CardMaskableElement.CARDNUMBER)) cardDetailsMasked.pan else cardDetailsClear.pan,
+                    expiry = if(it.contains(CardMaskableElement.EXPIRY)) cardDetailsMasked.expiry else cardDetailsClear.expiry,
+                    cVV2 = if(it.contains(CardMaskableElement.CVV)) cardDetailsMasked.cVV2 else cardDetailsClear.cVV2,
+                    cardholderName = if(it.contains(CardMaskableElement.CARDHOLDER)) cardDetailsMasked.cardholderName else cardDetailsClear.cardholderName
+                )
+            }
         }
     }
 
@@ -68,7 +109,7 @@ class CardDetailsFragmentViewModel(
                     cardDetailsClear = it.asClearViewModel()
                     cardDetailsMasked = it.asMaskedViewModel()
                     clearPanNonSpaced = it.asClearPanNonSpaced()
-                    isShowDetailsLiveData.value = defaultShouldDisplayValue
+                    showMaskedLiveData.value = shouldBeMaskedDefault
                 }
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
             }
