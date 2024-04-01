@@ -66,7 +66,6 @@
             android:layout_marginStart="8dp"
             android:contentDescription="@string/copy_to_clipboard_image_content_description"
             android:padding="8dp"
-            android:visibility="@{viewModel.isShowDetailsLiveData ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/cardNumberTextView"
             app:layout_constraintStart_toEndOf="@id/cardNumberTextView"
             app:layout_constraintTop_toTopOf="@+id/cardNumberTextView"
@@ -127,11 +126,9 @@
             android:layout_marginStart="8dp"
             android:contentDescription="@string/credentials_toggle_image_content_description"
             android:padding="8dp"
-            android:visibility="@{(viewModel.isShowDetailsLiveData == null || viewModel.defaultShouldDisplayValue) ? View.INVISIBLE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/cvvCodeTextView"
             app:layout_constraintStart_toEndOf="@+id/cvvCodeTextView"
             app:layout_constraintTop_toTopOf="@+id/cvvCodeTextView"
-            app:srcCompat="@{viewModel.isShowDetailsLiveData ? @drawable/ic_hide_details : @drawable/ic_reveal_details}"
             tools:ignore="ImageContrastCheck"
             tools:srcCompat="@drawable/ic_hide_details" />
 
@@ -164,7 +161,7 @@
             android:layout_marginStart="8dp"
             android:contentDescription="@string/copy_to_clipboard_image_content_description"
             android:padding="8dp"
-            android:visibility="@{viewModel.isShowDetailsLiveData ? View.VISIBLE : View.INVISIBLE}"
+            android:visibility="@{View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="@+id/cardHolderNameTextView"
             app:layout_constraintStart_toEndOf="@id/cardHolderNameTextView"
             app:layout_constraintTop_toTopOf="@+id/cardHolderNameTextView"

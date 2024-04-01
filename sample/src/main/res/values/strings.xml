@@ -35,4 +35,9 @@
     <string name="done">Done</string>
     <string name="another_activity_destination">Another Activity destination\n after success/error operation</string>
 
+    // Card details custom labels
+    <string name="card_number_app" >Card number (app)</string>
+    <string name="card_expiry_app" >Expiry (app)</string>
+    <string name="card_cvv_app" >CVV (app)</string>
+    <string name="card_name_app" >Card Holder (app)</string>
 </resources>
