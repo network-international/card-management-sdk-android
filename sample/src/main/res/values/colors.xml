@@ -10,7 +10,7 @@
     //AppCompat colors
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#3F51B5</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorAccentApp">#D81B60</color>
 
     //Custom colors
     <color name="black">#FF000000</color>

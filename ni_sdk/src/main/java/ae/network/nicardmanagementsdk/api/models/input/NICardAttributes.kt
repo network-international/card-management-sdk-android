@@ -1,6 +1,10 @@
 package ae.network.nicardmanagementsdk.api.models.input
 
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElementEntries
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import java.io.Serializable
 
 data class NICardAttributes(
@@ -27,21 +31,58 @@ data class TextPositioning(
     val cardHolderNameGroupTopAlignment: Float? = null
 ): Serializable
 
-data class CardElementPositioning(
-    val start: Int? = null,
+
+/// Define visibility of element
+/// - always visible
+/// - visible when element masked
+/// - visible when element unmasked
+/// - always invisible
+enum class CardElementsVisibilityType {
+    VISIBLE_ALWAYS, VISIBLE_MASKED, VISIBLE_UNMASKED, INVISIBLE_ALWAYS
+}
+data class CardElementLayout(
     val top: Int? = null,
+    val bottom: Int? = null,
+    val left: Int? = null,
+    val right: Int? = null,
 ): Serializable
 
-data class CardElementsPositioning(
-    val cardNumberLabel: CardElementPositioning? = null,
-    val cardNumberText: CardElementPositioning? = null,
-    val cardNumberButton: CardElementPositioning? = null,
-    val expiryLabel: CardElementPositioning? = null,
-    val expiryText: CardElementPositioning? = null,
-    val showDetailsButton: CardElementPositioning? = null,
-    val cvvLabel: CardElementPositioning? = null,
-    val cvvText: CardElementPositioning? = null,
-    val cardHolderLabel: CardElementPositioning? = null,
-    val cardHolderText: CardElementPositioning? = null,
-    val cardHolderButton: CardElementPositioning? = null,
+// TODO: define interface and several implementations - label / details / button and use suitable configs there
+// example: ConstraintInstructions
+data class CardElementsItemConfig(
+    @StringRes
+    val labelResource: Int? = null,
+    // Colors
+    @ColorRes
+    val labelColor: Int? = null,
+    @ColorRes
+    val detailsColor: Int? = null,
+    // Button images
+    @DrawableRes
+    var copyButtonImage: Int? = null,
+    @DrawableRes
+    var maskButtonShowImage: Int? = null,
+    @DrawableRes
+    var maskButtonHideImage: Int? = null,
+    // Layout
+    val labelLayout: CardElementLayout? = null,
+    val detailsLayout: CardElementLayout? = null,
+    val copyButtonLayout: CardElementLayout? = null,
+    val maskButtonLayout: CardElementLayout? = null,
+): Serializable
+data class CardElementsConfig(
+    val cardNumber: CardElementsItemConfig? = null,
+    val expiry: CardElementsItemConfig? = null,
+    val cvv: CardElementsItemConfig? = null,
+    val cardHolder: CardElementsItemConfig? = null,
+    // common mask button - toggle all elements together
+    val commonMaskButton: CardElementsItemConfig? = null, // common show details button
+    val commonMaskButtonTargets: List<CardMaskableElement> = CardMaskableElementEntries.all(),
+    // define initial state of masking
+    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.EXPIRY,
+        CardMaskableElement.CVV,
+        CardMaskableElement.CARDHOLDER,
+    )
 ): Serializable
