@@ -91,7 +91,7 @@ abstract class CardDetailsFragmentBase : Fragment() {
                 }
             }
             niDisplayAttributes.cardAttributes?.let { niCardAttributes ->
-                viewModel.defaultShouldDisplayValue = !niCardAttributes.shouldHide
+                viewModel.shouldBeMaskedDefault = if (niCardAttributes.shouldHide) CardMaskableElementEntries.all() else listOf()
                 niCardAttributes.backgroundImage?.let { it -> binding.cardBackgroundImageView.setImageResource(it) }
                 niCardAttributes.textPositioning?.let { positioning ->
                     positioning.leftAlignment?.let { it -> binding.leftAlignGuideVertical.setGuidelinePercent(it) }
@@ -116,8 +116,12 @@ abstract class CardDetailsFragmentBase : Fragment() {
         }
 
         binding.hideShowDetailsImageView.setOnClickListener {
-            viewModel.isShowDetailsLiveData.value?.let { isVisible ->
-                viewModel.isShowDetailsLiveData.value = !isVisible
+            viewModel.showMaskedLiveData.value?.let { currentMasked ->
+                if (currentMasked.isEmpty()) {
+                    viewModel.showMaskedLiveData.value = CardMaskableElementEntries.all()
+                } else {
+                    viewModel.showMaskedLiveData.value = listOf()
+                }
             }
         }
 
@@ -130,16 +134,35 @@ abstract class CardDetailsFragmentBase : Fragment() {
         viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
             successErrorResponse?.let {
                 listener?.onCardDetailsFragmentCompletion(it)
+                if (it.isSuccess != null) {
+                    // enable images
+                }
             }
         }
 
-        if (viewModel.isShowDetailsLiveData.value == null) {
+        if (viewModel.showMaskedLiveData.value == null) {
             viewModel.getData()
         }
 
         binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
             "ar" -> false
             else -> true
+        }
+
+        binding.copyCardNumberImageView.visibility = View.INVISIBLE
+        binding.copyCardHolderNameImageView.visibility = View.INVISIBLE
+        binding.hideShowDetailsImageView.visibility = View.VISIBLE
+        viewModel.showMaskedLiveData.observe(viewLifecycleOwner) { showMaskedLiveData ->
+            if (showMaskedLiveData.isEmpty()) { // details showed
+                binding.hideShowDetailsImageView.setImageResource(R.drawable.ic_hide_details)
+                binding.copyCardNumberImageView.visibility = View.VISIBLE
+                binding.copyCardHolderNameImageView.visibility = View.VISIBLE
+                binding.hideShowDetailsImageView.visibility = View.VISIBLE
+            } else {
+                binding.hideShowDetailsImageView.setImageResource(R.drawable.ic_reveal_details)
+                binding.copyCardNumberImageView.visibility = View.INVISIBLE
+                binding.copyCardHolderNameImageView.visibility = View.INVISIBLE
+            }
         }
     }
 
