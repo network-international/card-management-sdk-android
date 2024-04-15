@@ -84,5 +84,7 @@ data class CardElementsConfig(
         CardMaskableElement.EXPIRY,
         CardMaskableElement.CVV,
         CardMaskableElement.CARDHOLDER,
-    )
+    ),
+    // progressBar - for free form only
+    val progressBar: CardElementsItemConfig? = null, // use `details` field for color and layout
 ): Serializable
