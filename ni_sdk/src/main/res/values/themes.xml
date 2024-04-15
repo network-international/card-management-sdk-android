@@ -28,6 +28,11 @@
         <item name="colorAccent">@color/white_80</item>
     </style>
 
+    <style name="NICardManagementSDK.ProgressBar.Gray" parent="">
+        // the spinner color
+        <item name="colorAccent">@color/gray3</item>
+    </style>
+
     <style name="ThemeOverlay.NICardManagementSDK.DialogTheme" parent="">
         // bullets and inactive "done" button state color
         <item name="colorDisabledImageButton">@color/gray3</item>

@@ -324,7 +324,7 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             detailsColor = detailsColor, // use null for default
             labelResource = R.string.card_number_app, // use null for default
             labelLayout = CardElementLayout(left = 16, top = 100),
-            // right 16 - copy button -- 8 -- mask (common) button - right 16 = 100
+            // right - copy button -- -- mask (common) button - right
             detailsLayout = CardElementLayout(right = 116, top = 84),
             copyButtonLayout = CardElementLayout(right = 16, top = 96),
             copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
@@ -344,7 +344,7 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             // add individual mask button if needed
             maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
             maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-            // right 16 -- copy btn -- 8
+            // right -- copy btn -- 
             maskButtonLayout = CardElementLayout(right = 68, top = 16),
         ),
         expiry = CardElementsItemConfig(
@@ -365,14 +365,14 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             detailsColor = detailsColor, // use null for default
             labelResource = R.string.card_cvv_app,
             labelLayout = CardElementLayout(left = 16, top = 260),
-            // right 16 - copy button -- 8 -- mask button - right 16 = 100
+            // right - copy button --  -- mask button - right
             detailsLayout = CardElementLayout(right = 116, top = 254),
             // use individual button if needed
             copyButtonLayout = CardElementLayout(right = 16, top = 254),
             copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
             maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
             maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-            // right 16 -- copy btn -- 8
+            // right -- copy btn -- 
             maskButtonLayout = CardElementLayout(right = 68, top = 254),
         ),
         commonMaskButton = CardElementsItemConfig(
@@ -392,7 +392,12 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             CardMaskableElement.CARDNUMBER,
             CardMaskableElement.CARDHOLDER,
             CardMaskableElement.EXPIRY,
-        )
+        ),
+        // Configure progressBar
+        progressBar = CardElementsItemConfig(
+            detailsColor = detailsColor,
+            detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
+        ),
     ),
 )
 ```

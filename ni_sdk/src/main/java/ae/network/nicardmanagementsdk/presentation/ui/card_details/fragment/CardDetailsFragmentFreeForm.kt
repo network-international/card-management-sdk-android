@@ -14,12 +14,15 @@ import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.ColorFilter
 import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
@@ -33,6 +36,7 @@ import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
 import androidx.core.view.marginTop
+import androidx.core.view.updatePadding
 import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -327,6 +331,19 @@ class CardDetailsFragmentFreeForm : Fragment() {
             cnf.shouldBeMaskedDefault.let { targets ->
                 viewModel.shouldBeMaskedDefault = targets
             }
+            cnf.progressBar?.let { elm ->
+                elm.detailsColor?.let { colorRes -> //binding.loadingIndicator.setColorRes(colorRes)
+                    val tint = ContextCompat.getColor(binding.loadingIndicator.context, colorRes)
+                    binding.loadingIndicator.indeterminateDrawable.setTint(tint)
+                    //setColorFilter(0xFFFF0000.toInt(), android.graphics.PorterDuff.Mode.MULTIPLY)
+                }
+                elm.detailsLayout?.let {
+                    it.left?.let { itt -> binding.loadingIndicator.updatePadding(left = itt) }
+                    it.right?.let { itt -> binding.loadingIndicator.updatePadding(right = itt) }
+                    it.top?.let { itt -> binding.loadingIndicator.updatePadding(top = itt) }
+                    it.bottom?.let { itt -> binding.loadingIndicator.updatePadding(bottom = itt) }
+                }
+            }
         }
 
 
@@ -453,19 +470,20 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
         position.left?.let { it ->
             instructions.add(ConnectConstraint(viewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START))
-            this.setMargins(left = it)
+            this.updatePadding(left = it)
         }
         position.top?.let { it ->
             instructions.add(ConnectConstraint(viewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP))
-            this.setMargins(top = it)
+            this.updatePadding(top = it)
         }
         position.bottom?.let { it ->
             instructions.add(ConnectConstraint(viewId, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM))
-            this.setMargins(top = it)
+            this.updatePadding(top = it)
         }
         position.right?.let { it ->
             instructions.add(ConnectConstraint(viewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END))
-            this.setMargins(right = it)
+            //this.setMargins(right = it)
+            this.updatePadding(right = it)
         }
         constraintLayout.updateConstraints(instructions)
     }
