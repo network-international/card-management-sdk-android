@@ -27,4 +27,7 @@
     <color name="blue2">#5D21D1</color>
 
     <color name="green1">#FF669900</color>
+
+    <color name="colorShimmer">#E6D3D3D3</color>
+    <color name="colorShimmerLight">#00D3D3D3</color>
 </resources>

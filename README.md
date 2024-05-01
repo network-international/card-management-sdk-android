@@ -393,11 +393,13 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             CardMaskableElement.CARDHOLDER,
             CardMaskableElement.EXPIRY,
         ),
-        // Configure progressBar
+        // Configure progressBar, if null - do not show
         progressBar = CardElementsItemConfig(
             detailsColor = detailsColor,
             detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
         ),
+        // show shimmering
+        shimmerDetails = true
     ),
 )
 ```
