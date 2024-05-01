@@ -11,18 +11,16 @@ import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
+import ae.network.nicardmanagementsdk.presentation.views.ShimmerView
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.ColorFilter
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
@@ -41,7 +39,6 @@ import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-
 
 class CardDetailsFragmentFreeForm : Fragment() {
     companion object {
@@ -268,7 +265,7 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
                 // layout
                 elm.labelLayout?.let { it -> binding.cardHolderNameLabelTextView.setConstraints(it, binding.constraintLayout) }
-                elm.detailsLayout?.let { it -> binding.cardHolderNameTextView.setConstraints(it, binding.constraintLayout) }
+                elm.detailsLayout?.let { it -> binding.cardHolderNameTextViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.copyButtonLayout?.let { it -> binding.copyCardHolderNameImageViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.maskButtonLayout?.let { it -> binding.hideShowCardHolderDetailsImageViewHolder.setConstraints(it, binding.constraintLayout) }
             }
@@ -284,7 +281,7 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
                 // layout
                 elm.labelLayout?.let { it -> binding.cardNumberLabelTextView.setConstraints(it, binding.constraintLayout) }
-                elm.detailsLayout?.let { it -> binding.cardNumberTextView.setConstraints(it, binding.constraintLayout) }
+                elm.detailsLayout?.let { it -> binding.cardNumberTextViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.copyButtonLayout?.let { it -> binding.copyCardNumberImageViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.maskButtonLayout?.let { it -> binding.hideShowCardNumberDetailsImageViewHolder.setConstraints(it, binding.constraintLayout) }
             }
@@ -300,7 +297,7 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
                 // layout
                 elm.labelLayout?.let { it -> binding.cvvCodeLabelTextView.setConstraints(it, binding.constraintLayout) }
-                elm.detailsLayout?.let { it -> binding.cvvCodeTextView.setConstraints(it, binding.constraintLayout) }
+                elm.detailsLayout?.let { it -> binding.cvvCodeTextViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.copyButtonLayout?.let { it -> binding.copyCVVImageViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.maskButtonLayout?.let { it -> binding.hideShowCVVImageViewHolder.setConstraints(it, binding.constraintLayout) }
             }
@@ -317,7 +314,7 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
                 // layout
                 elm.labelLayout?.let { it -> binding.expiryDateLabelTextView.setConstraints(it, binding.constraintLayout) }
-                elm.detailsLayout?.let { it -> binding.expiryDateTextView.setConstraints(it, binding.constraintLayout) }
+                elm.detailsLayout?.let { it -> binding.expiryDateTextViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.copyButtonLayout?.let { it -> binding.copyExpiryImageViewHolder.setConstraints(it, binding.constraintLayout) }
                 elm.maskButtonLayout?.let { it -> binding.hideShowExpiryImageViewHolder.setConstraints(it, binding.constraintLayout) }
             }
@@ -332,6 +329,7 @@ class CardDetailsFragmentFreeForm : Fragment() {
                 viewModel.shouldBeMaskedDefault = targets
             }
             cnf.progressBar?.let { elm ->
+                binding.overlayFrameLayout.alpha = 1f
                 elm.detailsColor?.let { colorRes -> //binding.loadingIndicator.setColorRes(colorRes)
                     val tint = ContextCompat.getColor(binding.loadingIndicator.context, colorRes)
                     binding.loadingIndicator.indeterminateDrawable.setTint(tint)
@@ -342,6 +340,56 @@ class CardDetailsFragmentFreeForm : Fragment() {
                     it.right?.let { itt -> binding.loadingIndicator.updatePadding(right = itt) }
                     it.top?.let { itt -> binding.loadingIndicator.updatePadding(top = itt) }
                     it.bottom?.let { itt -> binding.loadingIndicator.updatePadding(bottom = itt) }
+                }
+            }
+
+            setButtonsVisibility(viewModel.shouldBeMaskedDefault) // assing drawables
+
+            if (cnf.shimmerDetails) {
+                binding.cardNumberShimmerView.alpha = 1f
+                binding.cardNumberShimmerView.setSize(binding.cardNumberTextView, sampleIfEmpty = "1234 5678 2345 3456")
+                binding.cardHolderNameShimmerView.alpha = 1f
+                binding.cardHolderNameShimmerView.setSize(binding.cardHolderNameTextView, sampleIfEmpty = "Firstname Lastname")
+                binding.cvvCodeShimmerView.alpha = 1f
+                binding.cvvCodeShimmerView.setSize(binding.cvvCodeTextView, sampleIfEmpty = "333333")
+                binding.expiryDateShimmerView.alpha = 1f
+                binding.expiryDateShimmerView.setSize(binding.expiryDateTextView, sampleIfEmpty = "12 / 2099")
+                if (cnf.commonMaskButton?.maskButtonShowImage != null || cnf.commonMaskButton?.maskButtonHideImage != null) {
+                    binding.hideShowDetailsShimmerView.alpha = 1f
+                    binding.hideShowDetailsShimmerView.setSize(binding.hideShowDetailsImageView)
+                }
+                if (cnf.cardHolder?.maskButtonShowImage != null || cnf.cardHolder?.maskButtonHideImage != null) {
+                    binding.hideShowCardHolderShimmerView.alpha = 1f
+                    binding.hideShowCardHolderShimmerView.setSize(binding.hideShowCardHolderDetailsImageView)
+                }
+                if (cnf.cardNumber?.maskButtonShowImage != null || cnf.cardNumber?.maskButtonHideImage != null) {
+                    binding.hideShowCardNumberShimmerView.alpha = 1f
+                    binding.hideShowCardNumberShimmerView.setSize(binding.hideShowCardNumberDetailsImageView)
+                }
+                if (cnf.expiry?.maskButtonShowImage != null || cnf.expiry?.maskButtonHideImage != null) {
+                    binding.hideShowExpiryShimmerView.alpha = 1f
+                    binding.hideShowExpiryShimmerView.setSize(binding.hideShowExpiryImageView)
+                }
+                if (cnf.cvv?.maskButtonShowImage != null || cnf.cvv?.maskButtonHideImage != null) {
+                    binding.hideShowCVVShimmerView.alpha = 1f
+                    binding.hideShowCVVShimmerView.setSize(binding.hideShowCVVImageView)
+                }
+
+                cnf.cardNumber?.copyButtonImage?.let {
+                    binding.copyCardNumberShimmerView.alpha = 1f
+                    binding.copyCardNumberShimmerView.setSize(binding.copyCardNumberImageView)
+                }
+                cnf.cardHolder?.copyButtonImage?.let {
+                    binding.copyCardHolderNameShimmerView.alpha = 1f
+                    binding.copyCardHolderNameShimmerView.setSize(binding.copyCardHolderNameImageView)
+                }
+                cnf.cvv?.copyButtonImage?.let {
+                    binding.copyCVVShimmerView.alpha = 1f
+                    binding.copyCVVShimmerView.setSize(binding.copyCVVImageView)
+                }
+                cnf.expiry?.copyButtonImage?.let {
+                    binding.copyExpiryShimmerView.alpha = 1f
+                    binding.copyExpiryShimmerView.setSize(binding.copyExpiryImageView)
                 }
             }
         }
@@ -356,16 +404,16 @@ class CardDetailsFragmentFreeForm : Fragment() {
 
     private fun setButtonsVisibility(showMaskedLiveData: List<CardMaskableElement>?) {
         // Additional buttons
-        binding.hideShowCardHolderDetailsImageViewHolder.visibility = View.INVISIBLE
-        binding.hideShowCardNumberDetailsImageViewHolder.visibility = View.INVISIBLE
-        binding.copyCVVImageViewHolder.visibility = View.INVISIBLE
-        binding.hideShowCVVImageViewHolder.visibility = View.INVISIBLE
-        binding.copyExpiryImageViewHolder.visibility = View.INVISIBLE
-        binding.hideShowExpiryImageViewHolder.visibility = View.INVISIBLE
+        binding.hideShowCardHolderDetailsImageView.alpha = 0f
+        binding.hideShowCardNumberDetailsImageView.alpha = 0f
+        binding.copyCVVImageView.alpha = 0f
+        binding.hideShowCVVImageView.alpha = 0f
+        binding.copyExpiryImageView.alpha = 0f
+        binding.hideShowExpiryImageView.alpha = 0f
 
-        binding.copyCardNumberImageViewHolder.visibility = View.INVISIBLE
-        binding.copyCardHolderNameImageViewHolder.visibility = View.INVISIBLE
-        binding.hideShowDetailsImageViewHolder.visibility = View.INVISIBLE
+        binding.copyCardNumberImageView.alpha = 0f
+        binding.copyCardHolderNameImageView.alpha = 0f
+        binding.hideShowDetailsImageView.alpha = 0f
 
         showMaskedLiveData?.let {
             // common mask button
@@ -380,11 +428,11 @@ class CardDetailsFragmentFreeForm : Fragment() {
                 if (!anyTargetCurrentlyMasked) { // try set `show` image first then correct it with `hide` image
                     elementsConfig.commonMaskButton?.maskButtonShowImage?.let { binding.hideShowDetailsImageView.setImageResource(it) }
                     elementsConfig.commonMaskButton?.maskButtonHideImage?.let { binding.hideShowDetailsImageView.setImageResource(it) }
-                } else { // if any target field masked --> allow unmast all targets
+                } else { // if any target field masked --> allow unmask all targets
                     elementsConfig.commonMaskButton?.maskButtonHideImage?.let { binding.hideShowDetailsImageView.setImageResource(it) }
                     elementsConfig.commonMaskButton?.maskButtonShowImage?.let { binding.hideShowDetailsImageView.setImageResource(it) }
                 }
-                binding.hideShowDetailsImageViewHolder.visibility = View.VISIBLE
+                binding.hideShowDetailsImageView.alpha = 1f
             }
             // CardHolder
             if (elementsConfig.cardHolder?.maskButtonShowImage != null || elementsConfig.cardHolder?.maskButtonHideImage != null) {
@@ -395,12 +443,12 @@ class CardDetailsFragmentFreeForm : Fragment() {
                     elementsConfig.cardHolder?.maskButtonShowImage?.let { binding.hideShowCardHolderDetailsImageView.setImageResource(it) }
                     elementsConfig.cardHolder?.maskButtonHideImage?.let { binding.hideShowCardHolderDetailsImageView.setImageResource(it) }
                 }
-                binding.hideShowCardHolderDetailsImageViewHolder.visibility = View.VISIBLE
+                binding.hideShowCardHolderDetailsImageView.alpha = 1f
             }
             if (!(it.contains(CardMaskableElement.CARDHOLDER))) {
                 elementsConfig.cardHolder?.copyButtonImage?.let {
                     binding.copyCardHolderNameImageView.setImageResource(it)
-                    binding.copyCardHolderNameImageViewHolder.visibility = View.VISIBLE
+                    binding.copyCardHolderNameImageView.alpha = 1f
                 }
             }
             // CardNumber
@@ -412,12 +460,12 @@ class CardDetailsFragmentFreeForm : Fragment() {
                     elementsConfig.cardNumber?.maskButtonShowImage?.let { binding.hideShowCardNumberDetailsImageView.setImageResource(it) }
                     elementsConfig.cardNumber?.maskButtonHideImage?.let { binding.hideShowCardNumberDetailsImageView.setImageResource(it) }
                 }
-                binding.hideShowCardNumberDetailsImageViewHolder.visibility = View.VISIBLE
+                binding.hideShowCardNumberDetailsImageView.alpha = 1f
             }
             if (!(it.contains(CardMaskableElement.CARDNUMBER))) {
                 elementsConfig.cardNumber?.copyButtonImage?.let {
                     binding.copyCardNumberImageView.setImageResource(it)
-                    binding.copyCardNumberImageViewHolder.visibility = View.VISIBLE
+                    binding.copyCardNumberImageView.alpha = 1f
                 }
             }
             // CVV
@@ -429,11 +477,11 @@ class CardDetailsFragmentFreeForm : Fragment() {
                     elementsConfig.cvv?.maskButtonShowImage?.let { binding.hideShowCVVImageView.setImageResource(it) }
                     elementsConfig.cvv?.maskButtonHideImage?.let { binding.hideShowCVVImageView.setImageResource(it) }
                 }
-                binding.hideShowCVVImageViewHolder.visibility = View.VISIBLE
+                binding.hideShowCVVImageView.alpha = 1f
             }
             if (!(it.contains(CardMaskableElement.CVV))) {
                 elementsConfig.cvv?.copyButtonImage?.let {
-                    binding.copyCVVImageViewHolder.visibility = View.VISIBLE
+                    binding.copyCVVImageView.alpha = 1f
                 }
             }
             // Expiry
@@ -445,17 +493,41 @@ class CardDetailsFragmentFreeForm : Fragment() {
                     elementsConfig.expiry?.maskButtonShowImage?.let { binding.hideShowExpiryImageView.setImageResource(it) }
                     elementsConfig.expiry?.maskButtonHideImage?.let { binding.hideShowExpiryImageView.setImageResource(it) }
                 }
-                binding.hideShowExpiryImageViewHolder.visibility = View.VISIBLE
+                binding.hideShowExpiryImageView.alpha = 1f
             }
             if (!(it.contains(CardMaskableElement.EXPIRY))) {
                 elementsConfig.expiry?.copyButtonImage?.let {
                     binding.copyExpiryImageView.setImageResource(it)
-                    binding.copyExpiryImageViewHolder.visibility = View.VISIBLE
+                    binding.copyExpiryImageView.alpha = 1f
                 }
             }
         }
     }
 
+    private fun ShimmerView.setSize(imageView: ImageView) {
+        if (imageView.drawable == null || imageView.alpha == 0f || imageView.visibility == View.INVISIBLE) {
+            return
+        }
+        val layoutParams = this.layoutParams
+        layoutParams.width = imageView.drawable.intrinsicWidth
+        layoutParams.height = imageView.drawable.intrinsicHeight
+        this.layoutParams = layoutParams
+    }
+    private fun ShimmerView.setSize(textView: TextView, sampleIfEmpty: String) {
+        val layoutParams = this.layoutParams
+        var changed = false
+        if (textView.text.isEmpty()) {
+            textView.text = sampleIfEmpty
+            changed = true
+        }
+        textView.measure(0, 0)
+        layoutParams.height = textView.measuredHeight
+        layoutParams.width = textView.measuredWidth
+        if (changed) {
+            textView.text = ""
+        }
+        this.layoutParams = layoutParams
+    }
     private fun View.setConstraints(position: CardElementLayout, constraintLayout: ConstraintLayout) {
         if (position.left == null && position.right == null && position.top == null && position.bottom == null) {
             return
@@ -578,3 +650,4 @@ fun ConstraintLayout.clearConstraints(viewID: Int) {
         it.applyTo(this)
     }
 }
+
