@@ -229,6 +229,10 @@ enum class NIPinFormType(val minSize: Int, val maxSize: Int) {
 ```
 
 ### Display a fragment
+Pass non null `elementsColor` to update color of card elements, if null - default color will be used
+```kotlin
+val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
+```
 ```kotlin
 class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmentInteractionListener {
     lateinit var niInput: NIInput
@@ -241,9 +245,11 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmen
 
     private fun initializeUI() {
         // TODO Build niInput here
-        val cardDetailsFragment = CardDetailsFragment.newInstance(niInput)
+        // use CardDetailsFragmentFromFragment to display from other fragment
+        // pass @ColorRes elementsColor to change elements color 
+        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput, elementsColor = null)
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
+            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
             commit()
         }
     }

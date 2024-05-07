@@ -61,8 +61,7 @@ class MainFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput)
+        val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
         childFragmentManager.beginTransaction().apply {
             add(R.id.fragment_card_container, cardDetailsFragment, CardDetailsFragmentFromFragment.TAG)
             commit()
