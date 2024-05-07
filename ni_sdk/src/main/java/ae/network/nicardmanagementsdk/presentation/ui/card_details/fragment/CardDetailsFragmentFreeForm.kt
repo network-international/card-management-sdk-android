@@ -1,7 +1,6 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
 import ae.network.nicardmanagementsdk.R
-import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NILabels
@@ -10,32 +9,22 @@ import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsFreeformBin
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setColorRes
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setConstraints
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setSize
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.views.ShimmerView
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.marginBottom
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
-import androidx.core.view.marginTop
 import androidx.core.view.updatePadding
-import androidx.core.widget.ImageViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -504,91 +493,6 @@ class CardDetailsFragmentFreeForm : Fragment() {
         }
     }
 
-    private fun ShimmerView.setSize(imageView: ImageView) {
-        if (imageView.drawable == null || imageView.alpha == 0f || imageView.visibility == View.INVISIBLE) {
-            return
-        }
-        val layoutParams = this.layoutParams
-        layoutParams.width = imageView.drawable.intrinsicWidth
-        layoutParams.height = imageView.drawable.intrinsicHeight
-        this.layoutParams = layoutParams
-    }
-    private fun ShimmerView.setSize(textView: TextView, sampleIfEmpty: String) {
-        val layoutParams = this.layoutParams
-        var changed = false
-        if (textView.text.isEmpty()) {
-            textView.text = sampleIfEmpty
-            changed = true
-        }
-        textView.measure(0, 0)
-        layoutParams.height = textView.measuredHeight
-        layoutParams.width = textView.measuredWidth
-        if (changed) {
-            textView.text = ""
-        }
-        this.layoutParams = layoutParams
-    }
-    private fun View.setConstraints(position: CardElementLayout, constraintLayout: ConstraintLayout) {
-        if (position.left == null && position.right == null && position.top == null && position.bottom == null) {
-            return
-        }
-        val viewId = this.id
-        constraintLayout.updateConstraints(listOf(
-            // By default every view has top-left constraints - clear it
-            DisconnectConstraint(viewId, ConstraintSet.START), DisconnectConstraint(viewId, ConstraintSet.TOP)
-        ))
-
-        val instructions: MutableList<ConstraintInstructions> = mutableListOf()
-
-        position.left?.let { it ->
-            instructions.add(ConnectConstraint(viewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START))
-            this.updatePadding(left = it)
-        }
-        position.top?.let { it ->
-            instructions.add(ConnectConstraint(viewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP))
-            this.updatePadding(top = it)
-        }
-        position.bottom?.let { it ->
-            instructions.add(ConnectConstraint(viewId, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM))
-            this.updatePadding(top = it)
-        }
-        position.right?.let { it ->
-            instructions.add(ConnectConstraint(viewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END))
-            //this.setMargins(right = it)
-            this.updatePadding(right = it)
-        }
-        constraintLayout.updateConstraints(instructions)
-    }
-    private fun View.setMargins(
-        left: Int = this.marginLeft,
-        top: Int = this.marginTop,
-        right: Int = this.marginRight,
-        bottom: Int = this.marginBottom,
-    ) {
-        layoutParams = (layoutParams as ViewGroup.MarginLayoutParams).apply {
-            setMargins(left, top, right, bottom)
-        }
-    }
-    private fun ImageView.setTint(@ColorRes colorRes: Int) {
-        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(ContextCompat.getColor(context, colorRes)))
-    }
-    private fun TextView.setColorRes(@ColorRes colorRes: Int) {
-        this.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(context, colorRes)))
-    }
-
-    private fun ImageView.setTint3(@ColorInt color: Int?) {
-        if (color == null) {
-            ImageViewCompat.setImageTintList(this, null)
-            return
-        }
-        ImageViewCompat.setImageTintMode(this, PorterDuff.Mode.SRC_ATOP)
-        ImageViewCompat.setImageTintList(this, ColorStateList.valueOf(color))
-    }
-    private fun ImageView.setTint2(context: Context, @ColorRes colorId: Int) {
-        val color = ContextCompat.getColor(context, colorId)
-        val colorStateList = ColorStateList.valueOf(color)
-        ImageViewCompat.setImageTintList(this, colorStateList)
-    }
     private fun setCardFonts(textView: TextView, uiFont: UIFont?) {
         uiFont?.let {
             textView.apply {
@@ -606,48 +510,3 @@ class CardDetailsFragmentFreeForm : Fragment() {
             else -> R.string.copied_to_clipboard_en
         }
 }
-
-// TODO: Move this to separate helper class
-/*
-<ImageView
-            android:id="@+id/image"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title" />
-
-app:layout_constraintTop_toBottomOf=”@id/title”
-||
-ConnectConstraint(R.id.image, ConstraintSet.Top, R.id.title, ConstraintSet.BOTTOM)
-
-val imageView = ImageView(context)
-imageView.id = View.generateViewId()
-imageView.setImageResource(resId)
-constraintLayout.addView(imageView)
-val set = ConstraintSet()
-set.clone(constraintLayout)
-set.connect(imageView.id, ConstraintSet.RIGHT, ConstraintSet.PARENT_ID, ConstraintSet.RIGHT)
-set.applyTo(constraintLayout)
-* */
-interface ConstraintInstructions
-data class ConnectConstraint(val startID: Int, val startSide: Int, val endID: Int, val endSide: Int) : ConstraintInstructions
-data class DisconnectConstraint(val startID: Int, val startSide: Int) : ConstraintInstructions
-fun ConstraintLayout.updateConstraints(instructions: List<ConstraintInstructions>) {
-    ConstraintSet().also {
-        it.clone(this)
-        for (instruction in instructions) {
-            if (instruction is ConnectConstraint) it.connect(instruction.startID, instruction.startSide, instruction.endID, instruction.endSide)
-            if (instruction is DisconnectConstraint) it.clear(instruction.startID, instruction.startSide)
-        }
-        it.applyTo(this)
-    }
-}
-fun ConstraintLayout.clearConstraints(viewID: Int) {
-    ConstraintSet().also {
-        it.clone(this)
-        it.clear(viewID)
-        it.applyTo(this)
-    }
-}
-
