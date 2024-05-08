@@ -44,7 +44,8 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
-        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput)
+        // pass `elementsColor` null for default
+        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput, elementsColor = R.color.black)
         supportFragmentManager.beginTransaction().apply {
             add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
             commit()

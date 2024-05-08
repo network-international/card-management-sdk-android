@@ -8,6 +8,8 @@ import ae.network.nicardmanagementsdk.api.models.input.UIFont
 import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setColorRes
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setTint
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
@@ -18,6 +20,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -30,6 +33,7 @@ abstract class CardDetailsFragmentBase : Fragment() {
     private val binding: FragmentCardDetailsBinding
         get() = _binding!!
     private lateinit var niInput: NIInput
+    private var elementsColor: Int? = null
     protected var listener: OnFragmentInteractionListener? = null
 
     abstract fun checkSubscriber(context: Context)
@@ -44,6 +48,9 @@ abstract class CardDetailsFragmentBase : Fragment() {
         arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
+        arguments?.getSerializableCompat<Int>(Extra.EXTRA_NI_CARD_ELEMENTS_COLOR)?.let {
+            elementsColor = it
+        }
     }
 
     override fun onCreateView(
@@ -73,6 +80,24 @@ abstract class CardDetailsFragmentBase : Fragment() {
     }
 
     private fun initializeUI() {
+        elementsColor?.let {
+            binding.cardNumberLabelTextView.setColorRes(it)
+            binding.cardNumberTextView.setColorRes(it)
+            binding.expiryDateLabelTextView.setColorRes(it)
+            binding.expiryDateTextView.setColorRes(it)
+            binding.cvvCodeLabelTextView.setColorRes(it)
+            binding.cvvCodeTextView.setColorRes(it)
+            binding.cvvCodeTextView.setColorRes(it)
+            binding.cardHolderNameTextView.setColorRes(it)
+            binding.cardHolderNameLabelTextView.setColorRes(it)
+
+            binding.copyCardNumberImageView.setTint(it)
+            binding.copyCardHolderNameImageView.setTint(it)
+            binding.hideShowDetailsImageView.setTint(it)
+
+            val tint = ContextCompat.getColor(binding.loadingIndicator.context, it)
+            binding.loadingIndicator.indeterminateDrawable.setTint(tint)
+        }
         niInput.displayAttributes?.let { niDisplayAttributes ->
             niDisplayAttributes.fonts?.let { niFontLabelPairs ->
             niFontLabelPairs.forEach {

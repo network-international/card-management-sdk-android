@@ -4,6 +4,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
 import android.os.Bundle
+import androidx.annotation.ColorRes
 
 class CardDetailsFragmentFromActivity: CardDetailsFragmentBase() {
 
@@ -17,9 +18,10 @@ class CardDetailsFragmentFromActivity: CardDetailsFragmentBase() {
 
     companion object {
         @JvmStatic
-        fun newInstance(input: NIInput) = CardDetailsFragmentFromActivity().apply {
+        fun newInstance(input: NIInput, @ColorRes elementsColor: Int? = null) = CardDetailsFragmentFromActivity().apply {
             arguments = Bundle().apply {
                 putSerializable(Extra.EXTRA_NI_INPUT, input)
+                putSerializable(Extra.EXTRA_NI_CARD_ELEMENTS_COLOR, elementsColor)
             }
         }
 
