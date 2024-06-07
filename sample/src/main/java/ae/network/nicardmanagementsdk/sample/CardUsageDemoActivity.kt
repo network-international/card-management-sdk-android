@@ -134,12 +134,10 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFra
                     CardMaskableElement.EXPIRY,
                 ),
                 // Configure progressBar, if null - do not show
-                progressBar = null,
-//                CardElementsItemConfig(
-//                    detailsColor = detailsColor,
-//                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
-//                ),
-                shimmerDetails = true
+                progressBar = CardElementsItemConfig(
+                    detailsColor = detailsColor,
+                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
+                ),
             ),
         )
         supportFragmentManager.beginTransaction().apply {

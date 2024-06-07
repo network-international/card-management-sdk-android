@@ -64,14 +64,6 @@ dependencies {
     // material
     implementation "com.google.android.material:material:1.5.0"
 
-
-    // NI SDK from local maven repository old project
-    //implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.1.4'
-    //implementation 'com.github.network-international:card-management-sdk-android:1.1.4'
-
-    // NI SDK from local maven repository new project
-//    implementation 'ae.network.nicardmanagementsdk:ni-sdk:1.1.4-local-release'
-
     // NI SDK from Jitpack repository
     implementation project(':ni_sdk')
 }
