@@ -30,27 +30,18 @@
             tools:ignore="TextContrastCheck"
             tools:text="Card Number" />
 
-        <FrameLayout android:id="@+id/cardNumberTextViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/cardNumberTextView"
-                style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="2dp"
-                android:text="@{viewModel.cardDetailsLiveData.pan}"
-                android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck"
-                tools:text="1234 5678 2345 3456" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/cardNumberShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
-        </FrameLayout>
+        <TextView
+            android:id="@+id/cardNumberTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:text="@{viewModel.cardDetailsLiveData.pan}"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="1234 5678 2345 3456" />
 
         <TextView
             android:id="@+id/expiryDateLabelTextView"
@@ -62,26 +53,17 @@
             tools:ignore="TextContrastCheck"
             tools:text="Expiry" />
 
-        <FrameLayout android:id="@+id/expiryDateTextViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/expiryDateTextView"
-                style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.cardDetailsLiveData.expiry}"
-                android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck"
-                tools:text="05 / 2024" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/expiryDateShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
-        </FrameLayout>
+        <TextView
+            android:id="@+id/expiryDateTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.expiry}"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="05 / 2024" />
 
         <TextView
             android:id="@+id/cvvCodeLabelTextView"
@@ -93,26 +75,17 @@
             tools:ignore="TextContrastCheck"
             tools:text="CVV" />
 
-        <FrameLayout android:id="@+id/cvvCodeTextViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/cvvCodeTextView"
-                style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.cardDetailsLiveData.cVV2}"
-                android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck"
-                tools:text="303" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/cvvCodeShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone" />
-        </FrameLayout>
+        <TextView
+            android:id="@+id/cvvCodeTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.cVV2}"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="303" />
 
         <TextView
             android:id="@+id/cardHolderNameLabelTextView"
@@ -124,26 +97,17 @@
             tools:ignore="TextContrastCheck"
             tools:text="Card Holder" />
 
-        <FrameLayout android:id="@+id/cardHolderNameTextViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <TextView
-                android:id="@+id/cardHolderNameTextView"
-                style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
-                android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck"
-                tools:text="Lee M. Cardholder" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/cardHolderNameShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
-        </FrameLayout>
+        <TextView
+            android:id="@+id/cardHolderNameTextView"
+            style="@style/Widget.NICardManagementSDK.TextView.Shadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="Lee M. Cardholder" />
 
         <!--  Since I can't use margins (it works wrong inside dialogs)
             Paddings will be used
@@ -158,153 +122,89 @@
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/copy_to_clipboard_image_content_description"
                 tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/copyCardNumberShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
         </FrameLayout>
 
         <!--        Shared button to toggle several elements-->
         <FrameLayout android:id="@+id/hideShowDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/hideShowDetailsImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/credentials_toggle_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/hideShowDetailsShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/hideShowDetailsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/copyCardHolderNameImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/copyCardHolderNameImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/copy_to_clipboard_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/copyCardHolderNameShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"
-                />
+        <ImageView
+            android:id="@+id/copyCardHolderNameImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/copy_to_clipboard_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
 <!--        Additional action buttons for each value field, to use it - provide src and setup position -->
         <FrameLayout android:id="@+id/hideShowCardHolderDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/hideShowCardHolderDetailsImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/credentials_toggle_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/hideShowCardHolderShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/hideShowCardHolderDetailsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/hideShowCardNumberDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/hideShowCardNumberDetailsImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/credentials_toggle_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/hideShowCardNumberShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/hideShowCardNumberDetailsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/copyCVVImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/copyCVVImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/copy_to_clipboard_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/copyCVVShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/copyCVVImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/copy_to_clipboard_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/hideShowCVVImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/hideShowCVVImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/credentials_toggle_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/hideShowCVVShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/hideShowCVVImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/copyExpiryImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/copyExpiryImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/copy_to_clipboard_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/copyExpiryShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/copyExpiryImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/copy_to_clipboard_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
         <FrameLayout android:id="@+id/hideShowExpiryImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
-            <ImageView
-                android:id="@+id/hideShowExpiryImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/credentials_toggle_image_content_description"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ImageContrastCheck" />
-            <ae.network.nicardmanagementsdk.presentation.views.ShimmerView
-                android:id="@+id/hideShowExpiryShimmerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-                android:alpha="0"
-                tools:visibility="gone"/>
+        <ImageView
+            android:id="@+id/hideShowExpiryImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
         </FrameLayout>
 
         <FrameLayout
@@ -318,7 +218,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:alpha="0"
             tools:visibility="gone">
 
             <ProgressBar
