@@ -6,8 +6,8 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFromFragment
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentListener
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragment
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragmentFromFragment
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinFragment
@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(),
-    CardDetailsFragmentBase.OnFragmentInteractionListener,
+    CardDetailsFragmentListener,
     SetPinFragment.OnFragmentInteractionListener,
     VerifyPinFragment.OnFragmentInteractionListener,
     ChangePinFragment.OnFragmentInteractionListener {
@@ -61,9 +61,9 @@ class MainFragment : Fragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
+        val cardDetailsFragment = CardDetailsFragment.newInstance(niInput, elementsColor = R.color.black_material)
         childFragmentManager.beginTransaction().apply {
-            add(R.id.fragment_card_container, cardDetailsFragment, CardDetailsFragmentFromFragment.TAG)
+            add(R.id.fragment_card_container, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
 

@@ -48,17 +48,16 @@ class CardDetailsFragmentFreeForm : Fragment() {
         get() = _binding!!
     private lateinit var niInput: NIInput
     private lateinit var elementsConfig: CardElementsConfig
-
-    protected var listener: CardDetailsFragmentBase.OnFragmentInteractionListener? = null
+    private var listener: CardDetailsFragmentListener? = null
 
     // override
     fun checkSubscriber(context: Context) {
-        listener = if (parentFragment is CardDetailsFragmentBase.OnFragmentInteractionListener) {
-            parentFragment as CardDetailsFragmentBase.OnFragmentInteractionListener
-        } else if (context is CardDetailsFragmentBase.OnFragmentInteractionListener) {
+        listener = if (parentFragment is CardDetailsFragmentListener) {
+            parentFragment as CardDetailsFragmentListener
+        } else if (context is CardDetailsFragmentListener) {
             context
         } else {
-            throw RuntimeException("$parentFragment must implement OnFragmentInteractionListener")
+            throw RuntimeException("Must implement CardDetailsFragmentListener")
         }
     }
 
@@ -108,17 +107,16 @@ class CardDetailsFragmentFreeForm : Fragment() {
     private fun initializeUI() {
         niInput.displayAttributes?.let { niDisplayAttributes ->
             niDisplayAttributes.fonts?.let { niFontLabelPairs ->
-            niFontLabelPairs.forEach {
-                when (it.label) {
-                    NILabels.CARD_NUMBER_LABEL -> setCardFonts(binding.cardNumberLabelTextView, it.uiFont)
-                    NILabels.CARD_NUMBER_VALUE_LABEL -> setCardFonts(binding.cardNumberTextView, it.uiFont)
-                    NILabels.EXPIRY_DATE_LABEL -> setCardFonts(binding.expiryDateLabelTextView, it.uiFont)
-                    NILabels.EXPIRY_DATE_VALUE_LABEL -> setCardFonts(binding.expiryDateTextView, it.uiFont)
-                    NILabels.CVV_LABEL -> setCardFonts(binding.cvvCodeLabelTextView, it.uiFont)
-                    NILabels.CVV_VALUE_LABEL -> setCardFonts(binding.cvvCodeTextView, it.uiFont)
-                    NILabels.CARD_HOLDER_NAME_LABEL -> setCardFonts(binding.cardHolderNameLabelTextView, it.uiFont)
-                    NILabels.CARD_HOLDER_NAME_VALUE_LABEL -> setCardFonts(binding.cardHolderNameTextView, it.uiFont)
-                    else -> { }
+                niFontLabelPairs.forEach {
+                    when (it.label) {
+                        NILabels.CARD_NUMBER_LABEL -> setCardFonts(binding.cardNumberLabelTextView, it.uiFont)
+                        NILabels.CARD_NUMBER_VALUE_LABEL -> setCardFonts(binding.cardNumberTextView, it.uiFont)
+                        NILabels.EXPIRY_DATE_LABEL -> setCardFonts(binding.expiryDateLabelTextView, it.uiFont)
+                        NILabels.EXPIRY_DATE_VALUE_LABEL -> setCardFonts(binding.expiryDateTextView, it.uiFont)
+                        NILabels.CVV_LABEL -> setCardFonts(binding.cvvCodeLabelTextView, it.uiFont)
+                        NILabels.CVV_VALUE_LABEL -> setCardFonts(binding.cvvCodeTextView, it.uiFont)
+                        NILabels.CARD_HOLDER_NAME_LABEL -> setCardFonts(binding.cardHolderNameLabelTextView, it.uiFont)
+                        NILabels.CARD_HOLDER_NAME_VALUE_LABEL -> setCardFonts(binding.cardHolderNameTextView, it.uiFont)
                     }
                 }
             }

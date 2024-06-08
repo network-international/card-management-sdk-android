@@ -26,12 +26,6 @@ enum class NILabels: Serializable {
     CVV_VALUE_LABEL,
     CARD_HOLDER_NAME_LABEL,
     CARD_HOLDER_NAME_VALUE_LABEL,
-
-    // Set PIN
-    SET_DESCRIPTION_LABEL,
-
-    // Change PIN
-    CHANGE_PIN_DESCRIPTION_LABEL
 }
 
 
