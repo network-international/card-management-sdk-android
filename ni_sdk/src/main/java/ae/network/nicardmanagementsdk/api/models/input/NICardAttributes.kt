@@ -87,5 +87,4 @@ data class CardElementsConfig(
     ),
     // progressBar - for free form only, if not nil - standard progressIndicator shows progress
     val progressBar: CardElementsItemConfig? = null, // use `details` field for color and layout
-    val shimmerDetails: Boolean = false
 ): Serializable

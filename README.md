@@ -234,7 +234,7 @@ Pass non null `elementsColor` to update color of card elements, if null - defaul
 val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
 ```
 ```kotlin
-class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmentInteractionListener {
+class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
     lateinit var niInput: NIInput
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -245,11 +245,9 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmen
 
     private fun initializeUI() {
         // TODO Build niInput here
-        // use CardDetailsFragmentFromFragment to display from other fragment
-        // pass @ColorRes elementsColor to change elements color 
-        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput, elementsColor = null)
+        val cardDetailsFragment = CardDetailsFragment.newInstance(niInput)
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
+            add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
     }
@@ -404,8 +402,6 @@ val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
             detailsColor = detailsColor,
             detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
         ),
-        // show shimmering
-        shimmerDetails = true
     ),
 )
 ```

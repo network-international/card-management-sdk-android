@@ -7,8 +7,8 @@ import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseActivity
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFromActivity
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentListener
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -19,7 +19,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFragmentBase.OnFragmentInteractionListener {
+class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFragmentListener {
 
     private lateinit var binding: ActivityCardDetailsBinding
     override lateinit var viewModel: CardDetailsViewModel
@@ -48,9 +48,9 @@ class CardDetailsActivity : BaseActivity<CardDetailsViewModel>(), CardDetailsFra
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
-        val cardDetailsFragment = CardDetailsFragmentFromActivity.newInstance(niInput)
+        val cardDetailsFragment = CardDetailsFragment.newInstance(niInput)
         supportFragmentManager.beginTransaction().apply {
-            add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragmentFromActivity.TAG)
+            add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
     }
