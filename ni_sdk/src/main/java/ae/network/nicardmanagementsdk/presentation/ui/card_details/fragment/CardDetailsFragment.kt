@@ -2,7 +2,6 @@ package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
 import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
-import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NILabels
 import ae.network.nicardmanagementsdk.api.models.input.UIFont
@@ -21,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -28,17 +28,29 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
+interface CardDetailsFragmentListener {
+    fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse)
+}
+class CardDetailsFragment: Fragment() {
+    companion object {
+        @JvmStatic
+        fun newInstance(input: NIInput, @ColorRes elementsColor: Int? = null) = CardDetailsFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(Extra.EXTRA_NI_INPUT, input)
+                putSerializable(Extra.EXTRA_NI_CARD_ELEMENTS_COLOR, elementsColor)
+            }
+        }
 
-abstract class CardDetailsFragmentBase : Fragment() {
+        const val TAG = "CardDetailsFragment"
+    }
+
     private lateinit var viewModel: CardDetailsFragmentViewModel
     private var _binding: FragmentCardDetailsBinding? = null
     private val binding: FragmentCardDetailsBinding
         get() = _binding!!
     private lateinit var niInput: NIInput
     private var elementsColor: Int? = null
-    protected var listener: OnFragmentInteractionListener? = null
-
-    abstract fun checkSubscriber(context: Context)
+    private var listener: CardDetailsFragmentListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -102,17 +114,16 @@ abstract class CardDetailsFragmentBase : Fragment() {
         }
         niInput.displayAttributes?.let { niDisplayAttributes ->
             niDisplayAttributes.fonts?.let { niFontLabelPairs ->
-            niFontLabelPairs.forEach {
-                when (it.label) {
-                    NILabels.CARD_NUMBER_LABEL -> setCardFonts(binding.cardNumberLabelTextView, it.uiFont)
-                    NILabels.CARD_NUMBER_VALUE_LABEL -> setCardFonts(binding.cardNumberTextView, it.uiFont)
-                    NILabels.EXPIRY_DATE_LABEL -> setCardFonts(binding.expiryDateLabelTextView, it.uiFont)
-                    NILabels.EXPIRY_DATE_VALUE_LABEL -> setCardFonts(binding.expiryDateTextView, it.uiFont)
-                    NILabels.CVV_LABEL -> setCardFonts(binding.cvvCodeLabelTextView, it.uiFont)
-                    NILabels.CVV_VALUE_LABEL -> setCardFonts(binding.cvvCodeTextView, it.uiFont)
-                    NILabels.CARD_HOLDER_NAME_LABEL -> setCardFonts(binding.cardHolderNameLabelTextView, it.uiFont)
-                    NILabels.CARD_HOLDER_NAME_VALUE_LABEL -> setCardFonts(binding.cardHolderNameTextView, it.uiFont)
-                    else -> { }
+                niFontLabelPairs.forEach {
+                    when (it.label) {
+                        NILabels.CARD_NUMBER_LABEL -> setCardFonts(binding.cardNumberLabelTextView, it.uiFont)
+                        NILabels.CARD_NUMBER_VALUE_LABEL -> setCardFonts(binding.cardNumberTextView, it.uiFont)
+                        NILabels.EXPIRY_DATE_LABEL -> setCardFonts(binding.expiryDateLabelTextView, it.uiFont)
+                        NILabels.EXPIRY_DATE_VALUE_LABEL -> setCardFonts(binding.expiryDateTextView, it.uiFont)
+                        NILabels.CVV_LABEL -> setCardFonts(binding.cvvCodeLabelTextView, it.uiFont)
+                        NILabels.CVV_VALUE_LABEL -> setCardFonts(binding.cvvCodeTextView, it.uiFont)
+                        NILabels.CARD_HOLDER_NAME_LABEL -> setCardFonts(binding.cardHolderNameLabelTextView, it.uiFont)
+                        NILabels.CARD_HOLDER_NAME_VALUE_LABEL -> setCardFonts(binding.cardHolderNameTextView, it.uiFont)
                     }
                 }
             }
@@ -203,13 +214,22 @@ abstract class CardDetailsFragmentBase : Fragment() {
         }
     }
 
-    interface OnFragmentInteractionListener {
-        fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse)
-    }
+
 
     private fun getClipboardText(): Int =
         when (LanguageHelper().getLanguage(niInput)) {
             "ar" -> R.string.copied_to_clipboard_ar
             else -> R.string.copied_to_clipboard_en
         }
+    private fun checkSubscriber(context: Context) {
+        listener = if (parentFragment is CardDetailsFragmentListener) {
+            parentFragment as CardDetailsFragmentListener
+        } else if (context is CardDetailsFragmentListener) {
+            context
+        } else {
+            throw RuntimeException("Must implement CardDetailsFragmentListener")
+        }
+    }
+
+
 }

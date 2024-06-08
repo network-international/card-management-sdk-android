@@ -234,7 +234,7 @@ Pass non null `elementsColor` to update color of card elements, if null - defaul
 val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
 ```
 ```kotlin
-class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragment.OnFragmentInteractionListener {
+class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
     lateinit var niInput: NIInput
 
     override fun onCreate(savedInstanceState: Bundle?) {
