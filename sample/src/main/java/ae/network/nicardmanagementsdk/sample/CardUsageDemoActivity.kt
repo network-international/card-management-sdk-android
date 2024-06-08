@@ -8,10 +8,9 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentBase
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFreeForm
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentListener
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElementEntries
 import ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +20,7 @@ import com.example.nicardmanagementapp.R
 import com.example.nicardmanagementapp.R.color.colorAccentApp
 import com.example.nicardmanagementapp.R.color.colorPrimary
 
-class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFragmentInteractionListener {
+class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
 
     private lateinit var niInput: NIInput
     private lateinit var niPinFormType: NIPinFormType
@@ -134,12 +133,10 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentBase.OnFra
                     CardMaskableElement.EXPIRY,
                 ),
                 // Configure progressBar, if null - do not show
-                progressBar = null,
-//                CardElementsItemConfig(
-//                    detailsColor = detailsColor,
-//                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
-//                ),
-                shimmerDetails = true
+                progressBar = CardElementsItemConfig(
+                    detailsColor = detailsColor,
+                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
+                ),
             ),
         )
         supportFragmentManager.beginTransaction().apply {
