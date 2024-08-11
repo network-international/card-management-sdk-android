@@ -45,7 +45,15 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:background="@color/light_blue"
         tools:minHeight="209dp">
-
+<!--        Put desired background image here-->
+        <ImageView
+            android:id="@+id/cardBackgroundImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/background_card_image_content_description"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/bg_default_visa"
+            tools:ignore="ImageContrastCheck" />
     </FrameLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -54,19 +62,5 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.5" />
-
-    <FrameLayout
-        android:id="@+id/main_fragment_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/holo_orange_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3"
-        tools:background="@color/light_blue">
-
-    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
