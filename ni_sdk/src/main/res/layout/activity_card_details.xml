@@ -45,7 +45,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/blue1"
             tools:minHeight="209dp">
-
+            <!--        Put desired background image here-->
+            <ImageView
+                android:id="@+id/cardBackgroundImageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/background_card_image_content_description"
+                android:scaleType="fitXY"
+                tools:ignore="ImageContrastCheck" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

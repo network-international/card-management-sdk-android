@@ -8,7 +8,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFreeForm
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentListener
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import ae.network.nicardmanagementsdk.sample.MainActivity.Companion.TAG
 import com.example.nicardmanagementapp.R
 import com.example.nicardmanagementapp.R.color.colorAccentApp
-import com.example.nicardmanagementapp.R.color.colorPrimary
+import com.example.nicardmanagementapp.R.color.white
 
 class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
 
@@ -53,45 +53,45 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
         }
 
         // Use your color from resources, only textViews will be affected, not buttons
-        val elementsColor =  colorPrimary
+        val elementsColor =  white
         val detailsColor =  colorAccentApp
-        val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
+        val cardDetailsFragment = CardDetailsFragment.newInstance(
             niInput,
             config = CardElementsConfig(
                 cardNumber = CardElementsItemConfig(
                     labelColor = elementsColor, // use null for default
                     detailsColor = detailsColor, // use null for default
                     labelResource = R.string.card_number_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 100),
+                    labelLayout = CardElementLayout(left = 32, top = 130),
                     // right - copy button - right
-                    detailsLayout = CardElementLayout(right = 116, top = 84),
-                    copyButtonLayout = CardElementLayout(right = 16, top = 96),
+                    detailsLayout = CardElementLayout(right = 132, top = 114),
+                    copyButtonLayout = CardElementLayout(right = 32, top = 126),
                     copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
                     // add individual mask button if needed
                     maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
                     maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-                    maskButtonLayout = CardElementLayout(right = 68, top = 96),
+                    maskButtonLayout = CardElementLayout(right = 84, top = 126),
                 ),
                 cardHolder = CardElementsItemConfig(
                     labelColor = elementsColor, // use null for default
                     detailsColor = detailsColor, // use null for default
                     labelResource = R.string.card_name_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 20),
-                    detailsLayout = CardElementLayout(right = 116, top = 16),
-                    copyButtonLayout = CardElementLayout(right = 16, top = 16),
+                    labelLayout = CardElementLayout(left = 32, top = 50),
+                    detailsLayout = CardElementLayout(right = 132, top = 46),
+                    copyButtonLayout = CardElementLayout(right = 32, top = 46),
                     copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
                     // add individual mask button if needed
                     maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
                     maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
                     // right 16 -- copy btn -- 8
-                    maskButtonLayout = CardElementLayout(right = 68, top = 16),
+                    maskButtonLayout = CardElementLayout(right = 84, top = 46),
                 ),
                 expiry = CardElementsItemConfig(
                     labelColor = elementsColor, // use null for default
                     detailsColor = detailsColor, // use null for default
                     labelResource = R.string.card_expiry_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 180),
-                    detailsLayout = CardElementLayout(right = 16, top = 176),
+                    labelLayout = CardElementLayout(left = 32, top = 210),
+                    detailsLayout = CardElementLayout(right = 32, top = 206),
                     copyButtonLayout = null,
                     copyButtonImage = null, // use null to hide button
                     // add individual mask button if needed
@@ -103,21 +103,21 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                     labelColor = elementsColor, // use null for default
                     detailsColor = detailsColor, // use null for default
                     labelResource = R.string.card_cvv_app,
-                    labelLayout = CardElementLayout(left = 16, top = 260),
+                    labelLayout = CardElementLayout(left = 32, top = 290),
                     // right - copy button --  -- mask button - right
-                    detailsLayout = CardElementLayout(right = 116, top = 254),
+                    detailsLayout = CardElementLayout(right = 132, top = 284),
                     // use individual button if needed
-                    copyButtonLayout = CardElementLayout(right = 16, top = 254),
+                    copyButtonLayout = CardElementLayout(right = 32, top = 284),
                     copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
                     maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
                     maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
 
-                    maskButtonLayout = CardElementLayout(right = 68, top = 254),
+                    maskButtonLayout = CardElementLayout(right = 84, top = 284),
                 ),
                 commonMaskButton = CardElementsItemConfig(
                     maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_red,
                     maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_red,
-                    maskButtonLayout = CardElementLayout(left = 200, top = 176),
+                    maskButtonLayout = CardElementLayout(left = 216, top = 206),
                 ),
                 // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
                 commonMaskButtonTargets = listOf(
@@ -135,19 +135,12 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 // Configure progressBar, if null - do not show
                 progressBar = CardElementsItemConfig(
                     detailsColor = detailsColor,
-                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
+                    detailsLayout = CardElementLayout(right = 0, bottom =32), // paddings from center
                 ),
             ),
         )
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFreeForm.TAG)
-            commit()
-        }
-
-        // add MainFragment to the UI
-        val mainFragment = MainFragment.newInstance(niInput, niPinFormType)
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.main_fragment_container, mainFragment, MainFragment.TAG)
+            add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
     }

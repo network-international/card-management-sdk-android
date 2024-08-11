@@ -1,36 +1,13 @@
 package ae.network.nicardmanagementsdk.api.models.input
 
+import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElementEntries
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.annotation.StyleRes
 import java.io.Serializable
-
-data class NICardAttributes(
-    // if true, the card details will be hidden/masked by default; if false, the card details will be visible by default
-    val shouldHide: Boolean = true,
-    // if set, this image will be used as background for the card details view; if not set, it will use default image from sdk
-    @DrawableRes
-    val backgroundImage: Int? = null,
-    // if set will apply new text positioning values for Card Details components: cardNumberLine, dateCvvLine and cardHolderNameLine
-    // if not set default positioning will be used
-    val textPositioning: TextPositioning? = null
-): Serializable
-
-// the ratio of the parent container width/height in the range 0..1 (meaning 0 to 100% percent)
-// relative to the left|top corner (which is the axis origin point)
-// leftAlignment: all three groups of views (lines) have the same left alignment
-// cardNumberGroupTopAlignment: card number line top alignment
-// dateCvvGroupTopAlignment: date cvv line top alignment
-// cardHolderNameGroupTopAlignment: card holder name line top alignment
-data class TextPositioning(
-    val leftAlignment: Float? = null,
-    val cardNumberGroupTopAlignment: Float? = null,
-    val dateCvvGroupTopAlignment: Float? = null,
-    val cardHolderNameGroupTopAlignment: Float? = null
-): Serializable
-
 
 /// Define visibility of element
 /// - always visible
@@ -87,4 +64,70 @@ data class CardElementsConfig(
     ),
     // progressBar - for free form only, if not nil - standard progressIndicator shows progress
     val progressBar: CardElementsItemConfig? = null, // use `details` field for color and layout
+): Serializable {
+    companion object {
+        fun default() = CardElementsConfig(
+            cardNumber = CardElementsItemConfig(
+                labelLayout = CardElementLayout(left = 30, top = 130),
+                detailsLayout = CardElementLayout(left = 30, top = 160),
+                copyButtonLayout = CardElementLayout(left = 510, top = 170),
+                copyButtonImage = R.drawable.ic_baseline_content_copy, // use null to hide button
+            ),
+            expiry = CardElementsItemConfig(
+                labelLayout = CardElementLayout(left = 30, top = 240),
+                detailsLayout = CardElementLayout(left = 30, top = 270),
+            ),
+            cvv = CardElementsItemConfig(
+                labelLayout = CardElementLayout(left = 200, top = 240),
+                detailsLayout = CardElementLayout(left = 200, top = 270),
+            ),
+            cardHolder = CardElementsItemConfig(
+                labelLayout = CardElementLayout(left = 30, top = 360),
+                detailsLayout = CardElementLayout(left = 30, top = 390),
+                copyButtonLayout = null,
+                copyButtonImage = null
+            ),
+            commonMaskButton = CardElementsItemConfig(
+                maskButtonHideImage = R.drawable.ic_hide_details,
+                maskButtonShowImage = R.drawable.ic_reveal_details,
+                maskButtonLayout = CardElementLayout(left = 350, top = 280),
+            ),
+            // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
+            commonMaskButtonTargets = CardMaskableElementEntries.all(),
+            // Use `listOf(CardMaskableElement.CVV)` to mask CVV by default
+            // following details will be showed masked by default
+            shouldBeMaskedDefault = CardMaskableElementEntries.all(),
+            // Configure progressBar, if null - do not show
+            progressBar = CardElementsItemConfig(
+                detailsColor = R.color.white_80,
+                detailsLayout = CardElementLayout(right = 0, bottom = 0), // paddings from center
+            ),
+        )
+    }
+}
+
+data class CardPresenterElementConfig(
+    @StringRes val labelResource: Int? = null,
+    @StyleRes val titleAppearanceResId: Int? = null,
+    @StyleRes val dataAppearanceResId: Int? = null,
+): Serializable
+data class CardPresenterConfig(
+    // when (LanguageHelper().getLanguage(niInput)) {
+    //    "ar" -> false
+    //    else -> true
+    //}
+    val shouldDefaultLanguage: Boolean = true,
+    val cardNumber: CardPresenterElementConfig? = null,
+    val expiry: CardPresenterElementConfig? = null,
+    val cvv: CardPresenterElementConfig? = null,
+    val cardHolder: CardPresenterElementConfig? = null,
+
+    val commonMaskButtonTargets: List<CardMaskableElement> = CardMaskableElementEntries.all(),
+    // define initial state of masking
+    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.EXPIRY,
+        CardMaskableElement.CVV,
+        CardMaskableElement.CARDHOLDER,
+    ),
 ): Serializable

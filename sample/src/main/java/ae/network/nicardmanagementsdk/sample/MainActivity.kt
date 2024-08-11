@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity(),
             }
 
             cardDetailsButton.setOnClickListener {
-                niCardManagementForms.displayCardDetailsForm(niInput)
+                niCardManagementForms.displayCardDetailsForm(niInput, backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc, config = CardElementsConfig.default())
             }
 
             cardDetailsFragmentButton.setOnClickListener {
@@ -125,11 +125,11 @@ class MainActivity : AppCompatActivity(),
     private fun setViewModelData() {
         if (viewModel.entriesItemModels.isEmpty()) {
             val entries = listOf(
-                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "EAND"),
-                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "52913582188097343008"),
+                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "AXIS4"),
+                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "12259219\$\$\$8514AB521454A85D2D810EC5F4A63286BBB0E4E57357B4947F6E6E8646FDBCFD"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
-                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://apitest.network.ae"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "rfk59hvusfbtxas9xjw9ec98"),
+                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.egy.network.global/sdk/v2"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjMyOTg0MTUsImlhdCI6MTcyMzI5NjYxNSwianRpIjoiNDg5YzNkMTUtMDEzMC00MmYwLThmODktMzcwNDhkMjc3NjY0IiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiIzNmFhNWJjMS1mYzU2LTRiMGMtODFkYi00YTE4ZTM2ZmU1MjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiI2YThlMDRjMi1hNWQ3LTQ1ZGItOTA4My0wYWE0MDNkNGJmY2YyMDc1OCIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiI2YThlMDRjMi1hNWQ3LTQ1ZGItOTA4My0wYWE0MDNkNGJmY2YyMDc1OCIsIm9yZ19pZCI6IkFYSVM0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTZhOGUwNGMyLWE1ZDctNDVkYi05MDgzLTBhYTQwM2Q0YmZjZjIwNzU4In0.RfzNEzcV4NU2jp5igjLRx56ajpeU6Y92B-7fyjCAY8Mmmt9niUiwI0NDU8dNi5Ol3sl2H5SYKKDgIo9RW2B1iOachzTmyAf2noUJ2b_hdhPw7Q_L_pUG6mSKoc7X8VAyjJZVsEZNlZvhVjMP8RMglPmsmc1RBOPGQZDdq7OmcohB4L6mVO5Qedw_R6ftPapCHQ7EdjON9JuZb40h0ihkIASzyuJA6XTQ9lV9l2PM9Uz-349qBRKvfDecLCTjtOhVkaQz4LOctUAYYq-JqM9_pa2wOVml_4C8JN7CJXl_wJNCQ_HkKV4wDD8NHODU6LJ03gyMGlWVvxV6iRpzzQY2fA"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))
@@ -177,17 +177,7 @@ class MainActivity : AppCompatActivity(),
 //                        ),
 //                        NILabels.CARD_NUMBER_VALUE_LABEL
 //                    )
-//                ),
-                cardAttributes = NICardAttributes(
-                    shouldHide = true,
-                    backgroundImage = R.drawable.default_upi,
-//                    textPositioning = TextPositioning(
-//                        leftAlignment = 0.08f,
-//                        cardNumberGroupTopAlignment = 0.95f,
-//                        dateCvvGroupTopAlignment = 0.7f,
-//                        cardHolderNameGroupTopAlignment = 0.5f
-//                    )
-                ),
+//                ), ,
 //                setPinMessageAttributes = PinMessageAttributes(
 //                    successAttributes = SuccessErrorScreenAttributes(
 //                        layoutId = R.layout.activity_success,
