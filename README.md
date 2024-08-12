@@ -13,21 +13,10 @@ The current supported features are:
 ### Basics
 After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
 ### Sample usage:
+Check Sample application for details
 Kotlin:
 ```kotlin
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
-    private val niInput: NIInput
-    private val pinLength: NIPinFormType
-    
-    // Optional paddingTop, can only be applied for Set/Change/Verify PIN screens.
-    // The value (of Int type) must be passed to the get() method
-    // To complete the padding customization, the paddingTop parameter must be passed to desired fragment (alongside niInput and pinLength)
-    // If there's no paddingTop parameter sent, there will be no paddingTop.
-    private val paddingTop: Int
-        get() = 100
 
     // Create an instance of NICardManagement. Callback for completion handler are provided here
     private val niCardManagementForms = NICardManagementForms(
@@ -37,38 +26,26 @@ class MainActivity : AppCompatActivity() {
         changePinOnCompletion = getCompletionHandler("changePinForm")
     )
 
+    niCardManagementForms.displayCardDetailsForm(
+        niInput,
+        backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
+        title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
+        config = CardElementsConfig.default(
+            copyTargets = listOf<CardMaskableElement>(
+                CardMaskableElement.CARDNUMBER,
+                CardMaskableElement.CARDHOLDER,
+            ),
+            copyTemplate = "Card number: %s\nName: %s"
+        )
+    )
+    // Build NIInput Object
+    niCardManagementForms.displayCardDetailsForm(niInput)
+    // Build NIInput Object & PIN Length
+    niCardManagementForms.setPinForm(niInput, pinLength)
+    // Build NIInput Object & PIN Length
+    niCardManagementForms.changePinForm(niInput, pinLength)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initializeUI()
-    }
 
-    private fun initializeUI() {
-        binding.apply {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = EntriesListAdapter()
-                setHasFixedSize(true)
-            }
-
-            cardDetailsButton.setOnClickListener {
-                // Build NIInput Object
-                niCardManagementForms.displayCardDetailsForm(niInput)
-            }
-
-            setPinButton.setOnClickListener {
-                // Build NIInput Object & PIN Length
-                niCardManagementForms.setPinForm(niInput, pinLength)
-            }
-
-            changePinButton.setOnClickListener {
-                // Build NIInput Object & PIN Length
-                niCardManagementForms.changePinForm(niInput, pinLength)
-            }
-        }
-    }
-
-    // 
     private fun getCompletionHandler(formName: String): OnSuccessErrorCancelCompletion =
         { success, error, canceled ->
             if (canceled) {
@@ -82,10 +59,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
-    companion object {
-        const val TAG = "MainActivity"
-    }
 }
 ```
 
@@ -125,15 +98,6 @@ data class NIConnectionProperties(
 @theme : Allow to display the status bar following your current theme setting
 */
 data class NIDisplayAttributes(
-    // this parameter is optional
-    // if set, these fonts will be used in the UI forms; if not set will use default fonts
-    val fonts: List<NIFontLabelPair>? = null,
-
-    // this parameter is optional
-    // if set, the card details will take into account the attributes passed into this variable
-    // if not set, will take the default values
-    val cardAttributes: NICardAttributes? = null,
-
     // the next three parameter are optional
     // if set an custom layout will be displayed on completion, and the component will navigate
     // back on "doneButton" specified as an @IdRes val buttonResId: Int
@@ -152,60 +116,23 @@ enum class NITheme: Serializable {
     LIGHT, DARK_APP_COMPAT, DARK_MATERIAL
 }
 
-data class NIFontLabelPair(
-    val uiFont: UIFont,
-    var label: NILabels
-): Serializable
-
-data class UIFont(
-    @FontRes
-    val fontRes: Int? = null,
-    // interpreted as "scaled pixel" units Sp
-    val textSize: Int
-): Serializable
-
-enum class NILabels: Serializable {
-
-    // Card Details
-    CARD_NUMBER_LABEL,
-    CARD_NUMBER_VALUE_LABEL,
-    EXPIRY_DATE_LABEL,
-    EXPIRY_DATE_VALUE_LABEL,
-    CVV_LABEL,
-    CVV_VALUE_LABEL,
-    CARD_HOLDER_NAME_LABEL,
-    CARD_HOLDER_NAME_VALUE_LABEL,
-
-    // Set PIN
-    SET_DESCRIPTION_LABEL,
-
-    // Change PIN
-    CHANGE_PIN_DESCRIPTION_LABEL
-}
-
-data class NICardAttributes(
-    // if true, the card details will be hidden/masked by default; if false, the card details will be visible by default
-    val shouldHide: Boolean = true,
-    // if set, this image will be used as background for the card details view; if not set, it will use default image from sdk
-    @DrawableRes
-    val backgroundImage: Int? = null,
-    // if set will apply new text positioning values for Card Details components: cardNumberLine, dateCvvLine and cardHolderNameLine
-    // if not set default positioning will be used
-    val textPositioning: TextPositioning? = null
-): Serializable
-
-// the ratio of the parent container width/height in the range 0..1 (meaning 0 to 100% percent)
-// relative to the left|top corner (which is the axis origin point)
-// leftAlignment: all three groups of views (lines) have the same left alignment
-// cardNumberGroupTopAlignment: card number line top alignment
-// dateCvvGroupTopAlignment: date cvv line top alignment
-// cardHolderNameGroupTopAlignment: card holder name line top alignment
-data class TextPositioning(
-    val leftAlignment: Float? = null,
-    val cardNumberGroupTopAlignment: Float? = null,
-    val dateCvvGroupTopAlignment: Float? = null,
-    val cardHolderNameGroupTopAlignment: Float? = null
-): Serializable
+data class CardElementsConfig(
+    val cardNumber: CardElementsItemConfig? = null,
+    val expiry: CardElementsItemConfig? = null,
+    val cvv: CardElementsItemConfig? = null,
+    val cardHolder: CardElementsItemConfig? = null,
+    // common mask button - toggle all elements together
+    val commonMaskButton: CardElementMaskButton? = null, // common show details button
+    // define initial state of masking
+    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.EXPIRY,
+        CardMaskableElement.CVV,
+        CardMaskableElement.CARDHOLDER,
+    ),
+    // if not null - standard progressIndicator shows progress
+    val progressBar: CardProgressBarConfig? = null,
+): Serializable 
 
 data class PinMessageAttributes(
     val successAttributes: SuccessErrorScreenAttributes,
@@ -231,31 +158,20 @@ enum class NIPinFormType(val minSize: Int, val maxSize: Int) {
 ### Display a fragment
 Pass non null `elementsColor` to update color of card elements, if null - default color will be used
 ```kotlin
-val cardDetailsFragment = CardDetailsFragmentFromFragment.newInstance(niInput, elementsColor = R.color.black_material)
-```
-```kotlin
-class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
-    lateinit var niInput: NIInput
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_card_usage_demo)
-        initializeUI()
-    }
-
-    private fun initializeUI() {
-        // TODO Build niInput here
-        val cardDetailsFragment = CardDetailsFragment.newInstance(niInput)
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
-            commit()
-        }
-    }
+val cardDetailsFragment = CardDetailsFragment.newInstance(
+    niInput,
+    // Only show a toast for Android 12 and lower.
+    copyToClipboardMessage = R.string.copied_to_clipboard_en,
+    cardElementsConfig
+)
+supportFragmentManager.beginTransaction().apply {
+    add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
+    commit()
 }
 ```
+
 The UI of the activity should offer a container described here by R.id.card_container, which have the appropiate width dimension. The fragment component will take the width of the container to resize itself, and the height is enforced by the aspect ratio of 16:10 (width:height), which guarantee a good user experience related to card UI.
 
-Below is an example of layout from the demo activity:
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -264,31 +180,6 @@ Below is an example of layout from the demo activity:
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CardUsageDemoActivity">
-
-    <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
-        android:id="@+id/customBackNavigationView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="@string/card_details_from_custom_component" />
-
-    <TextView
-        android:id="@+id/firstTitleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/custom_component_used_fom_host_activity"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textStyle="bold|italic"
-        app:layout_constraintBottom_toTopOf="@+id/card_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customBackNavigationView"
-        app:layout_constraintVertical_bias="1.0" />
 
     <FrameLayout
         android:id="@+id/card_container"
@@ -306,112 +197,49 @@ Below is an example of layout from the demo activity:
 
     </FrameLayout>
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="1.0" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### Display a card details fragment with information about position of each element
-Refer to `CardUsageDemoActivity.kt` with example
-For custom elements position `CardDetailsFragmentFreeForm` can be used
+### Customization of card details UI - CardElementsConfig
+Refer to `CardUsageDemoActivity.kt` or to the `config` parameter for `niCardManagementForms.displayCardDetailsForm` in `MainActivity.kt` with example
+
 ```kotlin
-val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
-    niInput,
-    config = CardElementsConfig(
-        cardNumber = CardElementsItemConfig(
-            labelColor = elementsColor, // use null for default
-            detailsColor = detailsColor, // use null for default
-            labelResource = R.string.card_number_app, // use null for default
-            labelLayout = CardElementLayout(left = 16, top = 100),
-            // right - copy button -- -- mask (common) button - right
-            detailsLayout = CardElementLayout(right = 116, top = 84),
-            copyButtonLayout = CardElementLayout(right = 16, top = 96),
-            copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-            // add individual mask button if needed
-            maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-            maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-            maskButtonLayout = CardElementLayout(right = 68, top = 96),
-        ),
-        cardHolder = CardElementsItemConfig(
-            labelColor = elementsColor, // use null for default
-            detailsColor = detailsColor, // use null for default
-            labelResource = R.string.card_name_app, // use null for default
-            labelLayout = CardElementLayout(left = 16, top = 20),
-            detailsLayout = CardElementLayout(right = 116, top = 16),
-            copyButtonLayout = CardElementLayout(right = 16, top = 16),
-            copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-            // add individual mask button if needed
-            maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-            maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-            // right -- copy btn -- 
-            maskButtonLayout = CardElementLayout(right = 68, top = 16),
-        ),
-        expiry = CardElementsItemConfig(
-            labelColor = elementsColor, // use null for default
-            detailsColor = detailsColor, // use null for default
-            labelResource = R.string.card_expiry_app, // use null for default
-            labelLayout = CardElementLayout(left = 16, top = 180),
-            detailsLayout = CardElementLayout(right = 16, top = 176),
-            copyButtonLayout = null,
-            copyButtonImage = null, // use null to hide button
-            // add individual mask button if needed
-            maskButtonHideImage = null,
-            maskButtonShowImage = null,
-            maskButtonLayout = null
-        ),
-        cvv = CardElementsItemConfig(
-            labelColor = elementsColor, // use null for default
-            detailsColor = detailsColor, // use null for default
-            labelResource = R.string.card_cvv_app,
-            labelLayout = CardElementLayout(left = 16, top = 260),
-            // right - copy button --  -- mask button - right
-            detailsLayout = CardElementLayout(right = 116, top = 254),
-            // use individual button if needed
-            copyButtonLayout = CardElementLayout(right = 16, top = 254),
-            copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-            maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-            maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-            // right -- copy btn -- 
-            maskButtonLayout = CardElementLayout(right = 68, top = 254),
-        ),
-        commonMaskButton = CardElementsItemConfig(
-            maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_red,
-            maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_red,
-            maskButtonLayout = CardElementLayout(left = 200, top = 176),
-        ),
-        // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
-        commonMaskButtonTargets = listOf(
-            CardMaskableElement.CARDNUMBER,
-            CardMaskableElement.CARDHOLDER,
-            CardMaskableElement.EXPIRY,
-        ),
-        // Use `listOf(CardMaskableElement.CVV)` to mask CVV by default
-        // following details will be showed masked by default
-        shouldBeMaskedDefault = listOf(
-            CardMaskableElement.CARDNUMBER,
-            CardMaskableElement.CARDHOLDER,
-            CardMaskableElement.EXPIRY,
-        ),
-        // Configure progressBar, if null - do not show
-        progressBar = CardElementsItemConfig(
-            detailsColor = detailsColor,
-            detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
-        ),
+val config = CardElementsConfig.default(
+    copyTargets = listOf<CardMaskableElement>(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.CARDHOLDER,
     ),
+    copyTemplate = "Card number: %s\nName: %s"
 )
 ```
-- `positioning` Each element can be positioned with start/top dimentsions related to parent
-- `elementsColor` set color for card elements
 
-And this fragment should be placed into container
+This will give you
+- default positioning for each UI element (labels / clearValues / buttons ...), use `layout` info of desired element to draw it in desired position
 ```kotlin
-add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFreeForm.TAG)
+// attach element to left and top edges of container with desired offsets
+CardElementLayout(left = 30, top = 130)
 ```
+- provide desired appearance style to update font/color... of desired element 
+`appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel`
+- configure copy action behaviour - define card details values and format that will be passed to clipboard
+```kotlin
+copyButton = CardElementCopyButton( // use null to hide button
+    imageDefault = R.drawable.ic_baseline_content_copy,
+    layout = CardElementLayout(left = 510, top = 170),
+    targets = listOf<CardMaskableElement>(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.CARDHOLDER,
+    ),
+    template = "Card number: %s\nName: %s",
+    contentDescription = R.string.copy_to_clipboard_image_content_description
+)
+```
+- provide icons that will be used for desired buttons, use desired sizes and colors
+```kotlin
+imageDefault = R.drawable.ic_reveal_details
+imageSelected = R.drawable.ic_hide_details
+```
+
 
 ### Verify PIN from an activity
 ```kotlin

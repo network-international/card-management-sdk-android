@@ -24,7 +24,7 @@ class CardElement(
     private val context: Context,
     @StyleRes private val titleAppearanceResId: Int,
     @StyleRes private val dataAppearanceResId: Int,
-    @StringRes private val titleRes: Int,
+    @StringRes private val titleRes: Int?,
 ) {
     val title: View by lazy {
         makeTextView(titleAppearanceResId, context, titleRes)
@@ -139,8 +139,8 @@ class CardElementsPresenter(
         }
         return defaultRes
     }
-    private fun titleRes(elm: CardMaskableElement, config: CardPresenterConfig): Int {
-        val configRes = elm.let {
+    private fun titleRes(elm: CardMaskableElement, config: CardPresenterConfig): Int? {
+        return elm.let {
             when(elm){
                 CardMaskableElement.CARDNUMBER -> config.cardNumber?.labelResource
                 CardMaskableElement.EXPIRY -> config.expiry?.labelResource
@@ -148,20 +148,5 @@ class CardElementsPresenter(
                 CardMaskableElement.CVV -> config.cvv?.labelResource
             }
         }
-        if (configRes != null) {
-            return configRes
-        }
-
-        val defaultRes = elm.let {
-            val shouldDefaultLanguage = config.shouldDefaultLanguage
-            when(elm){
-                CardMaskableElement.CARDNUMBER -> if (shouldDefaultLanguage) R.string.card_number_en else R.string.card_number_ar
-                CardMaskableElement.EXPIRY -> if (shouldDefaultLanguage) R.string.card_expiry_en else R.string.card_expiry_ar
-                CardMaskableElement.CARDHOLDER -> if (shouldDefaultLanguage) R.string.card_name_en else R.string.card_name_ar
-                CardMaskableElement.CVV -> if (shouldDefaultLanguage) R.string.card_cvv_en else R.string.card_cvv_ar
-            }
-        }
-
-        return defaultRes
     }
 }

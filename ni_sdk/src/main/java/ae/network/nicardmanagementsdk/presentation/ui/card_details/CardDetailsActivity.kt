@@ -31,6 +31,7 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
     lateinit var niInput: NIInput
     @DrawableRes
     private var backgroundImage: Int? = null
+    private var navTitle: Int? = null
     private lateinit var config: CardElementsConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +45,9 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
 
         intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_CARD_BACKGROUND)?.let {
             backgroundImage = it
+        }
+        intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_CARD_NAVIGATION_TITLE)?.let {
+            navTitle = it
         }
         intent.getSerializableExtraCompat<CardElementsConfig>(Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG)?.let {
             config = it
@@ -67,11 +71,10 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
     }
 
     private fun initializeUI() {
-        binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
-            "ar" -> false
-            else -> true
+        navTitle?.let {
+            val title = binding.customBackNavigationView.context.getString(it)
+            binding.customBackNavigationView.setTitle(title)
         }
-
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
@@ -79,9 +82,10 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
         backgroundImage?.let { it ->
             binding.cardBackgroundImageView.setImageResource(it)
         }
-        //val cardDetailsFragment = CardDetailsFragment.newInstance(niInput)
         val cardDetailsFragment = CardDetailsFragment.newInstance(
             niInput,
+            // Only show a toast for Android 12 and lower.
+            copyToClipboardMessage = R.string.copied_to_clipboard_en,
             config
         )
         supportFragmentManager.beginTransaction().apply {
