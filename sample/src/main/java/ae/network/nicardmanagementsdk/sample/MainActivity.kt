@@ -5,6 +5,7 @@ import ae.network.nicardmanagementsdk.api.implementation.OnSuccessErrorCancelCom
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.*
 import ae.network.nicardmanagementsdk.presentation.models.Extra
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragment
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragmentFromActivity
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinFragment
@@ -95,7 +96,18 @@ class MainActivity : AppCompatActivity(),
             }
 
             cardDetailsButton.setOnClickListener {
-                niCardManagementForms.displayCardDetailsForm(niInput, backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc, config = CardElementsConfig.default())
+                niCardManagementForms.displayCardDetailsForm(
+                    niInput,
+                    backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
+                    title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
+                    config = CardElementsConfig.default(
+                        copyTargets = listOf<CardMaskableElement>(
+                            CardMaskableElement.CARDNUMBER,
+                            CardMaskableElement.CARDHOLDER,
+                        ),
+                        copyTemplate = "Card number: %s\nName: %s"
+                    )
+                )
             }
 
             cardDetailsFragmentButton.setOnClickListener {
@@ -162,32 +174,16 @@ class MainActivity : AppCompatActivity(),
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
             ),
             displayAttributes = NIDisplayAttributes(
-//                fonts = listOf(
-//                    NIFontLabelPair(
-//                        UIFont(
-//                            R.font.architects_daughter,
-//                            18
-//                        ),
-//                        NILabels.CARD_HOLDER_NAME_LABEL
-//                    ),
-//                    NIFontLabelPair(
-//                        UIFont(
-//                            R.font.architects_daughter,
-//                            16
-//                        ),
-//                        NILabels.CARD_NUMBER_VALUE_LABEL
-//                    )
-//                ), ,
-//                setPinMessageAttributes = PinMessageAttributes(
-//                    successAttributes = SuccessErrorScreenAttributes(
-//                        layoutId = R.layout.activity_success,
-//                        buttonResId = R.id.doneButton
-//                    ),
-//                    errorAttributes = SuccessErrorScreenAttributes(
-//                        layoutId = R.layout.activity_error,
-//                        buttonResId = R.id.doneButton
-//                    )
-//                ),
+                setPinMessageAttributes = PinMessageAttributes(
+                    successAttributes = SuccessErrorScreenAttributes(
+                        layoutId = R.layout.activity_success,
+                        buttonResId = R.id.doneButton
+                    ),
+                    errorAttributes = SuccessErrorScreenAttributes(
+                        layoutId = R.layout.activity_error,
+                        buttonResId = R.id.doneButton
+                    )
+                ),
                 verifyPinMessageAttributes = PinMessageAttributes(
                     successAttributes = SuccessErrorScreenAttributes(
                         layoutId = R.layout.activity_success,
@@ -208,7 +204,7 @@ class MainActivity : AppCompatActivity(),
                         buttonResId = R.id.doneButton
                     )
                 ),
-//                theme = NITheme.DARK
+                //theme = NITheme.DARK_APP_COMPAT
             )
         )
     }
