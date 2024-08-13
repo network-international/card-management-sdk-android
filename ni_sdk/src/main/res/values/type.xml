@@ -27,4 +27,17 @@
         <item name="android:textColor">@color/white_80</item>
     </style>
 
+    <!-- This file contains TextAppearances, card elements styles -->
+    <!-- CardNumber -->
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardNumberLabel" parent="TextAppearance.NICardManagementSDK.Body.SlimTransparency" />
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardNumberData" parent="TextAppearance.NICardManagementSDK.Body.Strong" />
+    <!-- CardHolder -->
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardHolderLabel" parent="TextAppearance.NICardManagementSDK.Body.SlimTransparency" />
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardHolderData" parent="TextAppearance.NICardManagementSDK.Body" />
+    <!-- CardExpiry -->
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardExpiryLabel" parent="TextAppearance.NICardManagementSDK.Body.SlimTransparency" />
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardExpiryData" parent="TextAppearance.NICardManagementSDK.Body" />
+    <!-- CardCvv -->
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardCvvLabel" parent="TextAppearance.NICardManagementSDK.Body.SlimTransparency" />
+    <style name="TextAppearance.NICardManagementSDK.CardElement.CardCvvData" parent="TextAppearance.NICardManagementSDK.Body" />
 </resources>

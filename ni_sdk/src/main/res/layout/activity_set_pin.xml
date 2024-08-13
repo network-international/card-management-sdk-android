@@ -15,10 +15,6 @@
         <variable
             name="paddingTop"
             type="int" />
-
-        <variable
-            name="shouldDefaultLanguage"
-            type="Boolean" />
     </data>
 
     <FrameLayout

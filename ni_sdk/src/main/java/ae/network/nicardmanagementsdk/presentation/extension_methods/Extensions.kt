@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.extension_methods
 
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
+import ae.network.nicardmanagementsdk.api.models.input.UIFont
 import ae.network.nicardmanagementsdk.helpers.ConnectConstraint
 import ae.network.nicardmanagementsdk.helpers.ConstraintInstructions
 import ae.network.nicardmanagementsdk.helpers.DisconnectConstraint
@@ -9,6 +10,7 @@ import ae.network.nicardmanagementsdk.presentation.views.ShimmerView
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -19,9 +21,11 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
@@ -57,6 +61,12 @@ fun <T : Serializable> Bundle.getSerializableCompat(key: String): T? {
 
 }
 
+val Int.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+
+val Float.dp: Int
+    get() = (this * Resources.getSystem().displayMetrics.density + 0.5f).toInt()
+
 fun View.setConstraints(position: CardElementLayout, constraintLayout: ConstraintLayout) {
     if (position.left == null && position.right == null && position.top == null && position.bottom == null) {
         return
@@ -73,20 +83,20 @@ fun View.setConstraints(position: CardElementLayout, constraintLayout: Constrain
 
     position.left?.let { it ->
         instructions.add(ConnectConstraint(viewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START))
-        this.updatePadding(left = it)
+        this.updatePadding(left = it.dp)
     }
     position.top?.let { it ->
         instructions.add(ConnectConstraint(viewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP))
-        this.updatePadding(top = it)
+        this.updatePadding(top = it.dp)
     }
     position.bottom?.let { it ->
         instructions.add(ConnectConstraint(viewId, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM))
-        this.updatePadding(top = it)
+        this.updatePadding(top = it.dp)
     }
     position.right?.let { it ->
         instructions.add(ConnectConstraint(viewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END))
         //this.setMargins(right = it)
-        this.updatePadding(right = it)
+        this.updatePadding(right = it.dp)
     }
     constraintLayout.updateConstraints(instructions)
 }
@@ -145,4 +155,19 @@ fun ShimmerView.setSize(textView: TextView, sampleIfEmpty: String) {
         textView.text = ""
     }
     this.layoutParams = layoutParams
+}
+
+fun TextView.setFont(context: Context, uiFont: UIFont?) {
+    uiFont?.let {
+        this.apply {
+            uiFont.fontRes?.let {
+                typeface = ResourcesCompat.getFont(context, it)
+            }
+            textSize = uiFont.textSize.toFloat()
+        }
+    }
+}
+
+fun ImageView.setContentDescrId(@StringRes res: Int) {
+    this.contentDescription = this.context.getString(res)
 }

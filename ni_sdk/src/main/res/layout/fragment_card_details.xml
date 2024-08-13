@@ -9,192 +9,203 @@
         <variable
             name="viewModel"
             type="ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel" />
-
-        <variable
-            name="shouldDefaultLanguage"
-            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layoutDirection="ltr"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
+        android:layoutDirection="ltr"
         tools:context=".presentation.ui.card_details.fragments.CardDetailsFragment">
-
-        <ImageView
-            android:id="@+id/cardBackgroundImageView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:contentDescription="@string/background_card_image_content_description"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bg_default_visa"
-            tools:ignore="ImageContrastCheck" />
 
         <TextView
             android:id="@+id/cardNumberLabelTextView"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{shouldDefaultLanguage ? @string/card_number_en : @string/card_number_ar}"
-            app:layout_constraintBottom_toTopOf="@+id/cardNumberTextView"
-            app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
-            tools:ignore="TextContrastCheck" />
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="Card Number" />
 
         <TextView
             android:id="@+id/cardNumberTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="2dp"
             android:text="@{viewModel.cardDetailsLiveData.pan}"
-            app:layout_constraintBottom_toTopOf="@id/card_number_guideline_horizontal"
-            app:layout_constraintStart_toStartOf="@+id/cardNumberLabelTextView"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TextContrastCheck"
             tools:text="1234 5678 2345 3456" />
 
-        <ImageView
-            android:id="@+id/copyCardNumberImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/copy_to_clipboard_image_content_description"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardNumberTextView"
-            app:layout_constraintStart_toEndOf="@id/cardNumberTextView"
-            app:layout_constraintTop_toTopOf="@+id/cardNumberTextView"
-            app:srcCompat="@drawable/ic_baseline_content_copy"
-            tools:ignore="ImageContrastCheck" />
-
-
         <TextView
             android:id="@+id/expiryDateLabelTextView"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{shouldDefaultLanguage ? @string/card_expiry_en : @string/card_expiry_ar}"
-            app:layout_constraintBottom_toTopOf="@+id/expiryDateTextView"
-            app:layout_constraintStart_toStartOf="@+id/left_align_guide_vertical"
-            tools:ignore="TextContrastCheck" />
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="Expiry" />
 
         <TextView
             android:id="@+id/expiryDateTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.expiry}"
-            app:layout_constraintBottom_toTopOf="@+id/date_cvv_guideline_horizontal"
-            app:layout_constraintStart_toStartOf="@+id/expiryDateLabelTextView"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TextContrastCheck"
-            tools:text="05/ 2024" />
-
+            tools:text="05 / 2024" />
 
         <TextView
             android:id="@+id/cvvCodeLabelTextView"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:text="@{shouldDefaultLanguage ? @string/card_cvv_en : @string/card_cvv_ar}"
-            app:layout_constraintBaseline_toBaselineOf="@id/expiryDateLabelTextView"
-            app:layout_constraintStart_toEndOf="@id/expiryDateLabelTextView"
-            tools:ignore="TextContrastCheck" />
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="CVV" />
 
         <TextView
             android:id="@+id/cvvCodeTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.cVV2}"
-            app:layout_constraintBaseline_toBaselineOf="@+id/expiryDateTextView"
-            app:layout_constraintStart_toStartOf="@id/cvvCodeLabelTextView"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TextContrastCheck"
             tools:text="303" />
 
-        <ImageView
-            android:id="@+id/hideShowDetailsImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
-            android:contentDescription="@string/credentials_toggle_image_content_description"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cvvCodeTextView"
-            app:layout_constraintStart_toEndOf="@+id/cvvCodeTextView"
-            app:layout_constraintTop_toTopOf="@+id/cvvCodeTextView"
-            tools:ignore="ImageContrastCheck"
-            tools:srcCompat="@drawable/ic_hide_details" />
-
         <TextView
             android:id="@+id/cardHolderNameLabelTextView"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{shouldDefaultLanguage ? @string/card_name_en : @string/card_name_ar}"
-            app:layout_constraintBottom_toTopOf="@+id/cardHolderNameTextView"
-            app:layout_constraintStart_toStartOf="@id/left_align_guide_vertical"
-            tools:ignore="TextContrastCheck" />
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.SlimTransparency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TextContrastCheck"
+            tools:text="Card Holder" />
 
         <TextView
             android:id="@+id/cardHolderNameTextView"
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
-            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
-            app:layout_constraintBottom_toTopOf="@+id/holder_name_guideline_horizontal"
-            app:layout_constraintStart_toStartOf="@id/cardHolderNameLabelTextView"
+            android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="TextContrastCheck"
             tools:text="Lee M. Cardholder" />
 
+        <!--  Since I can't use margins (it works wrong inside dialogs)
+            Paddings will be used
+            And if each element connected by constraints to parent and moved inside parent by paddings
+            ==> it will stretch element by increasing it's inner boundaries
+            So to handle clicks of elements properly - it should be wrapped by some container
+        -->
+        <FrameLayout android:id="@+id/copyCardNumberImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:id="@+id/copyCardNumberImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/copy_to_clipboard_image_content_description"
+                tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+
+        <!--        Shared button to toggle several elements-->
+        <FrameLayout android:id="@+id/hideShowDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/hideShowDetailsImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/copyCardHolderNameImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
         <ImageView
             android:id="@+id/copyCardHolderNameImageView"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/copy_to_clipboard_image_content_description"
-            android:padding="8dp"
-            android:visibility="@{View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@+id/cardHolderNameTextView"
-            app:layout_constraintStart_toEndOf="@id/cardHolderNameTextView"
-            app:layout_constraintTop_toTopOf="@+id/cardHolderNameTextView"
-            app:srcCompat="@drawable/ic_baseline_content_copy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ImageContrastCheck" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/card_number_guideline_horizontal"
+        </FrameLayout>
+<!--        Additional action buttons for each value field, to use it - provide src and setup position -->
+        <FrameLayout android:id="@+id/hideShowCardHolderDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/hideShowCardHolderDetailsImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.52" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/date_cvv_guideline_horizontal"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/hideShowCardNumberDetailsImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/hideShowCardNumberDetailsImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/holder_name_guideline_horizontal"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/copyCVVImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/copyCVVImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.89" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/left_align_guide_vertical"
+            android:contentDescription="@string/copy_to_clipboard_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/hideShowCVVImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/hideShowCVVImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.044" />
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/copyExpiryImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/copyExpiryImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/copy_to_clipboard_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
+        <FrameLayout android:id="@+id/hideShowExpiryImageViewHolder" android:layout_width="wrap_content" android:layout_height="wrap_content" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:id="@+id/hideShowExpiryImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/credentials_toggle_image_content_description"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck" />
+        </FrameLayout>
 
         <FrameLayout
             android:id="@+id/overlayFrameLayout"
@@ -203,10 +214,10 @@
             android:clickable="true"
             android:focusable="true"
             android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="@id/cardBackgroundImageView"
-            app:layout_constraintEnd_toEndOf="@id/cardBackgroundImageView"
-            app:layout_constraintStart_toStartOf="@id/cardBackgroundImageView"
-            app:layout_constraintTop_toTopOf="@id/cardBackgroundImageView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone">
 
             <ProgressBar
@@ -215,7 +226,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar" />
+                android:theme="@style/NICardManagementSDK.ProgressBar.Gray" />
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

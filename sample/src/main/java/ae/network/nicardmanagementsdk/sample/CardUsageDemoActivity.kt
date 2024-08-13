@@ -1,14 +1,19 @@
 package ae.network.nicardmanagementsdk.sample
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.CardElementCopyButton
+import ae.network.nicardmanagementsdk.api.models.input.CardElementDetails
+import ae.network.nicardmanagementsdk.api.models.input.CardElementLabel
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
+import ae.network.nicardmanagementsdk.api.models.input.CardElementMaskButton
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsItemConfig
+import ae.network.nicardmanagementsdk.api.models.input.CardProgressBarConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentFreeForm
+import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentListener
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
@@ -17,8 +22,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import ae.network.nicardmanagementsdk.sample.MainActivity.Companion.TAG
 import com.example.nicardmanagementapp.R
-import com.example.nicardmanagementapp.R.color.colorAccentApp
-import com.example.nicardmanagementapp.R.color.colorPrimary
 
 class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
 
@@ -52,78 +55,106 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
             }
         }
 
-        // Use your color from resources, only textViews will be affected, not buttons
-        val elementsColor =  colorPrimary
-        val detailsColor =  colorAccentApp
-        val cardDetailsFragment = CardDetailsFragmentFreeForm.newInstance(
+        val cardDetailsFragment = CardDetailsFragment.newInstance(
             niInput,
+            // Only show a toast for Android 12 and lower.
+            copyToClipboardMessage = ae.network.nicardmanagementsdk.R.string.copied_to_clipboard_en,
             config = CardElementsConfig(
                 cardNumber = CardElementsItemConfig(
-                    labelColor = elementsColor, // use null for default
-                    detailsColor = detailsColor, // use null for default
-                    labelResource = R.string.card_number_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 100),
-                    // right - copy button - right
-                    detailsLayout = CardElementLayout(right = 116, top = 84),
-                    copyButtonLayout = CardElementLayout(right = 16, top = 96),
-                    copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-                    // add individual mask button if needed
-                    maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-                    maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-                    maskButtonLayout = CardElementLayout(right = 68, top = 96),
+                    label = CardElementLabel(
+                        text = R.string.card_number_app, // pass string from desired language
+                        layout = CardElementLayout(left = 16, top = 47),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardNumberLabel
+                    ),
+                    details = CardElementDetails(
+                        layout = CardElementLayout(right = 50, top = 41),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardNumberData
+                    ),
+                    copyButton = CardElementCopyButton( // use null to hide button
+                        imageDefault = R.drawable.ic_copy_buttonimg_app,
+                        layout = CardElementLayout(right = 16, top = 46),
+                        targets = listOf(CardMaskableElement.CARDNUMBER),
+                        template = null, // provide template for formatting copied data
+                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                    ),
+                    maskButton = CardElementMaskButton(
+                        imageDefault = R.drawable.ic_eye_show_buttonimg_app,
+                        imageSelected = R.drawable.ic_eye_hide_buttonimg_app,
+                        layout = CardElementLayout(right = 33, top = 46),
+                        targets = listOf(CardMaskableElement.CARDNUMBER),
+                    ),
                 ),
                 cardHolder = CardElementsItemConfig(
-                    labelColor = elementsColor, // use null for default
-                    detailsColor = detailsColor, // use null for default
-                    labelResource = R.string.card_name_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 20),
-                    detailsLayout = CardElementLayout(right = 116, top = 16),
-                    copyButtonLayout = CardElementLayout(right = 16, top = 16),
-                    copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-                    // add individual mask button if needed
-                    maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-                    maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-                    // right 16 -- copy btn -- 8
-                    maskButtonLayout = CardElementLayout(right = 68, top = 16),
+                    label = CardElementLabel(
+                        text = R.string.card_name_app, // pass string from desired language
+                        layout = CardElementLayout(left = 16, top = 18),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardHolderLabel
+                    ),
+                    details = CardElementDetails(
+                        layout = CardElementLayout(right = 50, top = 17),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardHolderData
+                    ),
+                    copyButton = CardElementCopyButton( // use null to hide button
+                        imageDefault = R.drawable.ic_copy_buttonimg_app,
+                        layout = CardElementLayout(right = 16, top = 17),
+                        targets = listOf(CardMaskableElement.CARDHOLDER),
+                        template = null, // provide template for formatting copied data
+                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                    ),
+                    maskButton = CardElementMaskButton(
+                        imageDefault = R.drawable.ic_eye_show_buttonimg_app,
+                        imageSelected = R.drawable.ic_eye_hide_buttonimg_app,
+                        layout = CardElementLayout(right = 33, top = 46),
+                        targets = listOf(CardMaskableElement.CARDHOLDER),
+                    ),
                 ),
                 expiry = CardElementsItemConfig(
-                    labelColor = elementsColor, // use null for default
-                    detailsColor = detailsColor, // use null for default
-                    labelResource = R.string.card_expiry_app, // use null for default
-                    labelLayout = CardElementLayout(left = 16, top = 180),
-                    detailsLayout = CardElementLayout(right = 16, top = 176),
-                    copyButtonLayout = null,
-                    copyButtonImage = null, // use null to hide button
-                    // add individual mask button if needed
-                    maskButtonHideImage = null,
-                    maskButtonShowImage = null,
-                    maskButtonLayout = null
+                    label = CardElementLabel(
+                        text = R.string.card_expiry_app, // pass string from desired language
+                        layout = CardElementLayout(left = 16, top = 76),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardExpiryLabel
+                    ),
+                    details = CardElementDetails(
+                        layout = CardElementLayout(right = 16, top = 75),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardExpiryData
+                    ),
+                    copyButton = null,
+                    maskButton = null,
                 ),
                 cvv = CardElementsItemConfig(
-                    labelColor = elementsColor, // use null for default
-                    detailsColor = detailsColor, // use null for default
-                    labelResource = R.string.card_cvv_app,
-                    labelLayout = CardElementLayout(left = 16, top = 260),
-                    // right - copy button --  -- mask button - right
-                    detailsLayout = CardElementLayout(right = 116, top = 254),
-                    // use individual button if needed
-                    copyButtonLayout = CardElementLayout(right = 16, top = 254),
-                    copyButtonImage = R.drawable.ic_copy_buttonimg_app, // use null to hide button
-                    maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_app,
-                    maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_app,
-
-                    maskButtonLayout = CardElementLayout(right = 68, top = 254),
+                    label = CardElementLabel(
+                        text = R.string.card_cvv_app, // pass string from desired language
+                        layout = CardElementLayout(left = 16, top = 105),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardCvvLabel
+                    ),
+                    details = CardElementDetails(
+                        layout = CardElementLayout(right = 50, top = 103),
+                        appearanceResId = R.style.TextAppearance_App_CardElement_CardCvvData
+                    ),
+                    copyButton = CardElementCopyButton( // use null to hide button
+                        imageDefault = R.drawable.ic_copy_buttonimg_app,
+                        layout = CardElementLayout(right = 16, top = 103),
+                        targets = listOf(CardMaskableElement.CVV),
+                        template = null, // provide template for formatting copied data
+                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                    ),
+                    maskButton = CardElementMaskButton(
+                        imageDefault = R.drawable.ic_eye_show_buttonimg_app,
+                        imageSelected = R.drawable.ic_eye_hide_buttonimg_app,
+                        layout = CardElementLayout(right = 33, top = 103),
+                        targets = listOf(CardMaskableElement.CARDHOLDER),
+                    ),
                 ),
-                commonMaskButton = CardElementsItemConfig(
-                    maskButtonHideImage = R.drawable.ic_eye_hide_buttonimg_red,
-                    maskButtonShowImage = R.drawable.ic_eye_show_buttonimg_red,
-                    maskButtonLayout = CardElementLayout(left = 200, top = 176),
-                ),
-                // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
-                commonMaskButtonTargets = listOf(
-                    CardMaskableElement.CARDNUMBER,
-                    CardMaskableElement.CARDHOLDER,
-                    CardMaskableElement.EXPIRY,
+                commonMaskButton = CardElementMaskButton(
+                    imageDefault = R.drawable.ic_eye_show_buttonimg_red,
+                    imageSelected = R.drawable.ic_eye_hide_buttonimg_red,
+                    contentDescription = ae.network.nicardmanagementsdk.R.string.credentials_toggle_image_content_description,
+                    layout = CardElementLayout(left = 80, top = 76),
+                    targets = listOf( // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
+                        CardMaskableElement.CARDNUMBER,
+                        CardMaskableElement.CARDHOLDER,
+                        CardMaskableElement.EXPIRY,
+                    ),
                 ),
                 // Use `listOf(CardMaskableElement.CVV)` to mask CVV by default
                 // following details will be showed masked by default
@@ -133,21 +164,14 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                     CardMaskableElement.EXPIRY,
                 ),
                 // Configure progressBar, if null - do not show
-                progressBar = CardElementsItemConfig(
-                    detailsColor = detailsColor,
-                    detailsLayout = CardElementLayout(right = 0, bottom = 150), // paddings from center
+                progressBar = CardProgressBarConfig(
+                    color = R.color.colorAccentApp,
+                    paddingFromCenter = CardElementLayout(right = 0, bottom = 0), // paddings from center
                 ),
-            ),
+            )
         )
         supportFragmentManager.beginTransaction().apply {
-            add(R.id.card_container, cardDetailsFragment, CardDetailsFragmentFreeForm.TAG)
-            commit()
-        }
-
-        // add MainFragment to the UI
-        val mainFragment = MainFragment.newInstance(niInput, niPinFormType)
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.main_fragment_container, mainFragment, MainFragment.TAG)
+            add(R.id.card_container, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
     }
