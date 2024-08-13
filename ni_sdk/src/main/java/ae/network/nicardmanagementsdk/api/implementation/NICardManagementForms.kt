@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.api.implementation
 
 import ae.network.nicardmanagementsdk.api.interfaces.NICardManagementFormsAPI
+import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
@@ -15,6 +16,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 
 typealias OnSuccessErrorCancelCompletion = (isSuccess: NISuccessResponse?, isError: NIErrorResponse?, isUserCanceled: Boolean) -> Unit
 
@@ -33,10 +36,16 @@ class NICardManagementForms(
     }
 
     override fun displayCardDetailsForm(
-        input: NIInput
+        input: NIInput,
+        @DrawableRes backgroundImage: Int?,
+        @StringRes title: Int?,
+        config: CardElementsConfig
     ) {
         displayCardResultLauncher?.launch(Intent(activity, CardDetailsActivity::class.java).apply {
             putExtra(Extra.EXTRA_NI_INPUT, input)
+            putExtra(Extra.EXTRA_NI_CARD_BACKGROUND, backgroundImage)
+            putExtra(Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG, config)
+            putExtra(Extra.EXTRA_NI_CARD_NAVIGATION_TITLE, title)
         })
     }
 

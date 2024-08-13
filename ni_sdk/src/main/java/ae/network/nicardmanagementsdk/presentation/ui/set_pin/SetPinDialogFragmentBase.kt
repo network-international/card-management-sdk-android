@@ -82,11 +82,6 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     }
 
     protected open fun initializeUI() {
-        binding.shouldDefaultLanguage = when (LanguageHelper().getLanguage(niInput)) {
-            "ar" -> false
-            else -> true
-        }
-
         binding.customBackNavigationView.setOnBackButtonClickListener {
             dismiss()
         }
