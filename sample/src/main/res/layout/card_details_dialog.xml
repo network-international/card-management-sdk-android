@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#2196F3"
+    android:padding="24dp"
+    tools:context="ae.network.nicardmanagementsdk.sample.CardBottomSheetDialogFragment">
+
+    <TextView
+        android:id="@+id/bottom_sheet_title"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/card_details_dialog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnClose"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:contentDescription="@string/done_image_content_description"
+        android:src="@drawable/ic_baseline_highlight_off_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--Use your own card labels if needed-->
+    <TextView
+        android:id="@+id/nameLabel"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title" />
+    <TextView
+        android:id="@+id/numberLabel"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Card #"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
+    <TextView
+        android:id="@+id/expiryLabel"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/numberLabel" />
+    <TextView
+        android:id="@+id/cvvLabel"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="CVV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/expiryLabel" />
+
+    <!--Use your own copy button-->
+    <ImageView
+        android:id="@+id/btnCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/copy_to_clipboard_image_content_description"
+        android:src="@drawable/ic_baseline_content_copy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/numberLabel" />
+
+    <!--Use your hide/show button, optionally change image from code-->
+    <ImageView
+        android:id="@+id/btnToggleCredentials"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:contentDescription="@string/credentials_toggle_image_content_description"
+        android:src="@drawable/ic_eye_show_buttonimg_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/cvvLabel" />
+
+    <!--    Provide containers for card values, card labels can be ignored or use your own labels-->
+    <FrameLayout android:id="@+id/cardNumberValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/numberLabel"/>
+    <FrameLayout android:id="@+id/cardHolderValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/nameLabel"/>
+    <FrameLayout android:id="@+id/cardExpiryValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/expiryLabel"/>
+    <FrameLayout android:id="@+id/cardCvvValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/btnToggleCredentials"
+        app:layout_constraintBottom_toBottomOf="@+id/cvvLabel"/>
+
+<!--    Use custom progress indicator if needed, replace it to shimmering for example-->
+    <FrameLayout
+        android:id="@+id/customProgressBarHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_title">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/customProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/NICardManagementSDK.ProgressBar.Gray" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -95,7 +95,6 @@ class CardDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[CardDetailsFragmentViewModel::class.java]
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_card_details, container, false)
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
         return binding.root
     }
 
@@ -137,84 +136,24 @@ class CardDetailsFragment : Fragment() {
         }
 
         binding.hideShowDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                var anyTargetCurrentlyMasked = false
-                val targets = elementsConfig.commonMaskButton?.targets
-                if (targets != null) {
-                    for (target in targets) {
-                        if (currentMasked.contains(target)) {
-                            anyTargetCurrentlyMasked = true
-                            break
-                        }
-                    }
-                    val filtered = currentMasked.filter { !targets.contains(it) }
-                    if (anyTargetCurrentlyMasked) { // unmask all targets
-                        viewModel.showMaskedLiveData.value = filtered
-                    } else { // mask all targets
-                        viewModel.showMaskedLiveData.value = (targets + filtered)
-                    }
-                }
-
+            elementsConfig.commonMaskButton?.targets?.let {
+                viewModel.hideShowDetails(it)
             }
         }
-
-        // Additional buttons
         binding.hideShowCardHolderDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CARDHOLDER)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CARDHOLDER }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CARDHOLDER
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CARDHOLDER))
         }
         binding.hideShowCardNumberDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CARDNUMBER)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CARDNUMBER }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CARDNUMBER
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CARDNUMBER))
         }
         binding.hideShowExpiryImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.EXPIRY)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.EXPIRY }
-                } else {
-                    val included = currentMasked + CardMaskableElement.EXPIRY
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.EXPIRY))
         }
         binding.hideShowCVVImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CVV)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CVV }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CVV
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CVV))
         }
 
-        viewModel.copiedTextMessageSingleLiveEvent.observe(this) { resId ->
-            resId?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
-            successErrorResponse?.let {
-                listener?.onCardDetailsFragmentCompletion(it)
-            }
-        }
-
-        if (viewModel.showMaskedLiveData.value == null) {
-            viewModel.getData()
-        }
+        viewModel.fetchDataInitially()
 
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
@@ -335,9 +274,31 @@ class CardDetailsFragment : Fragment() {
 
 
         setButtonsVisibility(null) // hide all
-        viewModel.showMaskedLiveData.observe(viewLifecycleOwner) { showMaskedLiveData ->
+        viewModel.maskedElementsLiveData.observe(viewLifecycleOwner) { showMaskedLiveData ->
             setButtonsVisibility(null)
             setButtonsVisibility(showMaskedLiveData)
+        }
+        viewModel.cardDetailsLiveData.observe(viewLifecycleOwner) { model ->
+            binding.cardNumberTextView.text = model.pan
+            binding.expiryDateTextView.text = model.expiry
+            binding.cvvCodeTextView.text = model.cVV2
+            binding.cardHolderNameTextView.text = model.cardholderName
+        }
+        viewModel.copiedTextMessageSingleLiveEvent.observe(this) { resId ->
+            resId?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.progressBarHolder.visibility = View.GONE
+        elementsConfig.progressBar?.let {
+            binding.progressBarHolder.visibility = View.VISIBLE
+        }
+        viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
+            binding.progressBarHolder.visibility = View.GONE
+            successErrorResponse?.let {
+                listener?.onCardDetailsFragmentCompletion(it)
+            }
         }
     }
 
@@ -476,26 +437,7 @@ class CardDetailsFragment : Fragment() {
     private fun copyToClipboard(targets: List<CardMaskableElement>, template: String?) {
         val clipboardManager =
             requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        var values = listOf<String>()
-        for (target in targets) {
-            when(target){
-                CardMaskableElement.CARDNUMBER -> {
-                    values = values + viewModel.getClearPanNonSpaced
-                }
-                CardMaskableElement.CARDHOLDER -> {
-                    values = values + viewModel.getClearCardHolderName
-                }
-                CardMaskableElement.EXPIRY -> {
-                    values = values + viewModel.getClearExpiry
-                }
-                CardMaskableElement.CVV -> {
-                    values = values + viewModel.getClearCVV
-                }
-            }
-        }
-        val fallbackTemplate = values.map { "%s" }.joinToString(separator = "\n")
-        val result = String.format(template ?: fallbackTemplate, *values.toTypedArray())
-        viewModel.copyToClipboard(result, clipboardManager, copyToClipboardMessage)
+        viewModel.copyToClipboard(targets, template, clipboardManager, copyToClipboardMessage)
     }
 }
 
