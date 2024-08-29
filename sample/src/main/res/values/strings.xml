@@ -8,6 +8,7 @@
     <string name="verify_pin">Verify PIN</string>
     <string name="card_details">Card Details Form</string>
     <string name="card_details_fragment">Card Details Fragment</string>
+    <string name="card_details_dialog">Dialog with Card Details</string>
 
     // Main screen entries labels
     <string name="card_identifier_id_txt">Card Identifier ID</string>

@@ -61,6 +61,7 @@ data class CardElementsItemConfig(
     var copyButton: CardElementCopyButton? = null,
     var maskButton: CardElementMaskButton? = null,
 ): Serializable
+
 data class CardElementsConfig(
     val cardNumber: CardElementsItemConfig? = null,
     val expiry: CardElementsItemConfig? = null,
@@ -162,21 +163,40 @@ data class CardPresenterElementConfig(
     @StyleRes val titleAppearanceResId: Int? = null,
     @StyleRes val dataAppearanceResId: Int? = null,
 ): Serializable
-data class CardPresenterConfig(
-    val cardNumber: CardPresenterElementConfig? = null,
-    val expiry: CardPresenterElementConfig? = null,
-    val cvv: CardPresenterElementConfig? = null,
-    val cardHolder: CardPresenterElementConfig? = null,
 
-    val commonMaskButtonTargets: List<CardMaskableElement> = CardMaskableElementEntries.all(),
-    // define initial state of masking
-    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
-        CardMaskableElement.CARDNUMBER,
-        CardMaskableElement.EXPIRY,
-        CardMaskableElement.CVV,
-        CardMaskableElement.CARDHOLDER,
-    ),
-): Serializable
+data class CardPresenterConfig(
+    val cardNumber: CardPresenterElementConfig?,
+    val expiry: CardPresenterElementConfig?,
+    val cvv: CardPresenterElementConfig?,
+    val cardHolder: CardPresenterElementConfig?,
+    var shouldBeMaskedDefault: List<CardMaskableElement>
+): Serializable {
+    companion object {
+        fun default() = CardPresenterConfig(
+            cardNumber = CardPresenterElementConfig(
+                labelResource = R.string.card_number_en,
+                titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel,
+                dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberData
+            ),
+            expiry = CardPresenterElementConfig(
+                labelResource = R.string.card_expiry_en,
+                titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardExpiryLabel,
+                dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardExpiryData
+            ),
+            cvv = CardPresenterElementConfig(
+                labelResource = R.string.card_cvv_en,
+                titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardCvvLabel,
+                dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardCvvData
+            ),
+            cardHolder = CardPresenterElementConfig(
+                labelResource = R.string.card_name_en,
+                titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardHolderLabel,
+                dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardHolderData
+            ),
+            shouldBeMaskedDefault = CardMaskableElementEntries.all()
+        )
+    }
+}
 
 /// Next classes temporary moved here, will be deleted soon
 data class NIDisplayAttributes(
