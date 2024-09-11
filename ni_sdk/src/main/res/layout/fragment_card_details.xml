@@ -4,13 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="viewModel"
-            type="ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
@@ -36,7 +29,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="2dp"
-            android:text="@{viewModel.cardDetailsLiveData.pan}"
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body.Strong"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +50,6 @@
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.cardDetailsLiveData.expiry}"
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +71,6 @@
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.cardDetailsLiveData.cVV2}"
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -102,7 +92,6 @@
             style="@style/Widget.NICardManagementSDK.TextView.Shadow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.cardDetailsLiveData.cardholderName}"
             android:textAppearance="@style/TextAppearance.NICardManagementSDK.Body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -208,17 +197,15 @@
         </FrameLayout>
 
         <FrameLayout
-            android:id="@+id/overlayFrameLayout"
+            android:id="@+id/progressBarHolder"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:clickable="true"
             android:focusable="true"
-            android:visibility="@{viewModel.isVisibleProgressBar ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="gone">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
                 style="?android:attr/progressBarStyle"

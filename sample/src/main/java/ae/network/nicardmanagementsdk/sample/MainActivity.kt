@@ -1,5 +1,6 @@
 package ae.network.nicardmanagementsdk.sample
 
+import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.implementation.NICardManagementForms
 import ae.network.nicardmanagementsdk.api.implementation.OnSuccessErrorCancelCompletion
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
@@ -25,6 +26,7 @@ import ae.network.nicardmanagementsdk.sample.adapters.EntriesListAdapter
 import com.example.nicardmanagementapp.databinding.ActivityMainBinding
 import ae.network.nicardmanagementsdk.sample.models.EntriesItemModel
 import ae.network.nicardmanagementsdk.sample.models.SampleAppFormEntryEnum.*
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity(),
     SetPinFragment.OnFragmentInteractionListener,
@@ -42,7 +44,6 @@ class MainActivity : AppCompatActivity(),
         this,
         displayCardDetailsOnCompletion = getCompletionHandler("displayCardDetailsForm")
     )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,8 +118,24 @@ class MainActivity : AppCompatActivity(),
                 })
             }
 
+            cardDetailsDialogButton.setOnClickListener {
+                Toast.makeText(applicationContext, "Not implemented", Toast.LENGTH_SHORT).show()
+
+//                val dialog = CardBottomSheetDialogFragment.newInstance(
+//                    niInput,
+//                    config = CardElementsConfig.default(
+//                        copyTargets = listOf<CardMaskableElement>(
+//                            CardMaskableElement.CARDNUMBER,
+//                            CardMaskableElement.CARDHOLDER,
+//                        ),
+//                        copyTemplate = "Card number: %s\nName: %s"
+//                    )
+//                )
+//                supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
+            }
+
             setPinButton.setOnClickListener {
-                val dialog = SetPinFragmentFromActivity.newInstance(niInput, pinLength)
+                val dialog = SetPinFragmentFromActivity.newInstance(niInput, pinLength, padding = 100)
                 dialog.show(supportFragmentManager, SetPinFragmentFromActivity.TAG)
             }
 
@@ -137,11 +154,11 @@ class MainActivity : AppCompatActivity(),
     private fun setViewModelData() {
         if (viewModel.entriesItemModels.isEmpty()) {
             val entries = listOf(
-                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "AXIS4"),
-                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "12259219\$\$\$8514AB521454A85D2D810EC5F4A63286BBB0E4E57357B4947F6E6E8646FDBCFD"),
+                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "D2C"),
+                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "22344402126097490505"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
-                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.egy.network.global/sdk/v2"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjMyOTg0MTUsImlhdCI6MTcyMzI5NjYxNSwianRpIjoiNDg5YzNkMTUtMDEzMC00MmYwLThmODktMzcwNDhkMjc3NjY0IiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiIzNmFhNWJjMS1mYzU2LTRiMGMtODFkYi00YTE4ZTM2ZmU1MjEiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiI2YThlMDRjMi1hNWQ3LTQ1ZGItOTA4My0wYWE0MDNkNGJmY2YyMDc1OCIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiY2xpZW50SWQiOiI2YThlMDRjMi1hNWQ3LTQ1ZGItOTA4My0wYWE0MDNkNGJmY2YyMDc1OCIsIm9yZ19pZCI6IkFYSVM0IiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTZhOGUwNGMyLWE1ZDctNDVkYi05MDgzLTBhYTQwM2Q0YmZjZjIwNzU4In0.RfzNEzcV4NU2jp5igjLRx56ajpeU6Y92B-7fyjCAY8Mmmt9niUiwI0NDU8dNi5Ol3sl2H5SYKKDgIo9RW2B1iOachzTmyAf2noUJ2b_hdhPw7Q_L_pUG6mSKoc7X8VAyjJZVsEZNlZvhVjMP8RMglPmsmc1RBOPGQZDdq7OmcohB4L6mVO5Qedw_R6ftPapCHQ7EdjON9JuZb40h0ihkIASzyuJA6XTQ9lV9l2PM9Uz-349qBRKvfDecLCTjtOhVkaQz4LOctUAYYq-JqM9_pa2wOVml_4C8JN7CJXl_wJNCQ_HkKV4wDD8NHODU6LJ03gyMGlWVvxV6iRpzzQY2fA"),
+                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.network.global/sdk/v2"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjYwNDM2NjMsImlhdCI6MTcyNjA0MTg2MywianRpIjoiM2YzMDFiMTYtN2UyNy00ZGNhLWE2OTctZTAzMmFmZmIyZWUxIiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiI0NGYxMTFlZi02MTEyLTRmY2ItYjkzYS03MDJiZjljZTIwZTQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiIyMDYxOGYxMC03MmM2LTRhM2MtYWFhNC1kMzM2MWY1MmZhOGY1NjMyMDciLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImNsaWVudElkIjoiMjA2MThmMTAtNzJjNi00YTNjLWFhYTQtZDMzNjFmNTJmYThmNTYzMjA3Iiwib3JnX2lkIjoiRDJDIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTIwNjE4ZjEwLTcyYzYtNGEzYy1hYWE0LWQzMzYxZjUyZmE4ZjU2MzIwNyJ9.Encgl8bAwUArrRu6rj5dOn5Yie2UIN30gfGyo3tnLZvzAppxm9gGWE-7psbX7O6AplEVgDlV9d7gZUV-Gj_HHifuJMJCByJL34VfBaxWvasQyCHwdSp0WJNN3saa9TuLgoI69HJ87Idv8TNm1AfrVtO8luD6cQsLnsmhtisbR7LMs90FzwRVOX-Mdd58xrev7_kqTZjzsqqBLQSl-OgLjukSnSphorZmghi_oxrTjoq7TTNG1Gs1pfGKDuPAkVmGHgWVf4JHfGhVUPn8lqItkeWV_H-m0vNuYkW5mbCNXcPRJC8jUIh_Fh8dpMQaWk355XajyDDCcL9CTzfBV4LgAw"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))

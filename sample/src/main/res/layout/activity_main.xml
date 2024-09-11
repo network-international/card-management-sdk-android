@@ -63,10 +63,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/card_details_fragment"
-                app:layout_constraintBottom_toTopOf="@+id/setPinButton"
+                app:layout_constraintBottom_toTopOf="@+id/cardDetailsDialogButton"
                 app:layout_constraintEnd_toEndOf="@+id/setPinButton"
                 app:layout_constraintStart_toStartOf="@+id/setPinButton"
                 app:layout_constraintTop_toBottomOf="@+id/cardDetailsButton"
+                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/cardDetailsDialogButton"
+                style="@style/Widget.App.SDKTaskButtons"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/card_details_dialog"
+                app:layout_constraintBottom_toTopOf="@+id/setPinButton"
+                app:layout_constraintEnd_toEndOf="@+id/setPinButton"
+                app:layout_constraintStart_toStartOf="@+id/setPinButton"
+                app:layout_constraintTop_toBottomOf="@+id/cardDetailsFragmentButton"
                 tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
             <Button

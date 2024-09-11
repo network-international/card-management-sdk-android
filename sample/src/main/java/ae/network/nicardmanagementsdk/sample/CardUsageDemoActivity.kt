@@ -6,6 +6,7 @@ import ae.network.nicardmanagementsdk.api.models.input.CardElementDetails
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLabel
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
 import ae.network.nicardmanagementsdk.api.models.input.CardElementMaskButton
+import ae.network.nicardmanagementsdk.api.models.input.CardElementText
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsItemConfig
 import ae.network.nicardmanagementsdk.api.models.input.CardProgressBarConfig
@@ -62,7 +63,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
             config = CardElementsConfig(
                 cardNumber = CardElementsItemConfig(
                     label = CardElementLabel(
-                        text = R.string.card_number_app, // pass string from desired language
+                        text = CardElementText.Int(R.string.card_number_app), // pass string from desired language
                         layout = CardElementLayout(left = 16, top = 47),
                         appearanceResId = R.style.TextAppearance_App_CardElement_CardNumberLabel
                     ),
@@ -75,7 +76,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                         layout = CardElementLayout(right = 16, top = 46),
                         targets = listOf(CardMaskableElement.CARDNUMBER),
                         template = null, // provide template for formatting copied data
-                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                        contentDescription = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description)
                     ),
                     maskButton = CardElementMaskButton(
                         imageDefault = R.drawable.ic_eye_show_buttonimg_app,
@@ -86,7 +87,8 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 ),
                 cardHolder = CardElementsItemConfig(
                     label = CardElementLabel(
-                        text = R.string.card_name_app, // pass string from desired language
+                        //CardElementText.Int(R.string.card_name_app), pass string from desired language
+                        text = CardElementText.String("card name string"),
                         layout = CardElementLayout(left = 16, top = 18),
                         appearanceResId = R.style.TextAppearance_App_CardElement_CardHolderLabel
                     ),
@@ -99,7 +101,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                         layout = CardElementLayout(right = 16, top = 17),
                         targets = listOf(CardMaskableElement.CARDHOLDER),
                         template = null, // provide template for formatting copied data
-                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                        contentDescription = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description)
                     ),
                     maskButton = CardElementMaskButton(
                         imageDefault = R.drawable.ic_eye_show_buttonimg_app,
@@ -110,7 +112,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 ),
                 expiry = CardElementsItemConfig(
                     label = CardElementLabel(
-                        text = R.string.card_expiry_app, // pass string from desired language
+                        text = CardElementText.Int(R.string.card_expiry_app), // pass string from desired language
                         layout = CardElementLayout(left = 16, top = 76),
                         appearanceResId = R.style.TextAppearance_App_CardElement_CardExpiryLabel
                     ),
@@ -123,7 +125,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 ),
                 cvv = CardElementsItemConfig(
                     label = CardElementLabel(
-                        text = R.string.card_cvv_app, // pass string from desired language
+                        text = CardElementText.Int(R.string.card_cvv_app), // pass string from desired language
                         layout = CardElementLayout(left = 16, top = 105),
                         appearanceResId = R.style.TextAppearance_App_CardElement_CardCvvLabel
                     ),
@@ -136,7 +138,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                         layout = CardElementLayout(right = 16, top = 103),
                         targets = listOf(CardMaskableElement.CVV),
                         template = null, // provide template for formatting copied data
-                        contentDescription = ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description
+                        contentDescription = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.copy_to_clipboard_image_content_description)
                     ),
                     maskButton = CardElementMaskButton(
                         imageDefault = R.drawable.ic_eye_show_buttonimg_app,
@@ -148,7 +150,7 @@ class CardUsageDemoActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 commonMaskButton = CardElementMaskButton(
                     imageDefault = R.drawable.ic_eye_show_buttonimg_red,
                     imageSelected = R.drawable.ic_eye_hide_buttonimg_red,
-                    contentDescription = ae.network.nicardmanagementsdk.R.string.credentials_toggle_image_content_description,
+                    contentDescription = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.credentials_toggle_image_content_description),
                     layout = CardElementLayout(left = 80, top = 76),
                     targets = listOf( // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
                         CardMaskableElement.CARDNUMBER,

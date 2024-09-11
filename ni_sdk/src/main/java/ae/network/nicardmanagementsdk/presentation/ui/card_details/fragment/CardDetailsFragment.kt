@@ -7,8 +7,9 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setCardElementText
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setConstraints
-import ae.network.nicardmanagementsdk.presentation.extension_methods.setContentDescrId
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setContentDescrText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
@@ -95,7 +96,7 @@ class CardDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[CardDetailsFragmentViewModel::class.java]
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_card_details, container, false)
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        //binding.viewModel = viewModel
         return binding.root
     }
 
@@ -137,89 +138,29 @@ class CardDetailsFragment : Fragment() {
         }
 
         binding.hideShowDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                var anyTargetCurrentlyMasked = false
-                val targets = elementsConfig.commonMaskButton?.targets
-                if (targets != null) {
-                    for (target in targets) {
-                        if (currentMasked.contains(target)) {
-                            anyTargetCurrentlyMasked = true
-                            break
-                        }
-                    }
-                    val filtered = currentMasked.filter { !targets.contains(it) }
-                    if (anyTargetCurrentlyMasked) { // unmask all targets
-                        viewModel.showMaskedLiveData.value = filtered
-                    } else { // mask all targets
-                        viewModel.showMaskedLiveData.value = (targets + filtered)
-                    }
-                }
-
+            elementsConfig.commonMaskButton?.targets?.let {
+                viewModel.hideShowDetails(it)
             }
         }
-
-        // Additional buttons
         binding.hideShowCardHolderDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CARDHOLDER)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CARDHOLDER }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CARDHOLDER
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CARDHOLDER))
         }
         binding.hideShowCardNumberDetailsImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CARDNUMBER)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CARDNUMBER }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CARDNUMBER
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CARDNUMBER))
         }
         binding.hideShowExpiryImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.EXPIRY)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.EXPIRY }
-                } else {
-                    val included = currentMasked + CardMaskableElement.EXPIRY
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.EXPIRY))
         }
         binding.hideShowCVVImageView.setOnClickListener {
-            viewModel.showMaskedLiveData.value?.let { currentMasked ->
-                if (currentMasked.contains(CardMaskableElement.CVV)) {
-                    viewModel.showMaskedLiveData.value = currentMasked.filter { it != CardMaskableElement.CVV }
-                } else {
-                    val included = currentMasked + CardMaskableElement.CVV
-                    viewModel.showMaskedLiveData.value = included
-                }
-            }
+            viewModel.hideShowDetails(listOf(CardMaskableElement.CVV))
         }
 
-        viewModel.copiedTextMessageSingleLiveEvent.observe(this) { resId ->
-            resId?.let {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
-            successErrorResponse?.let {
-                listener?.onCardDetailsFragmentCompletion(it)
-            }
-        }
-
-        if (viewModel.showMaskedLiveData.value == null) {
-            viewModel.getData()
-        }
+        viewModel.fetchDataInitially()
 
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
                 elm.label?.let {
-                    binding.cardHolderNameLabelTextView.setText(it.text)
+                    binding.cardHolderNameLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cardHolderNameLabelTextView.setTextAppearance(it) }
                     binding.cardHolderNameLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -231,18 +172,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCardHolderNameImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCardHolderNameImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCardHolderNameImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCardHolderNameImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCardHolderDetailsImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCardHolderDetailsImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCardHolderDetailsImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCardHolderDetailsImageView.setContentDescrText(it) }
                 }
             }
             cnf.cardNumber?.let { elm ->
                 elm.label?.let {
-                    binding.cardNumberLabelTextView.setText(it.text)
+                    binding.cardNumberLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cardNumberLabelTextView.setTextAppearance(it) }
                     binding.cardNumberLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -254,18 +195,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCardNumberImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCardNumberImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCardNumberImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCardNumberImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCardNumberDetailsImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCardNumberDetailsImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCardNumberDetailsImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCardNumberDetailsImageView.setContentDescrText(it) }
                 }
             }
             cnf.cvv?.let { elm ->
                 elm.label?.let {
-                    binding.cvvCodeLabelTextView.setText(it.text)
+                    binding.cvvCodeLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cvvCodeLabelTextView.setTextAppearance(it) }
                     binding.cvvCodeLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -277,18 +218,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCVVImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCVVImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCVVImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCVVImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCVVImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCVVImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCVVImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCVVImageView.setContentDescrText(it) }
                 }
             }
             cnf.expiry?.let { elm ->
                 elm.label?.let {
-                    binding.expiryDateLabelTextView.setText(it.text)
+                    binding.expiryDateLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.expiryDateLabelTextView.setTextAppearance(it) }
                     binding.expiryDateLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -300,20 +241,20 @@ class CardDetailsFragment : Fragment() {
                     binding.copyExpiryImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyExpiryImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyExpiryImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyExpiryImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowExpiryImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowExpiryImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowExpiryImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowExpiryImageView.setContentDescrText(it) }
                 }
             }
             cnf.commonMaskButton?.let { elm ->
                 binding.hideShowDetailsImageViewHolder.setConstraints(elm.layout, binding.constraintLayout)
                 // selected image could be assigned in setButtonsVisibility
                 binding.hideShowDetailsImageView.setImageResource(elm.imageDefault)
-                elm.contentDescription?.let { binding.hideShowDetailsImageView.setContentDescrId(it) }
+                elm.contentDescription?.let { binding.hideShowDetailsImageView.setContentDescrText(it) }
             }
             cnf.shouldBeMaskedDefault.let { targets ->
                 viewModel.shouldBeMaskedDefault = targets
@@ -335,9 +276,31 @@ class CardDetailsFragment : Fragment() {
 
 
         setButtonsVisibility(null) // hide all
-        viewModel.showMaskedLiveData.observe(viewLifecycleOwner) { showMaskedLiveData ->
+        viewModel.maskedElementsLiveData.observe(viewLifecycleOwner) { showMaskedLiveData ->
             setButtonsVisibility(null)
             setButtonsVisibility(showMaskedLiveData)
+        }
+        viewModel.cardDetailsLiveData.observe(viewLifecycleOwner) { model ->
+            binding.cardNumberTextView.text = model.pan
+            binding.expiryDateTextView.text = model.expiry
+            binding.cvvCodeTextView.text = model.cVV2
+            binding.cardHolderNameTextView.text = model.cardholderName
+        }
+        viewModel.copiedTextMessageSingleLiveEvent.observe(this) { resId ->
+            resId?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.progressBarHolder.visibility = View.GONE
+        elementsConfig.progressBar?.let {
+            binding.progressBarHolder.visibility = View.VISIBLE
+        }
+        viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
+            binding.progressBarHolder.visibility = View.GONE
+            successErrorResponse?.let {
+                listener?.onCardDetailsFragmentCompletion(it)
+            }
         }
     }
 
@@ -476,26 +439,7 @@ class CardDetailsFragment : Fragment() {
     private fun copyToClipboard(targets: List<CardMaskableElement>, template: String?) {
         val clipboardManager =
             requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
-        var values = listOf<String>()
-        for (target in targets) {
-            when(target){
-                CardMaskableElement.CARDNUMBER -> {
-                    values = values + viewModel.getClearPanNonSpaced
-                }
-                CardMaskableElement.CARDHOLDER -> {
-                    values = values + viewModel.getClearCardHolderName
-                }
-                CardMaskableElement.EXPIRY -> {
-                    values = values + viewModel.getClearExpiry
-                }
-                CardMaskableElement.CVV -> {
-                    values = values + viewModel.getClearCVV
-                }
-            }
-        }
-        val fallbackTemplate = values.map { "%s" }.joinToString(separator = "\n")
-        val result = String.format(template ?: fallbackTemplate, *values.toTypedArray())
-        viewModel.copyToClipboard(result, clipboardManager, copyToClipboardMessage)
+        viewModel.copyToClipboard(targets, template, clipboardManager, copyToClipboardMessage)
     }
 }
 
