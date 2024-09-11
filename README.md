@@ -12,6 +12,8 @@ The current supported features are:
 
 ### Basics
 After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
+https://jitpack.io/#network-international/card-management-sdk-android
+
 ### Sample usage:
 Check Sample application for details
 Kotlin:
@@ -155,8 +157,60 @@ enum class NIPinFormType(val minSize: Int, val maxSize: Int) {
 
 ```
 
+### Customization of card details UI - CardElementsConfig
+Refer to `CardUsageDemoActivity.kt` or to the `config` parameter for `niCardManagementForms.displayCardDetailsForm` in `MainActivity.kt` with example
+
+Alternate `CardElementsConfig` that will be passed to fragment or form
+```
+// You can use default configuration and change it, or build it from scratch
+// In this example - use default and set behaviour of `copy` button
+// by copy action - given fields with given template will be copied to clipboard
+var cardElementsConfig = CardElementsConfig.default(
+    copyTargets = listOf<CardMaskableElement>(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.CARDHOLDER,
+    ),
+    copyTemplate = "Card number: %s\nName: %s"
+)
+```
+- update text and position of Card element, example with card number label:
+```
+// update text if needed
+config.cardNumber?.label?.text  = CardElementText.String("My card #")
+// update position if needed - attach element to bottom-left corner
+config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
+```
+- Use either StringRes or String for labels and for button's content descrition
+```
+config.cardNumber?.label?.text  = CardElementText.String("My card #")
+// OR
+config.cardNumber?.label?.text  = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.card_details_title_en)
+```
+- provide desired appearance style to update font/color... of desired element 
+`appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel`
+- configure copy action behaviour - define card details values and format that will be passed to clipboard
+```kotlin
+copyButton = CardElementCopyButton( // use null to hide button
+    imageDefault = R.drawable.ic_baseline_content_copy,
+    layout = CardElementLayout(left = 510, top = 170),
+    targets = listOf<CardMaskableElement>(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.CARDHOLDER,
+    ),
+    template = "Card number: %s\nName: %s",
+    contentDescription = R.string.copy_to_clipboard_image_content_description
+)
+```
+- provide icons that will be used for desired buttons, use desired sizes and colors
+```kotlin
+imageDefault = R.drawable.ic_reveal_details
+imageSelected = R.drawable.ic_hide_details
+```
+
+Other configurations is also available within `CardElementsConfig`
+
 ### Display a fragment
-Pass non null `elementsColor` to update color of card elements, if null - default color will be used
+
 ```kotlin
 val cardDetailsFragment = CardDetailsFragment.newInstance(
     niInput,
@@ -199,47 +253,6 @@ The UI of the activity should offer a container described here by R.id.card_cont
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
-
-### Customization of card details UI - CardElementsConfig
-Refer to `CardUsageDemoActivity.kt` or to the `config` parameter for `niCardManagementForms.displayCardDetailsForm` in `MainActivity.kt` with example
-
-```kotlin
-val config = CardElementsConfig.default(
-    copyTargets = listOf<CardMaskableElement>(
-        CardMaskableElement.CARDNUMBER,
-        CardMaskableElement.CARDHOLDER,
-    ),
-    copyTemplate = "Card number: %s\nName: %s"
-)
-```
-
-This will give you
-- default positioning for each UI element (labels / clearValues / buttons ...), use `layout` info of desired element to draw it in desired position
-```kotlin
-// attach element to left and top edges of container with desired offsets
-CardElementLayout(left = 30, top = 130)
-```
-- provide desired appearance style to update font/color... of desired element 
-`appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel`
-- configure copy action behaviour - define card details values and format that will be passed to clipboard
-```kotlin
-copyButton = CardElementCopyButton( // use null to hide button
-    imageDefault = R.drawable.ic_baseline_content_copy,
-    layout = CardElementLayout(left = 510, top = 170),
-    targets = listOf<CardMaskableElement>(
-        CardMaskableElement.CARDNUMBER,
-        CardMaskableElement.CARDHOLDER,
-    ),
-    template = "Card number: %s\nName: %s",
-    contentDescription = R.string.copy_to_clipboard_image_content_description
-)
-```
-- provide icons that will be used for desired buttons, use desired sizes and colors
-```kotlin
-imageDefault = R.drawable.ic_reveal_details
-imageSelected = R.drawable.ic_hide_details
-```
-
 
 ### Verify PIN from an activity
 ```kotlin
