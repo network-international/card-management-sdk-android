@@ -96,6 +96,7 @@ class CardDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[CardDetailsFragmentViewModel::class.java]
         _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_card_details, container, false)
         binding.lifecycleOwner = this
+        //binding.viewModel = viewModel
         return binding.root
     }
 
