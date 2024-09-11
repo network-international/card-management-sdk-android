@@ -20,19 +20,19 @@ data class CardElementLayout(
 data class CardElementCopyButton(
     @DrawableRes var imageDefault: Int,
     @DrawableRes var imageSelected: Int? = null,
-    val contentDescription: CardElementText? = null,
-    val layout: CardElementLayout,
-    val targets: List<CardMaskableElement>,
-    val template: String? = null
+    var contentDescription: CardElementText? = null,
+    var layout: CardElementLayout,
+    var targets: List<CardMaskableElement>,
+    var template: String? = null
 ): Serializable
 
 data class CardElementMaskButton(
     @DrawableRes var imageDefault: Int,
     @DrawableRes var imageSelected: Int? = null,
-    val contentDescription: CardElementText? = null,
-    val layout: CardElementLayout,
-    val targets: List<CardMaskableElement>,
-    val template: String? = null
+    var contentDescription: CardElementText? = null,
+    var layout: CardElementLayout,
+    var targets: List<CardMaskableElement>,
+    var template: String? = null
 ): Serializable
 
 sealed class CardElementText: Serializable {
@@ -41,46 +41,46 @@ sealed class CardElementText: Serializable {
 }
 
 data class CardElementLabel(
-    val text: CardElementText, // use either StringRes or String
-    @StyleRes val appearanceResId: Int? = null, // color, font, ... use null for default
-    val layout: CardElementLayout
+    var text: CardElementText, // use either StringRes or String
+    @StyleRes var appearanceResId: Int? = null, // color, font, ... use null for default
+    var layout: CardElementLayout
 ): Serializable
 
 data class CardElementDetails(
-    val layout: CardElementLayout,
-    @StyleRes val appearanceResId: Int? // color, font, ... use null for default
+    var layout: CardElementLayout,
+    @StyleRes var appearanceResId: Int? // color, font, ... use null for default
 ): Serializable
 
 data class CardProgressBarConfig(
-    val paddingFromCenter: CardElementLayout? = null,
-    @ColorRes val color: Int? = null, // use null for default
+    var paddingFromCenter: CardElementLayout? = null,
+    @ColorRes var color: Int? = null, // use null for default
 ): Serializable
 
 // TODO: define interface and several implementations - label / details / button and use suitable configs there
 // example: ConstraintInstructions
 data class CardElementsItemConfig(
-    val label: CardElementLabel? = null,
-    val details: CardElementDetails,
+    var label: CardElementLabel? = null,
+    var details: CardElementDetails,
     var copyButton: CardElementCopyButton? = null,
     var maskButton: CardElementMaskButton? = null,
 ): Serializable
 
 data class CardElementsConfig(
-    val cardNumber: CardElementsItemConfig? = null,
-    val expiry: CardElementsItemConfig? = null,
-    val cvv: CardElementsItemConfig? = null,
-    val cardHolder: CardElementsItemConfig? = null,
+    var cardNumber: CardElementsItemConfig? = null,
+    var expiry: CardElementsItemConfig? = null,
+    var cvv: CardElementsItemConfig? = null,
+    var cardHolder: CardElementsItemConfig? = null,
     // common mask button - toggle all elements together
-    val commonMaskButton: CardElementMaskButton? = null, // common show details button
+    var commonMaskButton: CardElementMaskButton? = null, // common show details button
     // define initial state of masking
-    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
+    var shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
         CardMaskableElement.CARDNUMBER,
         CardMaskableElement.EXPIRY,
         CardMaskableElement.CVV,
         CardMaskableElement.CARDHOLDER,
     ),
     // if not null - standard progressIndicator shows progress
-    val progressBar: CardProgressBarConfig? = null,
+    var progressBar: CardProgressBarConfig? = null,
 ): Serializable {
     companion object {
         fun default(copyTargets: List<CardMaskableElement> = listOf(CardMaskableElement.CARDNUMBER), copyTemplate: String? = null) = CardElementsConfig(
