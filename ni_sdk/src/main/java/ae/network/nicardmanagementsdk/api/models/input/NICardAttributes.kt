@@ -20,7 +20,7 @@ data class CardElementLayout(
 data class CardElementCopyButton(
     @DrawableRes var imageDefault: Int,
     @DrawableRes var imageSelected: Int? = null,
-    @StringRes val contentDescription: Int? = null,
+    val contentDescription: CardElementText? = null,
     val layout: CardElementLayout,
     val targets: List<CardMaskableElement>,
     val template: String? = null
@@ -29,21 +29,24 @@ data class CardElementCopyButton(
 data class CardElementMaskButton(
     @DrawableRes var imageDefault: Int,
     @DrawableRes var imageSelected: Int? = null,
-    @StringRes val contentDescription: Int? = null,
+    val contentDescription: CardElementText? = null,
     val layout: CardElementLayout,
     val targets: List<CardMaskableElement>,
     val template: String? = null
 ): Serializable
 
+sealed class CardElementText {
+    class Int(@StringRes val value: kotlin.Int): CardElementText()
+    class String(val value: kotlin.String): CardElementText()
+}
+
 data class CardElementLabel(
-    @StringRes val text: Int,
-    // @ColorRes val color: Int? = null, // use null for default
+    val text: CardElementText, // use either StringRes or String
     @StyleRes val appearanceResId: Int? = null, // color, font, ... use null for default
     val layout: CardElementLayout
 ): Serializable
 
 data class CardElementDetails(
-    // @ColorRes val color: Int? = null, // use null for default
     val layout: CardElementLayout,
     @StyleRes val appearanceResId: Int? // color, font, ... use null for default
 ): Serializable
@@ -83,7 +86,7 @@ data class CardElementsConfig(
         fun default(copyTargets: List<CardMaskableElement> = listOf(CardMaskableElement.CARDNUMBER), copyTemplate: String? = null) = CardElementsConfig(
             cardNumber = CardElementsItemConfig(
                 label = CardElementLabel(
-                    text = R.string.card_number_en, // pass string from desired language
+                    text = CardElementText.Int(R.string.card_number_en), // pass string from desired language
                     layout = CardElementLayout(left = 10, top = 47),
                     appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel
                 ),
@@ -96,13 +99,13 @@ data class CardElementsConfig(
                     layout = CardElementLayout(left = 185, top = 62),
                     targets = copyTargets,
                     template = copyTemplate,
-                    contentDescription = R.string.copy_to_clipboard_image_content_description
+                    contentDescription = CardElementText.Int(R.string.copy_to_clipboard_image_content_description)
                 ),
                 maskButton = null,
             ),
             expiry = CardElementsItemConfig(
                 label = CardElementLabel(
-                    text = R.string.card_expiry_en, // pass string from desired language
+                    text = CardElementText.Int(R.string.card_expiry_en), // pass string from desired language
                     layout = CardElementLayout(left = 10, top = 87),
                     appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardExpiryLabel
                 ),
@@ -115,7 +118,7 @@ data class CardElementsConfig(
             ),
             cvv = CardElementsItemConfig(
                 label = CardElementLabel(
-                    text = R.string.card_cvv_en, // pass string from desired language
+                    text = CardElementText.Int(R.string.card_cvv_en), // pass string from desired language
                     layout = CardElementLayout(left = 73, top = 87),
                     appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardCvvLabel
                 ),
@@ -128,7 +131,7 @@ data class CardElementsConfig(
             ),
             cardHolder = CardElementsItemConfig(
                 label = CardElementLabel(
-                    text = R.string.card_name_en, // pass string from desired language
+                    text = CardElementText.Int(R.string.card_name_en), // pass string from desired language
                     layout = CardElementLayout(left = 10, top = 131),
                     appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardHolderLabel
                 ),
@@ -142,7 +145,7 @@ data class CardElementsConfig(
             commonMaskButton = CardElementMaskButton(
                 imageDefault = R.drawable.ic_reveal_details,
                 imageSelected = R.drawable.ic_hide_details,
-                contentDescription = R.string.credentials_toggle_image_content_description,
+                contentDescription = CardElementText.Int(R.string.credentials_toggle_image_content_description),
                 layout = CardElementLayout(left = 127, top = 102),
                 targets = CardMaskableElementEntries.all() // Chose which elements can be toggled by this button `CardMaskableElementEntries.all()`
             ),
@@ -159,7 +162,7 @@ data class CardElementsConfig(
 }
 
 data class CardPresenterElementConfig(
-    @StringRes val labelResource: Int? = null,
+    val text: CardElementText? = null,
     @StyleRes val titleAppearanceResId: Int? = null,
     @StyleRes val dataAppearanceResId: Int? = null,
 ): Serializable
@@ -174,22 +177,22 @@ data class CardPresenterConfig(
     companion object {
         fun default() = CardPresenterConfig(
             cardNumber = CardPresenterElementConfig(
-                labelResource = R.string.card_number_en,
+                text = CardElementText.Int(R.string.card_number_en),
                 titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel,
                 dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberData
             ),
             expiry = CardPresenterElementConfig(
-                labelResource = R.string.card_expiry_en,
+                text = CardElementText.Int(R.string.card_expiry_en),
                 titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardExpiryLabel,
                 dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardExpiryData
             ),
             cvv = CardPresenterElementConfig(
-                labelResource = R.string.card_cvv_en,
+                text = CardElementText.Int(R.string.card_cvv_en),
                 titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardCvvLabel,
                 dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardCvvData
             ),
             cardHolder = CardPresenterElementConfig(
-                labelResource = R.string.card_name_en,
+                text = CardElementText.Int(R.string.card_name_en),
                 titleAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardHolderLabel,
                 dataAppearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardHolderData
             ),

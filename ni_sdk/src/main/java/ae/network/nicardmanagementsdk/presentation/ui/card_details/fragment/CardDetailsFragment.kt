@@ -7,8 +7,9 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setCardElementText
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setConstraints
-import ae.network.nicardmanagementsdk.presentation.extension_methods.setContentDescrId
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setContentDescrText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.ClipboardManager
 import android.content.Context
@@ -158,7 +159,7 @@ class CardDetailsFragment : Fragment() {
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
                 elm.label?.let {
-                    binding.cardHolderNameLabelTextView.setText(it.text)
+                    binding.cardHolderNameLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cardHolderNameLabelTextView.setTextAppearance(it) }
                     binding.cardHolderNameLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -170,18 +171,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCardHolderNameImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCardHolderNameImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCardHolderNameImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCardHolderNameImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCardHolderDetailsImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCardHolderDetailsImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCardHolderDetailsImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCardHolderDetailsImageView.setContentDescrText(it) }
                 }
             }
             cnf.cardNumber?.let { elm ->
                 elm.label?.let {
-                    binding.cardNumberLabelTextView.setText(it.text)
+                    binding.cardNumberLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cardNumberLabelTextView.setTextAppearance(it) }
                     binding.cardNumberLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -193,18 +194,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCardNumberImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCardNumberImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCardNumberImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCardNumberImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCardNumberDetailsImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCardNumberDetailsImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCardNumberDetailsImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCardNumberDetailsImageView.setContentDescrText(it) }
                 }
             }
             cnf.cvv?.let { elm ->
                 elm.label?.let {
-                    binding.cvvCodeLabelTextView.setText(it.text)
+                    binding.cvvCodeLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.cvvCodeLabelTextView.setTextAppearance(it) }
                     binding.cvvCodeLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -216,18 +217,18 @@ class CardDetailsFragment : Fragment() {
                     binding.copyCVVImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyCVVImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyCVVImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyCVVImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowCVVImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowCVVImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowCVVImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowCVVImageView.setContentDescrText(it) }
                 }
             }
             cnf.expiry?.let { elm ->
                 elm.label?.let {
-                    binding.expiryDateLabelTextView.setText(it.text)
+                    binding.expiryDateLabelTextView.setCardElementText(it.text)
                     it.appearanceResId?.let { binding.expiryDateLabelTextView.setTextAppearance(it) }
                     binding.expiryDateLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -239,20 +240,20 @@ class CardDetailsFragment : Fragment() {
                     binding.copyExpiryImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.copyExpiryImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.copyExpiryImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.copyExpiryImageView.setContentDescrText(it) }
                 }
                 elm.maskButton?.let {
                     binding.hideShowExpiryImageViewHolder.setConstraints(it.layout, binding.constraintLayout)
                     // selected image could be assigned in setButtonsVisibility
                     binding.hideShowExpiryImageView.setImageResource(it.imageDefault)
-                    it.contentDescription?.let { binding.hideShowExpiryImageView.setContentDescrId(it) }
+                    it.contentDescription?.let { binding.hideShowExpiryImageView.setContentDescrText(it) }
                 }
             }
             cnf.commonMaskButton?.let { elm ->
                 binding.hideShowDetailsImageViewHolder.setConstraints(elm.layout, binding.constraintLayout)
                 // selected image could be assigned in setButtonsVisibility
                 binding.hideShowDetailsImageView.setImageResource(elm.imageDefault)
-                elm.contentDescription?.let { binding.hideShowDetailsImageView.setContentDescrId(it) }
+                elm.contentDescription?.let { binding.hideShowDetailsImageView.setContentDescrText(it) }
             }
             cnf.shouldBeMaskedDefault.let { targets ->
                 viewModel.shouldBeMaskedDefault = targets
