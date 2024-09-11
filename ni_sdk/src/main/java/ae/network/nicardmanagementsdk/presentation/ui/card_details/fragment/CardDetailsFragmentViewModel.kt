@@ -19,6 +19,7 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
@@ -44,32 +45,20 @@ class CardMaskableElementEntries {
 class CardDetailsFragmentViewModel(
     private val getCardDetailsCoreComponent: IGetCardDetailsCore,
     private val connectionLiveData: IConnection<ConnectionModel>
-) : BaseViewModel() {
+) : ViewModel() {
 
     private lateinit var cardDetailsClear: CardDetailsModel
     private lateinit var cardDetailsMasked: CardDetailsModel
     private lateinit var clearPanNonSpaced: String
 
-    val cardMaskableElementEntries: List<CardMaskableElement>
-        get() = listOf(
-            CardMaskableElement.CARDNUMBER,
-            CardMaskableElement.EXPIRY,
-            CardMaskableElement.CVV,
-            CardMaskableElement.CARDHOLDER,
-        )
-    val getClearPanNonSpaced: String
-        get() = clearPanNonSpaced
+    val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
+    val copiedTextMessageSingleLiveEvent = SingleLiveEvent<Int>()
 
-    val getClearCardHolderName: String
-        get() = cardDetailsClear.cardholderName.toString()
-    val getClearCVV: String
-        get() = cardDetailsClear.cVV2.toString()
-    val getClearExpiry: String
-        get() = cardDetailsClear.expiry.toString()
-
+    val maskedElementsLiveData = MutableLiveData<List<CardMaskableElement>>()
     var shouldBeMaskedDefault: List<CardMaskableElement> = CardMaskableElementEntries.all().toMutableList()
-    val showMaskedLiveData = MutableLiveData<List<CardMaskableElement>>()
-    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(showMaskedLiveData) {
+
+
+    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(maskedElementsLiveData) {
         it?.let {
             if (it.containsAll(CardMaskableElementEntries.all())) {
                 cardDetailsMasked
@@ -86,11 +75,47 @@ class CardDetailsFragmentViewModel(
         }
     }
 
-    val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
-    val copiedTextMessageSingleLiveEvent = SingleLiveEvent<Int>()
+    fun hideShowDetails(targets: List<CardMaskableElement>) {
+        val currentMasked = maskedElementsLiveData.value ?: return
+        var anyTargetCurrentlyMasked = false
+        for (target in targets) {
+            if (currentMasked.contains(target)) {
+                anyTargetCurrentlyMasked = true
+                break
+            }
+        }
+        val filtered = currentMasked.filter { !targets.contains(it) }
+        if (anyTargetCurrentlyMasked) { // unmask all targets
+            maskedElementsLiveData.value = filtered
+        } else { // mask all targets
+            maskedElementsLiveData.value = (targets + filtered)
+        }
+    }
 
-    fun copyToClipboard(text: String, clipboardManager: ClipboardManager, @StringRes resId: Int) {
-        val clip: ClipData = ClipData.newPlainText("", text)
+    fun copyToClipboard(targets: List<CardMaskableElement>, template: String?, clipboardManager: ClipboardManager, @StringRes resId: Int) {
+        var values = listOf<String>()
+        for (target in targets) {
+            values = when(target){
+                CardMaskableElement.CARDNUMBER -> {
+                    values + clearPanNonSpaced
+                }
+
+                CardMaskableElement.CARDHOLDER -> {
+                    values + cardDetailsClear.cardholderName.toString()
+                }
+
+                CardMaskableElement.EXPIRY -> {
+                    values + cardDetailsClear.expiry.toString()
+                }
+
+                CardMaskableElement.CVV -> {
+                    values + cardDetailsClear.cVV2.toString()
+                }
+            }
+        }
+        val fallbackTemplate = values.map { "%s" }.joinToString(separator = "\n")
+        val result = String.format(template ?: fallbackTemplate, *values.toTypedArray())
+        val clip: ClipData = ClipData.newPlainText("", result)
         clipboardManager.setPrimaryClip(clip)
 
         // Only show a toast for Android 12 and lower.
@@ -99,17 +124,18 @@ class CardDetailsFragmentViewModel(
         }
     }
 
-    fun getData() {
+    fun fetchDataInitially() {
+        if (maskedElementsLiveData.value != null) {
+            return
+        }
         viewModelScope.launch {
             if (connectionLiveData.hasInternetConnectivity) {
-                isVisibleProgressBar.value = true
                 val result = getCardDetailsCoreComponent.makeNetworkRequest()
-                isVisibleProgressBar.value = false
                 result.details?.let {
                     cardDetailsClear = it.asClearViewModel()
                     cardDetailsMasked = it.asMaskedViewModel()
                     clearPanNonSpaced = it.asClearPanNonSpaced()
-                    showMaskedLiveData.value = shouldBeMaskedDefault
+                    maskedElementsLiveData.value = shouldBeMaskedDefault
                 }
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
             }

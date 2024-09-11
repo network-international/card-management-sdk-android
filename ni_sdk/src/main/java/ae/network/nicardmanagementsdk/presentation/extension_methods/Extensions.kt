@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.extension_methods
 
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
+import ae.network.nicardmanagementsdk.api.models.input.CardElementText
 import ae.network.nicardmanagementsdk.api.models.input.UIFont
 import ae.network.nicardmanagementsdk.helpers.ConnectConstraint
 import ae.network.nicardmanagementsdk.helpers.ConstraintInstructions
@@ -168,6 +169,16 @@ fun TextView.setFont(context: Context, uiFont: UIFont?) {
     }
 }
 
-fun ImageView.setContentDescrId(@StringRes res: Int) {
-    this.contentDescription = this.context.getString(res)
+fun ImageView.setContentDescrText(data: CardElementText) {
+    when(data) {
+        is CardElementText.Int -> this.context.getString(data.value)
+        is CardElementText.String -> this.contentDescription = data.value
+    }
+}
+
+fun TextView.setCardElementText(data: CardElementText) {
+    when(data) {
+        is CardElementText.Int -> this.setText(data.value)
+        is CardElementText.String -> this.text = data.value
+    }
 }
