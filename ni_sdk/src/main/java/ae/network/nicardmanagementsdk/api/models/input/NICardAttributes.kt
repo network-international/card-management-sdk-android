@@ -35,7 +35,7 @@ data class CardElementMaskButton(
     val template: String? = null
 ): Serializable
 
-sealed class CardElementText {
+sealed class CardElementText: Serializable {
     class Int(@StringRes val value: kotlin.Int): CardElementText()
     class String(val value: kotlin.String): CardElementText()
 }
