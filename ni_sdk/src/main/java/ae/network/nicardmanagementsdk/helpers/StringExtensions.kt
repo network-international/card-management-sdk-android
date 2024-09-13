@@ -19,6 +19,8 @@ fun String.toStarMaskedString(range: Int): String {
 }
 
 fun String.toSpacedPAN(range: Int = 1): String {
+    if (this.length < 16) return this
+
     val spaces = List(range){" "}.joinToString(separator = "")
     val builder = StringBuilder()
     builder.append(this.substring(0..3))
@@ -30,3 +32,7 @@ fun String.toSpacedPAN(range: Int = 1): String {
     builder.append(this.substring(12..15))
     return builder.toString()
 }
+
+fun String.toDateString(): String =
+    if (this.length < 4) this
+    else "${this.substring(2..3)}/${this.substring(0..1)}"
