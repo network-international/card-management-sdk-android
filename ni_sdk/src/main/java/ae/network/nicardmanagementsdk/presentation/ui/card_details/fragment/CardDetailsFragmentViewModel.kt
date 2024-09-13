@@ -1,6 +1,5 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
@@ -11,15 +10,14 @@ import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
 import ae.network.nicardmanagementsdk.network.utils.IConnection
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
@@ -58,22 +56,23 @@ class CardDetailsFragmentViewModel(
     var shouldBeMaskedDefault: List<CardMaskableElement> = CardMaskableElementEntries.all().toMutableList()
 
 
-    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(maskedElementsLiveData) {
-        it?.let {
-            if (it.containsAll(CardMaskableElementEntries.all())) {
-                cardDetailsMasked
-            } else if (it.isEmpty()) {
-                cardDetailsClear
-            } else {
-                CardDetailsModel(
-                    pan = if(it.contains(CardMaskableElement.CARDNUMBER)) cardDetailsMasked.pan else cardDetailsClear.pan,
-                    expiry = if(it.contains(CardMaskableElement.EXPIRY)) cardDetailsMasked.expiry else cardDetailsClear.expiry,
-                    cVV2 = if(it.contains(CardMaskableElement.CVV)) cardDetailsMasked.cVV2 else cardDetailsClear.cVV2,
-                    cardholderName = if(it.contains(CardMaskableElement.CARDHOLDER)) cardDetailsMasked.cardholderName else cardDetailsClear.cardholderName
-                )
+    val cardDetailsLiveData: LiveData<CardDetailsModel>
+        get() = maskedElementsLiveData.map {
+            it.let {
+                if (it.containsAll(CardMaskableElementEntries.all())) {
+                    cardDetailsMasked
+                } else if (it.isEmpty()) {
+                    cardDetailsClear
+                } else {
+                    CardDetailsModel(
+                        pan = if(it.contains(CardMaskableElement.CARDNUMBER)) cardDetailsMasked.pan else cardDetailsClear.pan,
+                        expiry = if(it.contains(CardMaskableElement.EXPIRY)) cardDetailsMasked.expiry else cardDetailsClear.expiry,
+                        cVV2 = if(it.contains(CardMaskableElement.CVV)) cardDetailsMasked.cVV2 else cardDetailsClear.cVV2,
+                        cardholderName = if(it.contains(CardMaskableElement.CARDHOLDER)) cardDetailsMasked.cardholderName else cardDetailsClear.cardholderName
+                    )
+                }
             }
         }
-    }
 
     fun hideShowDetails(targets: List<CardMaskableElement>) {
         val currentMasked = maskedElementsLiveData.value ?: return

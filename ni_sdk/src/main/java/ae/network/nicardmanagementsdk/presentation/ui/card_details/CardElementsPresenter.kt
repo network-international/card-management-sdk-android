@@ -51,6 +51,9 @@ class CardElement(
     @StyleRes private val dataAppearanceResId: Int?,
     private val titleText: CardElementText?,
 ) {
+
+    private var _lastId: Int = 10000
+
     val title: View by lazy {
         makeTextView(titleAppearanceResId, context, titleText)
     }
@@ -71,7 +74,10 @@ class CardElement(
 
     private fun makeTextView(@StyleRes textAppearance: Int?, context: Context, text: CardElementText?): TextView {
         val textView = TextView(context)
-        textView.id = ViewCompat.generateViewId() // MUST have valid id for constraints
+        //textView.id = ViewCompat.generateViewId() // MUST have valid id for constraints
+        textView.id = _lastId
+        _lastId += 1
+
         textView.layoutParams = makeLayoutParams()
         textAppearance?.let { textView.setTextAppearance(it) }
         text?.let { textView.setCardElementText(it) }

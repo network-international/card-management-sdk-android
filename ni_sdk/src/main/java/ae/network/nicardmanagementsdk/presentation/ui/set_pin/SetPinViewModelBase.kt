@@ -7,7 +7,7 @@ import ae.network.nicardmanagementsdk.presentation.models.PinBulletModel
 import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 
 abstract class SetPinViewModelBase : BaseViewModel() {
 
@@ -39,7 +39,7 @@ abstract class SetPinViewModelBase : BaseViewModel() {
     private val _bulletItemsLiveData = MutableLiveData<List<PinBulletModel>>()
     val bulletItemsLiveData: LiveData<List<PinBulletModel>> = _bulletItemsLiveData
 
-    val validationSendButton : LiveData<Boolean> = Transformations.map(_inputStringLiveData) {
+    val validationSendButton : LiveData<Boolean> = _inputStringLiveData.map {
         when (it.length) {
             in minPinSize..maxPinSize -> true
             else ->  false
