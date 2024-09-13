@@ -14,7 +14,7 @@ data class NIErrorResponse(
 
                 is HttpException -> {
                     NISDKErrors.NETWORK_ERROR.also {
-                        val localizedMessage = e.localizedMessage as String
+                        //val localizedMessage = e.localizedMessage as String
                         val errorBodyMessage = e.response()?.errorBody()?.string()?.let { s ->
                             "${e.localizedMessage} : $s"
                         } ?: ""

@@ -103,12 +103,10 @@ abstract class ViewPinFragment : Fragment() {
 
                 timer = object : CountDownTimer(startTime!!, COUNTDOWN_INTERVAL) {
                     override fun onTick(millisUntilFinished: Long) {
-                        if (pinViewBinding != null) {
-                            pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
-                            val secondsToInt = (millisUntilFinished / 1000).toInt()
-                            pinViewBinding.countdownTimerTextView.text =
-                                setTimerText(secondsToInt)
-                        }
+                        pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
+                        val secondsToInt = (millisUntilFinished / 1000).toInt()
+                        pinViewBinding.countdownTimerTextView.text =
+                            setTimerText(secondsToInt)
                     }
 
                     override fun onFinish() {
