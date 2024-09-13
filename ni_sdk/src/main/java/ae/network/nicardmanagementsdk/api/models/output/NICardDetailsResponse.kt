@@ -1,5 +1,6 @@
 package ae.network.nicardmanagementsdk.api.models.output
 
+import ae.network.nicardmanagementsdk.helpers.toDateString
 import ae.network.nicardmanagementsdk.helpers.toSpacedPAN
 import ae.network.nicardmanagementsdk.helpers.toStarMaskedString
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
@@ -23,7 +24,7 @@ data class CardDetailsResponse(
 fun NICardDetailsResponse.asClearViewModel(): CardDetailsModel {
     return CardDetailsModel(
         clearPan?.toSpacedPAN(),
-        "${expiry?.substring(2..3)}/${expiry?.substring(0..1)}",
+        expiry?.toDateString(),
         clearCVV2,
         clearCardholderName?.trim()
     )
