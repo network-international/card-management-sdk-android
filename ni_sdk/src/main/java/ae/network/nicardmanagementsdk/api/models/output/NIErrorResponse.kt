@@ -14,13 +14,19 @@ data class NIErrorResponse(
 
                 is HttpException -> {
                     NISDKErrors.NETWORK_ERROR.also {
-                        val localizedMessage = e.localizedMessage as String
                         val errorBodyMessage = e.response()?.errorBody()?.string()?.let { s ->
                             "${e.localizedMessage} : $s"
                         } ?: ""
-                        val startIndex = errorBodyMessage.indexOf("{")
-                        val errorBodyMessageWithoutHttpCode = errorBodyMessage.substring(startIndex)
-                        it.value = errorBodyMessageWithoutHttpCode
+                        
+                        val startIndex = errorBodyMessage.indexOf("{") // -1 if not found
+                        if (startIndex > 0 && errorBodyMessage.length > startIndex) {
+                            val errorBodyMessageWithoutHttpCode = errorBodyMessage.substring(startIndex)
+                            it.value = errorBodyMessageWithoutHttpCode
+                        } else if (errorBodyMessage.isNotEmpty()){
+                            it.value = errorBodyMessage
+                        } else {
+                            it.value = e.localizedMessage as String
+                        }
                     }
                 }
 
