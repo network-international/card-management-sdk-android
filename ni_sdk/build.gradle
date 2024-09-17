@@ -32,12 +32,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
     // Comment the publishing block for local maven publishing
     publishing {
@@ -84,7 +84,7 @@ publishing {
         release(MavenPublication) {
             groupId = 'com.github.network-international'
             artifactId = 'card-management-sdk-android'
-            version = '2.0.3'
+            version = '2.0.5'
             afterEvaluate {
                 from components.release
             }
