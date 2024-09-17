@@ -143,13 +143,4 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
         putSerializable(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING, padding)
     }
-
-    private fun setLanguage(language: String) {
-        val res: Resources = resources
-        val metrics = res.displayMetrics
-        val config = res.configuration
-        config.setLocale(Locale(language))
-        res.updateConfiguration(config, metrics)
-        onConfigurationChanged(config)
-    }
 }
