@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="custom_component_used_from_host_activity">المكون المخصص المستخدم من النشاط</string>
+    <string name="custom_component_used_from_host_fragment">مكون مخصص</string>
+
+    // Main screen entries labels
+    <string name="card_identifier_id_txt">معرف معرف البطاقة</string>
+    <string name="card_identifier_type_txt">نوع معرف البطاقة</string>
+    <string name="root_url_txt">عنوان URL الجذر</string>
+    <string name="token_txt">رمز مميز</string>
+    <string name="bank_code_txt">رمز بنكي</string>
+    <string name="pin_length_txt">طول رقم التعريف الشخصي</string>
+</resources>
