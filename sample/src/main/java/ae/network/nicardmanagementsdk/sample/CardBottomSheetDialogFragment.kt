@@ -56,24 +56,10 @@ class CardBottomSheetDialogFragment : BottomSheetDialogFragment(), CardDetailsFr
         _binding =
             CardDetailsDialogBinding.inflate(inflater, container, false)
 
-        // The first method where it is safe to access the view lifecycle
-        // Consider using getViewLifecycleOwnerLiveData() or FragmentTransaction. runOnCommit(Runnable)
-        // to receive a callback for when the Fragment's view lifecycle is available.
-//        viewLifecycleOwnerLiveData.observe(this) { owner ->
-//            print("[viewLifecycleOwnerLiveData]")
-//            print(owner)
-//            Log.d("[viewLifecycleOwnerLiveData]", owner.toString())
-//        }
-
-        //binding.lifecycleOwner = this
         val presenterConfig = CardPresenterConfig.default()
         presenterConfig.shouldBeMaskedDefault = maskableTargets
-        //val lifecycleOwner = requireContext().applicationContext
-        //viewLifecycleOwner
         presenter = CardElementsPresenter.newInstance(requireContext(), this, niInput, presenterConfig)
-
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -90,8 +76,10 @@ class CardBottomSheetDialogFragment : BottomSheetDialogFragment(), CardDetailsFr
         presenter.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
             binding.customProgressBarHolder.visibility = View.GONE
             successErrorResponse?.let {
-                print("[Presenter] card request completed")
-                print(it)
+                it.isError?.let {
+                    // it.errorMessage
+                    Toast.makeText(requireContext(), "Got Error", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 
@@ -130,12 +118,10 @@ class CardBottomSheetDialogFragment : BottomSheetDialogFragment(), CardDetailsFr
 
     companion object {
         fun newInstance(
-            input: NIInput,
-            config: CardElementsConfig
+            input: NIInput
         ) = CardBottomSheetDialogFragment().apply {
             arguments = Bundle().apply {
                 putSerializable(Extra.EXTRA_NI_INPUT, input)
-                putSerializable(Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG, config)
             }
         }
 
