@@ -70,26 +70,28 @@
         android:id="@+id/btnCopy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:paddingStart="8dp"
         android:contentDescription="@string/copy_to_clipboard_image_content_description"
         android:src="@drawable/ic_baseline_content_copy"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/numberLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/numberLabel"
+        tools:ignore="RtlSymmetry" />
 
     <!--Use your hide/show button, optionally change image from code-->
     <ImageView
         android:id="@+id/btnToggleCredentials"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:paddingStart="8dp"
         android:contentDescription="@string/credentials_toggle_image_content_description"
         android:src="@drawable/ic_eye_show_buttonimg_red"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/cvvLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/cvvLabel"
+        tools:ignore="RtlSymmetry" />
 
     <!--    Provide containers for card values, card labels can be ignored or use your own labels-->
     <FrameLayout android:id="@+id/cardNumberValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnCopy"
         app:layout_constraintBottom_toBottomOf="@+id/numberLabel"/>
     <FrameLayout android:id="@+id/cardHolderValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/expiryLabel"/>
     <FrameLayout android:id="@+id/cardCvvValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@+id/btnToggleCredentials"
+        app:layout_constraintEnd_toStartOf="@+id/btnToggleCredentials"
         app:layout_constraintBottom_toBottomOf="@+id/cvvLabel"/>
 
 <!--    Use custom progress indicator if needed, replace it to shimmering for example-->

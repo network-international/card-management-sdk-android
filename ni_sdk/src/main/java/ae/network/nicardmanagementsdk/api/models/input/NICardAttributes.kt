@@ -162,16 +162,16 @@ data class CardElementsConfig(
 }
 
 data class CardPresenterElementConfig(
-    val text: CardElementText? = null,
-    @StyleRes val titleAppearanceResId: Int? = null,
-    @StyleRes val dataAppearanceResId: Int? = null,
+    var text: CardElementText? = null,
+    @StyleRes var titleAppearanceResId: Int? = null,
+    @StyleRes var dataAppearanceResId: Int? = null,
 ): Serializable
 
 data class CardPresenterConfig(
-    val cardNumber: CardPresenterElementConfig?,
-    val expiry: CardPresenterElementConfig?,
-    val cvv: CardPresenterElementConfig?,
-    val cardHolder: CardPresenterElementConfig?,
+    var cardNumber: CardPresenterElementConfig?,
+    var expiry: CardPresenterElementConfig?,
+    var cvv: CardPresenterElementConfig?,
+    var cardHolder: CardPresenterElementConfig?,
     var shouldBeMaskedDefault: List<CardMaskableElement>
 ): Serializable {
     companion object {
