@@ -43,7 +43,7 @@ class ConnectionLiveData(context: Context) : MutableLiveData<ConnectionModel>(),
 
     private val connectivityManager: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     private val validNetworks: MutableList<Network> = mutableListOf()
-    private var wasConnectedBefore: Boolean = true
+    private var wasConnectedBefore: Boolean = false
     private var isFirstTimeRunning: Boolean = true
 
     override val hasInternetConnectivity: Boolean

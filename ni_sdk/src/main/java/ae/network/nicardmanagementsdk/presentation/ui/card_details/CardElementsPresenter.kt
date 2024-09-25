@@ -7,6 +7,8 @@ import ae.network.nicardmanagementsdk.api.models.input.CardElementText
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.CardPresenterConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
+import ae.network.nicardmanagementsdk.api.models.output.NISDKErrors
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
@@ -30,6 +32,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -92,17 +95,16 @@ class CardElementsPresenter(
             config: CardPresenterConfig
         ) = CardElementsPresenter(context, lifecycleOwner, niInput, config)
     }
-    private val getCardDetailsCoreComponent: IGetCardDetailsCore = GetCardDetailsCoreComponent.fromFactory(niInput)
-    private val connectionLiveData: IConnection<ConnectionModel> = ConnectionLiveData(context)
 
     val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
     val copiedTextMessageSingleLiveEvent = SingleLiveEvent<Int>()
+    private val connectionLiveData: IConnection<ConnectionModel> = ConnectionLiveData(context)
 
     private lateinit var cardDetailsClear: CardDetailsModel
     private lateinit var cardDetailsMasked: CardDetailsModel
     private lateinit var clearPanNonSpaced: String
 
-    var isFetched = false
+    var isFetchRequested = false
         private set
 
     val cardNumber: CardElement by lazy {
@@ -119,30 +121,50 @@ class CardElementsPresenter(
     }
 
     fun fetch() {
-        lifecycleOwner.lifecycleScope.launch {
-            if (connectionLiveData.hasInternetConnectivity) {
-                val result = getCardDetailsCoreComponent.makeNetworkRequest()
-                result.details?.let {
-                    cardDetailsClear = it.asClearViewModel()
-                    cardDetailsMasked = it.asMaskedViewModel()
-                    clearPanNonSpaced = it.asClearPanNonSpaced()
-
-                    isFetched = true
-                    toggleDetails(false, CardMaskableElementEntries.all()) // unmask all
-                    toggleDetails(true, config.shouldBeMaskedDefault) // mask selected
+        if (connectionLiveData.hasInternetConnectivity) {
+            isFetchRequested = true
+            fetchOnInternetConnectivity()
+        } else {
+            isFetchRequested = false
+            // wait for the first network validations
+            connectionLiveData.observe(lifecycleOwner) { model ->
+                if (!isFetchRequested && model != null && model.isConnected) {
+                    isFetchRequested = true
+                    fetchOnInternetConnectivity()
                 }
-                onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
             }
         }
-//        fragment.lifecycleScope.launch(context = Dispatchers.IO)
-//        CoroutineScope(Dispatchers.IO).launch
-//        withContext(Dispatchers.Default) { // same as ViewModelScope
-//
-//        }
+    }
+    /// connectionLiveData.hasInternetConnectivity
+    private fun fetchOnInternetConnectivity() {
+        lifecycleOwner.lifecycleScope.launch {
+            if (!connectionLiveData.hasInternetConnectivity) {
+                onResultSingleLiveEvent.value = SuccessErrorResponse(
+                    isSuccess = null,
+                    isError = NIErrorResponse(error = NISDKErrors.NETWORK_ERROR)
+                )
+                isFetchRequested = false
+                return@launch
+            }
+
+            val getCardDetailsCoreComponent: IGetCardDetailsCore = GetCardDetailsCoreComponent.fromFactory(niInput)
+            val result = getCardDetailsCoreComponent.makeNetworkRequest()
+            result.details?.let {
+                cardDetailsClear = it.asClearViewModel()
+                cardDetailsMasked = it.asMaskedViewModel()
+                clearPanNonSpaced = it.asClearPanNonSpaced()
+                toggleDetails(false, CardMaskableElementEntries.all()) // unmask all
+                toggleDetails(true, config.shouldBeMaskedDefault) // mask selected
+            }
+            if (result.details == null) {
+                isFetchRequested = false
+            }
+            onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
+        }
     }
 
     fun toggleDetails(isMasked: Boolean, targets: List<CardMaskableElement>) {
-        if (!isFetched) {
+        if (!isFetchRequested) {
             return
         }
         for (target in targets) {
@@ -167,7 +189,7 @@ class CardElementsPresenter(
     }
 
     fun copyToClipboard(targets: List<CardMaskableElement>, template: String?, clipboardManager: ClipboardManager, @StringRes resId: Int) {
-        if (!isFetched) {
+        if (!isFetchRequested) {
             return
         }
         var values = listOf<String>()

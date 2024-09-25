@@ -95,28 +95,29 @@ class MainActivity : AppCompatActivity(),
                 enToggleButton.isChecked = false
                 arToggleButton.isChecked = false
             }
-            val config = CardElementsConfig.default(
-                copyTargets = listOf<CardMaskableElement>(
-                    CardMaskableElement.CARDNUMBER,
-                    CardMaskableElement.CARDHOLDER,
-                ),
-                copyTemplate = "Card number: %s\nName: %s"
-            )
-            // update text if needed
-            // config.cardNumber?.label?.text  = CardElementText.String("My card #")
-            // update position if needed - attach element to bottom-left corner
-            // config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
 
             cardDetailsButton.setOnClickListener {
+                // update text in config if needed,
+                // val config = CardElementsConfig.default ...
+                // config.cardNumber?.label?.text  = CardElementText.String("My card #")
+                // update position if needed - attach element to bottom-left corner
+                // config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
                 niCardManagementForms.displayCardDetailsForm(
                     niInput,
                     backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
                     title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
-                    config = config
+                    config = CardElementsConfig.default(
+                        copyTargets = listOf<CardMaskableElement>(
+                            CardMaskableElement.CARDNUMBER,
+                            CardMaskableElement.CARDHOLDER,
+                        ),
+                        copyTemplate = "Card number: %s\nName: %s"
+                    )
                 )
             }
 
             cardDetailsFragmentButton.setOnClickListener {
+                // check CardUsageDemoActivity for card view configuration
                 startActivity(Intent(this@MainActivity, CardUsageDemoActivity::class.java).apply {
                     putExtra(Extra.EXTRA_NI_INPUT, niInput)
                     putExtra(Extra.EXTRA_NI_PIN_FORM_TYPE, pinLength)
@@ -124,22 +125,13 @@ class MainActivity : AppCompatActivity(),
             }
 
             cardDetailsDialogButton.setOnClickListener {
-                Toast.makeText(applicationContext, "Not implemented", Toast.LENGTH_SHORT).show()
-
-//                val dialog = CardBottomSheetDialogFragment.newInstance(
-//                    niInput,
-//                    config = CardElementsConfig.default(
-//                        copyTargets = listOf<CardMaskableElement>(
-//                            CardMaskableElement.CARDNUMBER,
-//                            CardMaskableElement.CARDHOLDER,
-//                        ),
-//                        copyTemplate = "Card number: %s\nName: %s"
-//                    )
-//                )
-//                supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
+                // check CardBottomSheetDialogFragment for card view configuration
+                val dialog = CardBottomSheetDialogFragment.newInstance(niInput)
+                supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
             }
 
             setPinButton.setOnClickListener {
+                // provide padding for pin forms
                 val dialog = SetPinFragmentFromActivity.newInstance(niInput, pinLength, padding = 100)
                 dialog.show(supportFragmentManager, SetPinFragmentFromActivity.TAG)
             }
@@ -163,7 +155,7 @@ class MainActivity : AppCompatActivity(),
                 EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "22344402126097490505"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
                 EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.network.global/sdk/v2"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjYwNDYwMDksImlhdCI6MTcyNjA0NDIwOSwianRpIjoiMjhiYzlhYWEtYzg3NS00MGIxLThlZTItODk3MzQyMmFkMmUxIiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiI0NGYxMTFlZi02MTEyLTRmY2ItYjkzYS03MDJiZjljZTIwZTQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiIyMDYxOGYxMC03MmM2LTRhM2MtYWFhNC1kMzM2MWY1MmZhOGY1NjMyMDciLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImNsaWVudElkIjoiMjA2MThmMTAtNzJjNi00YTNjLWFhYTQtZDMzNjFmNTJmYThmNTYzMjA3Iiwib3JnX2lkIjoiRDJDIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTIwNjE4ZjEwLTcyYzYtNGEzYy1hYWE0LWQzMzYxZjUyZmE4ZjU2MzIwNyJ9.RnxPBT-vIHvgGu42r9EusTgbjvMuvBG-2_d_KpvfZ4QEQ9VxMgSMFz-oo5PJB3I33SM1bTQkDjIhDmziix1qNMSpHg6YrupH9eCrGbwUAEayNoq3z_3BJKlOJPoXKeFaMXPQDdyLPAgDTaxFC4Mdl0S2gNZPS5oYdC0UpDViXRF1LUy1rQtXrsl1eVb5kfY16psFtp9CFZEe7lMXGKjaJQAHxUw2EqJfF_3OcmxRTE4oaldQzZ9vdg1yVYGh4byKIInp0exQjAOWqsMbQByv3JYAsn_AZ3Czas1p5cwRzZ2-tbPjc_5SsAmORU7jD8AusaXaJohBbmKRqjD_hxaMAA"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjcyNTMxNzUsImlhdCI6MTcyNzI1MTM3NSwianRpIjoiZDVkYzEyYzctM2JiNS00NTBjLWI2NGItNDk5MGUyYjhhZjUwIiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiI0NGYxMTFlZi02MTEyLTRmY2ItYjkzYS03MDJiZjljZTIwZTQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiIyMDYxOGYxMC03MmM2LTRhM2MtYWFhNC1kMzM2MWY1MmZhOGY1NjMyMDciLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImNsaWVudElkIjoiMjA2MThmMTAtNzJjNi00YTNjLWFhYTQtZDMzNjFmNTJmYThmNTYzMjA3Iiwib3JnX2lkIjoiRDJDIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTIwNjE4ZjEwLTcyYzYtNGEzYy1hYWE0LWQzMzYxZjUyZmE4ZjU2MzIwNyJ9.Lo38nkElA1ojIdOO5VjuP8R2rdwRDssO3E0H2YcrG-_0qSxrJxyfL8io3BLue6EsnZPZnAmz4wWIW6qB2fx5dlGqnyFRSIKEgEmOYYqxLSKFr8K6TznA40bABWScKIMECXZ4ANNdvCznp9KouWk6RVlYCKapAZOFYy52G9MhdzL6RjkhbrZZCcTnyNyOCQitf_O78qa-8PKj_y9gxYrKNSyqQZBnEvJc6rafaBkZjsX2qSyGunczNOQroljyy2I2liOu7bbasCPEGf9s-XKC3Kyy8AqRhc1midmDmffd0htvl2Uunwsq3uZoROVQi-qOfXGqnv3cEDBtm3xq---AwA"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))

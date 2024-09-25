@@ -157,11 +157,11 @@ enum class NIPinFormType(val minSize: Int, val maxSize: Int) {
 
 ```
 
-### Customization of card details UI - CardElementsConfig
+### Customization of card details UI (Card details fragment or activity) - CardElementsConfig
 Refer to `CardUsageDemoActivity.kt` or to the `config` parameter for `niCardManagementForms.displayCardDetailsForm` in `MainActivity.kt` with example
 
 Alternate `CardElementsConfig` that will be passed to fragment or form
-```
+```kotlin
 // You can use default configuration and change it, or build it from scratch
 // In this example - use default and set behaviour of `copy` button
 // by copy action - given fields with given template will be copied to clipboard
@@ -173,22 +173,24 @@ var cardElementsConfig = CardElementsConfig.default(
     copyTemplate = "Card number: %s\nName: %s"
 )
 ```
-- update text and position of Card element, example with card number label:
-```
-// update text if needed
-config.cardNumber?.label?.text  = CardElementText.String("My card #")
+##### update position of Card element, example with card number label:
+```kotlin
 // update position if needed - attach element to bottom-left corner
 config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
 ```
+##### update text of Card element label, example with card number label:
 - Use either StringRes or String for labels and for button's content descrition
-```
+```kotlin
 config.cardNumber?.label?.text  = CardElementText.String("My card #")
 // OR
 config.cardNumber?.label?.text  = CardElementText.Int(ae.network.nicardmanagementsdk.R.string.card_details_title_en)
 ```
-- provide desired appearance style to update font/color... of desired element 
-`appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel`
-- configure copy action behaviour - define card details values and format that will be passed to clipboard
+##### provide desired appearance style to update font/color... of desired element 
+```kotlin
+config.cardNumber?.label?.appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberLabel
+config.cardNumber?.details?.appearanceResId = R.style.TextAppearance_NICardManagementSDK_CardElement_CardNumberData
+```
+##### configure copy action behaviour - define card details values and format that will be passed to clipboard
 ```kotlin
 copyButton = CardElementCopyButton( // use null to hide button
     imageDefault = R.drawable.ic_baseline_content_copy,
@@ -201,7 +203,7 @@ copyButton = CardElementCopyButton( // use null to hide button
     contentDescription = R.string.copy_to_clipboard_image_content_description
 )
 ```
-- provide icons that will be used for desired buttons, use desired sizes and colors
+##### provide icons that will be used for desired buttons, use desired sizes and colors
 ```kotlin
 imageDefault = R.drawable.ic_reveal_details
 imageSelected = R.drawable.ic_hide_details
@@ -209,7 +211,7 @@ imageSelected = R.drawable.ic_hide_details
 
 Other configurations is also available within `CardElementsConfig`
 
-### Display a fragment
+### Display a card details fragment
 
 ```kotlin
 val cardDetailsFragment = CardDetailsFragment.newInstance(
@@ -250,6 +252,96 @@ The UI of the activity should offer a container described here by R.id.card_cont
         tools:minHeight="209dp">
 
     </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+### Compose your custom layour for Card details with `CardElementsPresenter` usage
+Refer to `CardBottomSheetDialogFragment.kt` with example of how to create and use `presenter`
+- Note: Presenter do not hold any buttons, you should implemented any required buttons in your layout and conntect actions to presenter's methods
+
+##### Alternate `CardPresenterConfig` to update style of presenter
+- similarly to `CardElementsConfig`
+- allows to provide desired texts and appearance style (font/color) for card elements
+- do not include configuration for any buttons, as buttons should be implemented in custom layout if needed
+```kotlin
+data class CardPresenterConfig(
+    val cardNumber: CardPresenterElementConfig?,
+    val expiry: CardPresenterElementConfig?,
+    val cvv: CardPresenterElementConfig?,
+    val cardHolder: CardPresenterElementConfig?,
+    var shouldBeMaskedDefault: List<CardMaskableElement>
+): Serializable
+```
+```kotlin
+val presenterConfig = CardPresenterConfig.default()
+```
+
+##### Instantiate presenter in your fragment / activity
+```kotlin
+val presenterConfig = CardPresenterConfig.default()
+presenterConfig.shouldBeMaskedDefault = listOf<CardMaskableElement>(CardMaskableElement.CVV)
+val presenter = CardElementsPresenter.newInstance(requireContext(), this, niInput, presenterConfig)
+```
+##### Insert card elements into your layout containers
+- you can combine your own labels with card details values and skip presenter's labels if needed
+```kotlin
+binding.cardNumberValueHolder.addView(presenter.cardNumber.data)
+```
+- connect your buttons with presenter's methods
+```kotlin
+// define fields for copy to clipboard
+binding.btnCopy.setOnClickListener {
+    val copyTargets = listOf<CardMaskableElement>(
+        CardMaskableElement.CARDNUMBER,
+        CardMaskableElement.CARDHOLDER,
+    )
+    val copyTemplate = "Card number: %s\nName: %s"
+    val clipboardManager =
+        requireContext().getSystemService(AppCompatActivity.CLIPBOARD_SERVICE) as ClipboardManager
+    presenter.copyToClipboard(copyTargets, copyTemplate, clipboardManager, R.string.copied_to_clipboard_en)
+}
+```
+- initiate card details request
+```kotlin
+presenter.fetch()
+```
+- check `CardBottomSheetDialogFragment` layout for the example
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#2196F3"
+    android:padding="24dp"
+    tools:context="ae.network.nicardmanagementsdk.sample.CardBottomSheetDialogFragment">
+
+    <!--Use your own card labels if needed-->
+    <TextView
+        android:id="@+id/numberLabel"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Card #"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!--Use your own copy button-->
+    <ImageView
+        android:id="@+id/btnCopy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="8dp"
+        android:contentDescription="@string/copy_to_clipboard_image_content_description"
+        android:src="@drawable/ic_baseline_content_copy"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/numberLabel"
+        tools:ignore="RtlSymmetry" />
+    <!--    Provide containers for card values, card labels can be ignored or use your own labels-->
+    <FrameLayout android:id="@+id/cardNumberValueHolder" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/btnCopy"
+        app:layout_constraintBottom_toBottomOf="@+id/numberLabel"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
