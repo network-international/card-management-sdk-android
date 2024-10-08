@@ -56,6 +56,7 @@ class CardDetailsFragment : Fragment() {
     @StringRes private var copyToClipboardMessage: Int = R.string.copied_to_clipboard_en
     private var listener: CardDetailsFragmentListener? = null
 
+    private var isFetchRequested = false
     // override
     fun checkSubscriber(context: Context) {
         listener = if (parentFragment is CardDetailsFragmentListener) {
@@ -155,7 +156,19 @@ class CardDetailsFragment : Fragment() {
             viewModel.hideShowDetails(listOf(CardMaskableElement.CVV))
         }
 
-        viewModel.fetchDataInitially()
+        if (viewModel.connectionLiveData.hasInternetConnectivity) {
+            isFetchRequested = true
+            viewModel.fetchDataInitially()
+        } else {
+            isFetchRequested = false
+            // wait for the first network validations
+            viewModel.connectionLiveData.observe(this) { model ->
+                if (!isFetchRequested && model != null && model.isConnected) {
+                    isFetchRequested = true
+                    viewModel.fetchDataInitially()
+                }
+            }
+        }
 
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
