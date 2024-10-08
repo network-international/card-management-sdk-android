@@ -44,7 +44,7 @@ class CardMaskableElementEntries {
 
 class CardDetailsFragmentViewModel(
     private val getCardDetailsCoreComponent: IGetCardDetailsCore,
-    private val connectionLiveData: IConnection<ConnectionModel>
+    val connectionLiveData: IConnection<ConnectionModel>
 ) : ViewModel() {
 
     private lateinit var cardDetailsClear: CardDetailsModel
@@ -141,4 +141,5 @@ class CardDetailsFragmentViewModel(
             }
         }
     }
+
 }
