@@ -2,7 +2,6 @@ package ae.network.nicardmanagementsdk.di
 
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.core.*
-import ae.network.nicardmanagementsdk.network.utils.ConnectionLiveData
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.CardDetailsViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragmentViewModel
@@ -27,52 +26,50 @@ class Injector private constructor(context: Context) {
         }
     }
 
-    private val connectionLiveData = ConnectionLiveData(context)
-
     fun provideCardDetailsViewModelFactory(): ViewModelFactory<CardDetailsViewModel> {
         return ViewModelFactory {
-            CardDetailsViewModel(connectionLiveData)
+            CardDetailsViewModel()
         }
     }
 
     fun provideCardDetailsFragmentViewModelFactory(niInput : NIInput): ViewModelFactory<CardDetailsFragmentViewModel> {
         return ViewModelFactory {
             val getCardDetailsCoreComponent = GetCardDetailsCoreComponent.fromFactory(niInput)
-            CardDetailsFragmentViewModel(getCardDetailsCoreComponent, connectionLiveData)
+            CardDetailsFragmentViewModel(getCardDetailsCoreComponent)
         }
     }
 
     fun provideSetPinViewModelFactory(niInput : NIInput): ViewModelFactory<SetPinViewModel> {
         return ViewModelFactory {
             val setPinCoreComponent = SetPinCoreComponent.fromFactory(niInput)
-            SetPinViewModel(setPinCoreComponent, connectionLiveData, niInput)
+            SetPinViewModel(setPinCoreComponent, niInput)
         }
     }
 
     fun provideVerifyPinViewModelFactory(niInput : NIInput): ViewModelFactory<VerifyPinViewModel> {
         return ViewModelFactory {
             val verifyPinCoreComponent = VerifyPinCoreComponent.fromFactory(niInput)
-            VerifyPinViewModel(verifyPinCoreComponent, connectionLiveData, niInput)
+            VerifyPinViewModel(verifyPinCoreComponent, niInput)
         }
     }
 
     fun provideChangePinViewModelFactory(niInput : NIInput): ViewModelFactory<ChangePinViewModel> {
         return ViewModelFactory {
             val changePinCoreComponent = ChangePinCoreComponent.fromFactory(niInput)
-            ChangePinViewModel(changePinCoreComponent, connectionLiveData, niInput)
+            ChangePinViewModel(changePinCoreComponent, niInput)
         }
     }
 
     fun provideViewPinFragmentViewModelFactory(niInput: NIInput): ViewModelFactory<ViewPinFragmentViewModel> {
         return ViewModelFactory {
             val viewPinComponent = ViewPinCoreComponent.fromFactory(niInput)
-            ViewPinFragmentViewModel(viewPinComponent, connectionLiveData)
+            ViewPinFragmentViewModel(viewPinComponent)
         }
     }
 
     fun provideViewPinViewModelFactory(): ViewModelFactory<ViewPinViewModel> {
         return ViewModelFactory {
-            ViewPinViewModel(connectionLiveData)
+            ViewPinViewModel()
         }
     }
 }

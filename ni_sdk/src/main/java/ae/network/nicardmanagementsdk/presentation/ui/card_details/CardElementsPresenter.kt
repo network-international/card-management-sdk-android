@@ -14,25 +14,17 @@ import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
 import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
 import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
-import ae.network.nicardmanagementsdk.di.Injector
-import ae.network.nicardmanagementsdk.helpers.LanguageHelper
-import ae.network.nicardmanagementsdk.network.utils.ConnectionLiveData
 import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
 import ae.network.nicardmanagementsdk.network.utils.IConnection
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setCardElementText
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
-import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
-import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElementEntries
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -42,11 +34,7 @@ import androidx.annotation.StyleRes
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class CardElement(
     private val context: Context,
@@ -98,7 +86,6 @@ class CardElementsPresenter(
 
     val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
     val copiedTextMessageSingleLiveEvent = SingleLiveEvent<Int>()
-    private val connectionLiveData: IConnection<ConnectionModel> = ConnectionLiveData(context)
 
     private lateinit var cardDetailsClear: CardDetailsModel
     private lateinit var cardDetailsMasked: CardDetailsModel
@@ -121,31 +108,20 @@ class CardElementsPresenter(
     }
 
     fun fetch() {
-        if (connectionLiveData.hasInternetConnectivity) {
-            isFetchRequested = true
-            fetchOnInternetConnectivity()
-        } else {
-            isFetchRequested = false
-            // wait for the first network validations
-            connectionLiveData.observe(lifecycleOwner) { model ->
-                if (!isFetchRequested && model != null && model.isConnected) {
-                    isFetchRequested = true
-                    fetchOnInternetConnectivity()
-                }
-            }
-        }
+        isFetchRequested = true
+        fetchOnInternetConnectivity()
     }
     /// connectionLiveData.hasInternetConnectivity
     private fun fetchOnInternetConnectivity() {
         lifecycleOwner.lifecycleScope.launch {
-            if (!connectionLiveData.hasInternetConnectivity) {
-                onResultSingleLiveEvent.value = SuccessErrorResponse(
-                    isSuccess = null,
-                    isError = NIErrorResponse(error = NISDKErrors.NETWORK_ERROR)
-                )
-                isFetchRequested = false
-                return@launch
-            }
+//            if (!connectionLiveData.hasInternetConnectivity) {
+//                onResultSingleLiveEvent.value = SuccessErrorResponse(
+//                    isSuccess = null,
+//                    isError = NIErrorResponse(error = NISDKErrors.NETWORK_ERROR)
+//                )
+//                isFetchRequested = false
+//                return@launch
+//            }
 
             val getCardDetailsCoreComponent: IGetCardDetailsCore = GetCardDetailsCoreComponent.fromFactory(niInput)
             val result = getCardDetailsCoreComponent.makeNetworkRequest()
