@@ -43,8 +43,7 @@ class CardMaskableElementEntries {
 
 
 class CardDetailsFragmentViewModel(
-    private val getCardDetailsCoreComponent: IGetCardDetailsCore,
-    val connectionLiveData: IConnection<ConnectionModel>
+    private val getCardDetailsCoreComponent: IGetCardDetailsCore
 ) : ViewModel() {
 
     private lateinit var cardDetailsClear: CardDetailsModel
@@ -129,16 +128,14 @@ class CardDetailsFragmentViewModel(
             return
         }
         viewModelScope.launch {
-            if (connectionLiveData.hasInternetConnectivity) {
-                val result = getCardDetailsCoreComponent.makeNetworkRequest()
-                result.details?.let {
-                    cardDetailsClear = it.asClearViewModel()
-                    cardDetailsMasked = it.asMaskedViewModel()
-                    clearPanNonSpaced = it.asClearPanNonSpaced()
-                    maskedElementsLiveData.value = shouldBeMaskedDefault
-                }
-                onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
+            val result = getCardDetailsCoreComponent.makeNetworkRequest()
+            result.details?.let {
+                cardDetailsClear = it.asClearViewModel()
+                cardDetailsMasked = it.asMaskedViewModel()
+                clearPanNonSpaced = it.asClearPanNonSpaced()
+                maskedElementsLiveData.value = shouldBeMaskedDefault
             }
+            onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
         }
     }
 

@@ -10,9 +10,8 @@ import androidx.lifecycle.MutableLiveData
 
 class SetPinViewModel (
     private val setVerifyPinCore: ISetVerifyPinCore,
-    connectionLiveData: IConnection<ConnectionModel>,
     private val niInput: NIInput
-) : SetPinTwoStepViewModelBase(connectionLiveData) {
+) : SetPinTwoStepViewModelBase() {
 
     override val navTitle = MutableLiveData(getNavTitle())
     override val screenTitle = MutableLiveData(getScreenTitle())
