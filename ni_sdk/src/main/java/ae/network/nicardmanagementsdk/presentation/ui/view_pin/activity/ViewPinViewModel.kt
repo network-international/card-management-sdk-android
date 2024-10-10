@@ -1,7 +1,9 @@
 package ae.network.nicardmanagementsdk.presentation.ui.view_pin.activity
 
-import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
-import ae.network.nicardmanagementsdk.network.utils.IConnection
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class ViewPinViewModel() : BaseViewModel()
+class ViewPinViewModel() : ViewModel() {
+    // ex bViewModel
+    val isVisibleProgressBar = MutableLiveData(false)
+}

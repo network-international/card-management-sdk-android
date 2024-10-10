@@ -6,7 +6,6 @@ import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.databinding.ActivityCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
-import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra

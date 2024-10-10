@@ -1,8 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.extension_methods
 
 import ae.network.nicardmanagementsdk.api.models.input.CardElementLayout
-import ae.network.nicardmanagementsdk.api.models.input.CardElementText
-import ae.network.nicardmanagementsdk.api.models.input.UIFont
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
 import ae.network.nicardmanagementsdk.helpers.ConnectConstraint
 import ae.network.nicardmanagementsdk.helpers.ConstraintInstructions
 import ae.network.nicardmanagementsdk.helpers.DisconnectConstraint
@@ -22,7 +21,6 @@ import android.widget.TextView
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
-import androidx.annotation.StringRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -158,27 +156,35 @@ fun ShimmerView.setSize(textView: TextView, sampleIfEmpty: String) {
     this.layoutParams = layoutParams
 }
 
-fun TextView.setFont(context: Context, uiFont: UIFont?) {
-    uiFont?.let {
-        this.apply {
-            uiFont.fontRes?.let {
-                typeface = ResourcesCompat.getFont(context, it)
-            }
-            textSize = uiFont.textSize.toFloat()
-        }
+//fun TextView.setFont(context: Context, uiFont: UIFont?) {
+//    uiFont?.let {
+//        this.apply {
+//            uiFont.fontRes?.let {
+//                typeface = ResourcesCompat.getFont(context, it)
+//            }
+//            textSize = uiFont.textSize.toFloat()
+//        }
+//    }
+//}
+
+fun ImageView.setContentDescrText(data: UIElementText) {
+    when(data) {
+        is UIElementText.Int -> this.context.getString(data.value)
+        is UIElementText.String -> this.contentDescription = data.value
     }
 }
 
-fun ImageView.setContentDescrText(data: CardElementText) {
+fun TextView.setUIElementText(data: UIElementText) {
     when(data) {
-        is CardElementText.Int -> this.context.getString(data.value)
-        is CardElementText.String -> this.contentDescription = data.value
+        is UIElementText.Int -> this.setText(data.value)
+        is UIElementText.String -> this.text = data.value
     }
 }
 
-fun TextView.setCardElementText(data: CardElementText) {
+fun TextView.setUIElementText(data: UIElementText, vararg args: Any?) {
+    // resources.getString(R.string.get_pin_countdown_timer_text_ar, time)
     when(data) {
-        is CardElementText.Int -> this.setText(data.value)
-        is CardElementText.String -> this.text = data.value
+        is UIElementText.Int -> this.text = this.resources.getString(data.value, args)
+        is UIElementText.String -> this.text = String.format(data.value, args)
     }
 }
