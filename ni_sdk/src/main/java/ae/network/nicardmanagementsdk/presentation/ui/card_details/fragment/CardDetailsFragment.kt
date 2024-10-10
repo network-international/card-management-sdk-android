@@ -156,19 +156,7 @@ class CardDetailsFragment : Fragment() {
             viewModel.hideShowDetails(listOf(CardMaskableElement.CVV))
         }
 
-        if (viewModel.connectionLiveData.hasInternetConnectivity) {
-            isFetchRequested = true
-            viewModel.fetchDataInitially()
-        } else {
-            isFetchRequested = false
-            // wait for the first network validations
-            viewModel.connectionLiveData.observe(this) { model ->
-                if (!isFetchRequested && model != null && model.isConnected) {
-                    isFetchRequested = true
-                    viewModel.fetchDataInitially()
-                }
-            }
-        }
+        viewModel.fetchDataInitially()
 
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
