@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 
 class VerifyPinViewModel (
     private val setVerifyPinCore: ISetVerifyPinCore,
-    private val connectionLiveData: IConnection<ConnectionModel>,
     private val niInput : NIInput
 ) : SetPinViewModelBase() {
 
@@ -23,12 +22,10 @@ class VerifyPinViewModel (
 
     override fun onDoneImageButtonTap() {
         viewModelScope.launch {
-            if (connectionLiveData.hasInternetConnectivity) {
-                isVisibleProgressBar.value = true
-                val result = setVerifyPinCore.makeNetworkRequest(inputString)
-                isVisibleProgressBar.value = false
-                onResultSingleLiveEvent.value = result
-            }
+            isVisibleProgressBar.value = true
+            val result = setVerifyPinCore.makeNetworkRequest(inputString)
+            isVisibleProgressBar.value = false
+            onResultSingleLiveEvent.value = result
         }
     }
 

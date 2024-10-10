@@ -56,6 +56,7 @@ class CardDetailsFragment : Fragment() {
     @StringRes private var copyToClipboardMessage: Int = R.string.copied_to_clipboard_en
     private var listener: CardDetailsFragmentListener? = null
 
+    private var isFetchRequested = false
     // override
     fun checkSubscriber(context: Context) {
         listener = if (parentFragment is CardDetailsFragmentListener) {
