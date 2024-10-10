@@ -1,17 +1,13 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
 import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
-import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
-import ae.network.nicardmanagementsdk.network.utils.IConnection
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Build

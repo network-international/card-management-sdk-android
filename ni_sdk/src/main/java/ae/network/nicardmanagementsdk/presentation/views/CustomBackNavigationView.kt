@@ -1,6 +1,8 @@
 package ae.network.nicardmanagementsdk.presentation.views
 
 import ae.network.nicardmanagementsdk.R
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
@@ -55,6 +57,10 @@ class CustomBackNavigationView @JvmOverloads constructor(
 
     fun setTitle(message: String) {
         textView.text = message
+    }
+
+    fun setUIElementText(data: UIElementText) {
+        textView.setUIElementText(data)
     }
 
     fun setIcon(@DrawableRes resId: Int) {

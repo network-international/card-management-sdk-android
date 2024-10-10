@@ -7,10 +7,10 @@ import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
 import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
-import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
 import android.content.res.Resources
@@ -82,6 +82,12 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     }
 
     protected open fun initializeUI() {
+        viewModel.navTitle.observe(viewLifecycleOwner) { title ->
+            binding.customBackNavigationView.setUIElementText(title)
+        }
+        viewModel.screenTitle.observe(viewLifecycleOwner) { title ->
+            binding.titleTextView.setUIElementText(title)
+        }
         binding.customBackNavigationView.setOnBackButtonClickListener {
             dismiss()
         }
@@ -107,8 +113,6 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
             paddingTop = paddingDp
         }
-
-        viewModel.updateNIInput(niInput)
     }
 
     protected fun showSuccessErrorFragment(pinMessageAttributes: PinMessageAttributes, isSuccess: Boolean) {

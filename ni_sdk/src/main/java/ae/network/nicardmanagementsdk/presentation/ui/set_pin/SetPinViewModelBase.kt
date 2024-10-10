@@ -1,18 +1,58 @@
 package ae.network.nicardmanagementsdk.presentation.ui.set_pin
 
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
-import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.models.PinBulletModel
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-abstract class SetPinViewModelBase : BaseViewModel() {
+abstract class SetPinViewModelBase(
+    private val navTitleText: UIElementText,
+    private val screenTitleText: UIElementText,
+    private val secondStepTitleText: UIElementText, // R.string.set_pin_description_re_enter_pin_en
+    private val notMatchTitleText: UIElementText, // R.string.set_pin_description_pin_not_match_en
+) : ViewModel() {
+    val navTitle = MutableLiveData(navTitleText)
+    val screenTitle = MutableLiveData(screenTitleText)
 
-    abstract val navTitle: MutableLiveData<Int>
-    abstract val screenTitle: MutableLiveData<Int>
+    // ex bViewModel
+    val isVisibleProgressBar = MutableLiveData(false)
+
+    //From TwoStepVMBase
+    private var firstTimePinValue = ""
+    protected var secondTimePinValue = ""
+    private var isStepOnePinSetup = true
+    protected fun setPinTwoSteps(
+        networkRequest: suspend () -> SuccessErrorResponse
+    ) {
+        if (isStepOnePinSetup) {
+            firstTimePinValue = inputString
+            resetState()
+            screenTitle.value = secondStepTitleText
+            isStepOnePinSetup = false
+        } else {
+            secondTimePinValue = inputString
+            if (firstTimePinValue == secondTimePinValue) {
+                viewModelScope.launch {
+                    isVisibleProgressBar.value = true
+                    val result = networkRequest()
+                    isVisibleProgressBar.value = false
+                    onResultSingleLiveEvent.value = result
+                }
+            } else {
+                screenTitle.value = notMatchTitleText
+                // resetStepTwoPinState
+                secondTimePinValue = ""
+                resetState()
+            }
+        }
+    }
+
     abstract fun onDoneImageButtonTap()
 
     private var _inputString = ""
@@ -22,12 +62,6 @@ abstract class SetPinViewModelBase : BaseViewModel() {
     private val _inputStringLiveData = MutableLiveData(_inputString)
     private var minPinSize = 4
     private var maxPinSize = 6
-
-    val niInputLiveData: MutableLiveData<NIInput> = MutableLiveData()
-
-    fun updateNIInput(niInput: NIInput) {
-        niInputLiveData.value = niInput
-    }
 
     val updateBulletCellLiveEvent = SingleLiveEvent<Int>()
     val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()

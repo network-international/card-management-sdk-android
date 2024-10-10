@@ -3,11 +3,14 @@ package ae.network.nicardmanagementsdk.presentation.ui.view_pin
 import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
 import ae.network.nicardmanagementsdk.databinding.FragmentViewPinBinding
 import ae.network.nicardmanagementsdk.di.Injector
-import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
+import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinFragment
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Rect
@@ -22,7 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
 
-abstract class ViewPinFragment : Fragment() {
+class ViewPinFragment : Fragment() {
     protected var listener: OnFragmentInteractionListener? = null
     private var successErrorResponse: SuccessErrorResponse? = null
     private lateinit var viewModel: ViewPinFragmentViewModel
@@ -35,7 +38,36 @@ abstract class ViewPinFragment : Fragment() {
     private var strokeColor: String? = null
     private lateinit var timer: CountDownTimer
 
-    abstract fun checkSubscriber(context: Context)
+    companion object {
+        @JvmStatic
+        fun newInstance(input: NIInput, timer: Long = 6000L, color: String = BLACK) = ViewPinFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(Extra.EXTRA_NI_INPUT, input)
+                putSerializable(Extra.EXTRA_VIEW_PIN_START_TIME, timer)
+                putSerializable(Extra.EXTRA_VIEW_PIN_STROKE_COLOR, color)
+                // Fragment
+                //putSerializable(Extra.EXTRA_NI_INPUT, input)
+                //putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)   type: NIPinFormType
+            }
+        }
+
+        const val TAG = "ViewPinFragment"
+        private const val BLACK = "#FF000000" //- fromActivity
+        //const val BLACK = "#00000000" - fromFragment
+
+        const val COUNTDOWN_INTERVAL = 1000L
+
+    }
+
+    private fun checkSubscriber(context: Context) {
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else if (parentFragment is OnFragmentInteractionListener) {
+            listener = parentFragment as OnFragmentInteractionListener
+        } else {
+            throw RuntimeException("Must implement ViewPinFragment.OnFragmentInteractionListener")
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,8 +96,9 @@ abstract class ViewPinFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        val timerTemplate = UIElementText.Int(R.string.get_pin_countdown_timer_text_en)
         val factory =
-            Injector.getInstance(requireContext()).provideViewPinFragmentViewModelFactory(niInput)
+            Injector.getInstance(requireContext()).provideViewPinFragmentViewModelFactory(niInput, timerTemplate)
         viewModel = ViewModelProvider(this, factory)[ViewPinFragmentViewModel::class.java]
         _pinViewBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_view_pin, container, false)
@@ -76,12 +109,6 @@ abstract class ViewPinFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initializeUI()
-    }
-
-    private fun setTimerText(time: Int): String {
-        return if (LanguageHelper().getLanguage(niInput) == "ar")
-            resources.getString(R.string.get_pin_countdown_timer_text_ar, time)
-        else resources.getString(R.string.get_pin_countdown_timer_text_en, time)
     }
 
     override fun onDestroyView() {
@@ -106,8 +133,7 @@ abstract class ViewPinFragment : Fragment() {
                         if (pinViewBinding != null) {
                             pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
                             val secondsToInt = (millisUntilFinished / 1000).toInt()
-                            pinViewBinding.countdownTimerTextView.text =
-                                setTimerText(secondsToInt)
+                            pinViewBinding.countdownTimerTextView.setUIElementText(viewModel.timerStringTemplate, secondsToInt)
                         }
                     }
 
@@ -379,11 +405,6 @@ abstract class ViewPinFragment : Fragment() {
         drawable.getPadding(paddingRect)
         drawable.cornerRadii = floatArrayOf(40f, 40f, 40f, 40f, 40f, 40f, 40f, 40f)
         return drawable
-    }
-
-    companion object {
-        const val COUNTDOWN_INTERVAL = 1000L
-        const val BLACK = "#00000000"
     }
 
     interface OnFragmentInteractionListener {
