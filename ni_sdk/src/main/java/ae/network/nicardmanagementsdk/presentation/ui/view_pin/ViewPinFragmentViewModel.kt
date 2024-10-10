@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 
 class ViewPinFragmentViewModel(
     private val viewPinCore: IViewPinCore,
-    private val connectionLiveData: IConnection<ConnectionModel>
 ) : BaseViewModel() {
 
     val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
@@ -38,20 +37,18 @@ class ViewPinFragmentViewModel(
 
     fun getPin() {
         viewModelScope.launch {
-            if (connectionLiveData.hasInternetConnectivity) {
-                isVisibleProgressBar.value = true
-                val result = viewPinCore.makeNetworkRequest()
-                isVisibleProgressBar.value = false
-                if (result.pin != null) {
-                    val pinClear = result.pin.asClearViewModel().encryptedPin
-                    val pinMasked = result.pin.asMaskedViewModel().encryptedPin
-                    pinClearLiveData.value = pinClear
-                    pinMaskedLiveData.value = pinMasked
-                    onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
-                    hasPinData.value = true
-                } else {
-                    Log.d("ViewPinViewModel::", "result.pin is null")
-                }
+            isVisibleProgressBar.value = true
+            val result = viewPinCore.makeNetworkRequest()
+            isVisibleProgressBar.value = false
+            if (result.pin != null) {
+                val pinClear = result.pin.asClearViewModel().encryptedPin
+                val pinMasked = result.pin.asMaskedViewModel().encryptedPin
+                pinClearLiveData.value = pinClear
+                pinMaskedLiveData.value = pinMasked
+                onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
+                hasPinData.value = true
+            } else {
+                Log.d("ViewPinViewModel::", "result.pin is null")
             }
         }
     }

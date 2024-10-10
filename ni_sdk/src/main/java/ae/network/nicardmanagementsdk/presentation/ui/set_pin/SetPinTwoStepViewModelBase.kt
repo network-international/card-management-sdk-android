@@ -8,9 +8,7 @@ import ae.network.nicardmanagementsdk.network.utils.IConnection
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-abstract class SetPinTwoStepViewModelBase(
-    private val connectionLiveData: IConnection<ConnectionModel>
-    ) : SetPinViewModelBase() {
+abstract class SetPinTwoStepViewModelBase() : SetPinViewModelBase() {
 
     private var firstTimePinValue = ""
     protected var secondTimePinValue = ""
@@ -36,12 +34,10 @@ abstract class SetPinTwoStepViewModelBase(
             secondTimePinValue = inputString
             if (firstTimePinValue == secondTimePinValue) {
                 viewModelScope.launch {
-                    if (connectionLiveData.hasInternetConnectivity) {
-                        isVisibleProgressBar.value = true
-                        val result = networkRequest()
-                        isVisibleProgressBar.value = false
-                        onResultSingleLiveEvent.value = result
-                    }
+                    isVisibleProgressBar.value = true
+                    val result = networkRequest()
+                    isVisibleProgressBar.value = false
+                    onResultSingleLiveEvent.value = result
                 }
             } else {
                 when (niInputLiveData.value?.let { LanguageHelper().getLanguage(it) }) {
