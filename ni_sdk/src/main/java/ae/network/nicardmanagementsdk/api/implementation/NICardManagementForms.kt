@@ -4,6 +4,7 @@ import ae.network.nicardmanagementsdk.api.interfaces.NICardManagementFormsAPI
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
 import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
 import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
@@ -49,10 +50,11 @@ class NICardManagementForms(
         })
     }
 
-    override fun displayViewPinForm(input: NIInput, pinFormType: NIPinFormType) {
+    override fun displayViewPinForm(input: NIInput, pinFormType: NIPinFormType, texts: PinManagementResources) {
         displayCardResultLauncher?.launch(Intent(activity, ViewPinActivity::class.java).apply {
             putExtra(Extra.EXTRA_NI_INPUT, input)
             putExtra(Extra.EXTRA_NI_PIN_FORM_TYPE, pinFormType)
+            putExtra(Extra.EXTRA_NI_PIN_FORM_RESOURCES, texts)
         })
     }
 

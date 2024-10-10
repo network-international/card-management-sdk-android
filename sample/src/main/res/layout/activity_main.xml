@@ -52,7 +52,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/cardDetailsFragmentButton"
                 app:layout_constraintEnd_toEndOf="@+id/cardDetailsFragmentButton"
                 app:layout_constraintStart_toStartOf="@+id/cardDetailsFragmentButton"
-                app:layout_constraintTop_toBottomOf="@+id/enToggleButton"
+                app:layout_constraintTop_toBottomOf="@+id/themeSwitch"
                 app:layout_constraintVertical_bias="1.0"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
@@ -127,15 +127,6 @@
                 app:layout_constraintStart_toStartOf="@+id/recyclerView"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
-            <TextView
-                android:id="@+id/languageLabelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/language"
-                app:layout_constraintStart_toStartOf="@+id/themeLabelTextView"
-                app:layout_constraintTop_toBottomOf="@+id/themeLabelTextView" />
-
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/themeSwitch"
                 android:layout_width="wrap_content"
@@ -147,47 +138,7 @@
                 app:layout_constraintStart_toEndOf="@+id/themeLabelTextView"
                 app:layout_constraintTop_toTopOf="@+id/themeLabelTextView" />
 
-            <ToggleButton
-                android:id="@+id/enToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/english"
-                android:textOff="@string/english"
-                android:textOn="@string/english"
-                app:layout_constraintBottom_toBottomOf="@+id/languageLabelTextView"
-                app:layout_constraintEnd_toStartOf="@+id/arToggleButton"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toEndOf="@+id/languageLabelTextView"
-                app:layout_constraintTop_toTopOf="@+id/languageLabelTextView" />
 
-            <ToggleButton
-                android:id="@+id/arToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/arabic"
-                android:textOff="@string/arabic"
-                android:textOn="@string/arabic"
-                app:layout_constraintBottom_toBottomOf="@+id/enToggleButton"
-                app:layout_constraintEnd_toStartOf="@+id/noneToggleButton"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/enToggleButton"
-                app:layout_constraintTop_toTopOf="@+id/enToggleButton" />
-
-            <ToggleButton
-                android:id="@+id/noneToggleButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/none"
-                android:textOff="@string/none"
-                android:textOn="@string/none"
-                app:layout_constraintBottom_toBottomOf="@+id/arToggleButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/arToggleButton"
-                app:layout_constraintTop_toTopOf="@+id/arToggleButton"
-                tools:ignore="TextContrastCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
