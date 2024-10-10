@@ -1,23 +1,17 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
-import ae.network.nicardmanagementsdk.api.models.input.CardElementText
-import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
 import ae.network.nicardmanagementsdk.api.models.input.CardPresenterConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
-import ae.network.nicardmanagementsdk.api.models.output.NIErrorResponse
-import ae.network.nicardmanagementsdk.api.models.output.NISDKErrors
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
 import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
 import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
-import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
-import ae.network.nicardmanagementsdk.network.utils.IConnection
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
-import ae.network.nicardmanagementsdk.presentation.extension_methods.setCardElementText
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElementEntries
@@ -40,7 +34,7 @@ class CardElement(
     private val context: Context,
     @StyleRes private val titleAppearanceResId: Int?,
     @StyleRes private val dataAppearanceResId: Int?,
-    private val titleText: CardElementText?,
+    private val titleText: UIElementText?,
 ) {
     val title: View by lazy {
         makeTextView(titleAppearanceResId, context, titleText)
@@ -60,12 +54,12 @@ class CardElement(
             ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun makeTextView(@StyleRes textAppearance: Int?, context: Context, text: CardElementText?): TextView {
+    private fun makeTextView(@StyleRes textAppearance: Int?, context: Context, text: UIElementText?): TextView {
         val textView = TextView(context)
         textView.id = ViewCompat.generateViewId() // MUST have valid id for constraints
         textView.layoutParams = makeLayoutParams()
         textAppearance?.let { textView.setTextAppearance(it) }
-        text?.let { textView.setCardElementText(it) }
+        text?.let { textView.setUIElementText(it) }
         return textView
     }
 }
@@ -230,7 +224,7 @@ class CardElementsPresenter(
             }
         }
     }
-    private fun titleText(elm: CardMaskableElement): CardElementText? {
+    private fun titleText(elm: CardMaskableElement): UIElementText? {
         return elm.let {
             when(elm){
                 CardMaskableElement.CARDNUMBER -> config.cardNumber?.text

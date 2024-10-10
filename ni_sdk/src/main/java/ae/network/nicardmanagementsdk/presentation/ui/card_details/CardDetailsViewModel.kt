@@ -1,9 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details
 
-import ae.network.nicardmanagementsdk.network.utils.ConnectionModel
-import ae.network.nicardmanagementsdk.network.utils.IConnection
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 
-class CardDetailsViewModel() : BaseViewModel() {
-
+class CardDetailsViewModel() : ViewModel() {
 }

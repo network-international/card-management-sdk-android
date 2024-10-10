@@ -1,11 +1,15 @@
 package ae.network.nicardmanagementsdk.presentation.ui.change_pin
 
+import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.UIElementText
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinDialogFragmentBase
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
@@ -14,11 +18,29 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>() {
+class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>() {
 
     override lateinit var viewModel: ChangePinViewModel
     protected var listener: OnFragmentInteractionListener? = null
 
+    override fun checkSubscriber(context: Context) {
+        if (context is OnFragmentInteractionListener) {
+            listener = context
+        } else if (parentFragment is OnFragmentInteractionListener) {
+            listener = parentFragment as OnFragmentInteractionListener
+        } else {
+            throw RuntimeException("Must implement ChangePinFragment.OnFragmentInteractionListener")
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(input: NIInput, type: NIPinFormType, padding: Int = 0) = ChangePinFragment().apply {
+            arguments = createPinWithPaddingBundle(input, type, padding)
+        }
+
+        const val TAG = "ChangePinFragment"
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setArchitectureComponents(niInput)
         initializeUI()
@@ -31,7 +53,12 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
     }
 
     private fun setArchitectureComponents(niInput : NIInput) {
-        val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput)
+        val navTitleText: UIElementText = UIElementText.Int(R.string.change_pin_title_en)
+        val screenTitleText: UIElementText = UIElementText.Int(R.string.change_pin_description_enter_current_pin_en)
+        val newPinTitleText: UIElementText = UIElementText.Int(R.string.change_pin_description_enter_new_pin_en)
+        val approvePinTitleText: UIElementText = UIElementText.Int(R.string.set_pin_description_re_enter_pin_en)
+        val notMatchTitleText = UIElementText.Int(R.string.set_pin_description_pin_not_match_en)
+        val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput, navTitleText, screenTitleText, newPinTitleText, approvePinTitleText, notMatchTitleText)
         viewModel = ViewModelProvider(this, factory)[ChangePinViewModel::class.java]
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -51,7 +78,6 @@ abstract class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>(
                 }
             }
         }
-        viewModel.updateNIInput(niInput)
     }
 
     override fun onDismiss(dialog: DialogInterface) {

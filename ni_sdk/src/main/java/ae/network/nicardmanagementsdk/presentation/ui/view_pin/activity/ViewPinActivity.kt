@@ -7,7 +7,6 @@ import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseActivityWithPinForm
 import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragment
-import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragmentFromActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -40,9 +39,9 @@ class ViewPinActivity : BaseActivityWithPinForm<ViewPinViewModel>(), ViewPinFrag
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
-        val viewPinFragment = ViewPinFragmentFromActivity.newInstance(niInput)
+        val viewPinFragment = ViewPinFragment.newInstance(niInput)
         supportFragmentManager.beginTransaction().apply {
-            add(binding.viewPinContainer.id, viewPinFragment, ViewPinFragmentFromActivity.TAG)
+            add(binding.viewPinContainer.id, viewPinFragment, ViewPinFragment.TAG)
             commit()
         }
     }

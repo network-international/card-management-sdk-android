@@ -8,8 +8,9 @@ import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.app.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
 
-abstract class BaseActivityWithPinForm<T : BaseViewModel> : AppCompatActivity() {
+abstract class BaseActivityWithPinForm<T : ViewModel> : AppCompatActivity() {
 
     lateinit var niInput: NIInput
     lateinit var niPinFormType: NIPinFormType

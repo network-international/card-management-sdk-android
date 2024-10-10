@@ -387,8 +387,8 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
             }
 
             verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragmentFromActivity.newInstance(niInput, pinLength)
-                dialog.show(supportFragmentManager, VerifyPinFragmentFromActivity.TAG)
+                val dialog = VerifyPinFragment.newInstance(niInput, pinLength)
+                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
             }
         }
     }
@@ -423,11 +423,11 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
 
     override fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse) {
         response.isSuccess?.let {
-            Log.d(TAG, "VerifyPinFragmentFromActivity ${it.message}")
+            Log.d(TAG, "VerifyPinFragment ${it.message}")
         }
 
         response.isError?.let {
-            Log.d(TAG, "VerifyPinFragmentFromActivity ${it.errorMessage}")
+            Log.d(TAG, "VerifyPinFragment ${it.errorMessage}")
         }
     }
 
@@ -435,7 +435,7 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
 ```
 The activity should implement VerifyPinFragment.OnFragmentInteractionListener interface in order to receive
 the success/error operation callback, then you have to prepare an NIInput and NIPinFormType objects.
-In the current example the VerifyPinFragmentFromActivity component is displayed on screen using the
+In the current example the VerifyPinFragment component is displayed on screen using the
 verifyPinButton.setOnClickListener {}.
 A description of the NIPinFormType is as following:
 
@@ -495,8 +495,8 @@ class MainFragment : Fragment(), VerifyPinFragment.OnFragmentInteractionListener
         super.onViewCreated(view, savedInstanceState)
 
         binding.verifyPinButton.setOnClickListener {
-            val dialog = VerifyPinFragmentFromFragment.newInstance(niInput, niPinFormType)
-            dialog.show(childFragmentManager, VerifyPinFragmentFromFragment.TAG)
+            val dialog = VerifyPinFragment.newInstance(niInput, niPinFormType)
+            dialog.show(childFragmentManager, VerifyPinFragment.TAG)
         }
     }
 
@@ -508,11 +508,11 @@ class MainFragment : Fragment(), VerifyPinFragment.OnFragmentInteractionListener
 
     override fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse) {
         response.isSuccess?.let {
-            Log.d(MainActivity.TAG, "VerifyPinFragmentFromFragment ${it.message}")
+            Log.d(MainActivity.TAG, "VerifyPinFragment ${it.message}")
         }
 
         response.isError?.let {
-            Log.d(MainActivity.TAG, "VerifyPinFragmentFromFragment ${it.error}  ${it.errorMessage}")
+            Log.d(MainActivity.TAG, "VerifyPinFragment ${it.error}  ${it.errorMessage}")
         }
     }
 
@@ -530,16 +530,16 @@ class MainFragment : Fragment(), VerifyPinFragment.OnFragmentInteractionListener
 }
 ```
 When using VerifyPin component from a fragment, the fragment should implement VerifyPinFragment.OnFragmentInteractionListener
-in order to receive the success/error callback. Please take note of using SetPinFragmentFromFragment
+in order to receive the success/error callback. Please take note of using SetPinFragment
 component and offer a childFragmentManager parameter value to the dialog.show() method:
 
 ```kotlin
 binding.setPinButton.setOnClickListener {
-            val dialog = SetPinFragmentFromFragment.newInstance(niInput, niPinFormType)
-            dialog.show(childFragmentManager, SetPinFragmentFromFragment.TAG)
+            val dialog = SetPinFragment.newInstance(niInput, niPinFormType)
+            dialog.show(childFragmentManager, SetPinFragment.TAG)
         }
 ```
-All other aspects are the same as for SetPinFragmentFromActivity component
+All other aspects are the same as for SetPinFragment component
 
 ### ProGuard rules
 If you are using minifyEnabled true for your build configuration:
