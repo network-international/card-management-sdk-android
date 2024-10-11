@@ -3,6 +3,7 @@ package ae.network.nicardmanagementsdk.api.interfaces
 import ae.network.nicardmanagementsdk.api.models.input.CardElementsConfig
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
@@ -14,6 +15,7 @@ interface NICardManagementFormsAPI {
 
     fun displayViewPinForm(
         input: NIInput,
-        pinFormType: NIPinFormType
+        pinFormType: NIPinFormType,
+        texts: PinManagementResources
     )
 }

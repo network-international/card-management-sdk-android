@@ -20,34 +20,78 @@ Kotlin:
 ```kotlin
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: MainViewModel
+    private val niInput: NIInput
+    private val pinLength: NIPinFormType
+    private val pinFlowResources = PinManagementResources.default(
+        setPinResultAttributes = makePinResultAttributes(),
+        verifyPinMessageAttributes = makePinResultAttributes(),
+        changePinResultAttributes = makePinResultAttributes(),
+    )
+    
+    // Optional paddingTop, can only be applied for Set/Change/Verify PIN screens.
+    // The value (of Int type) must be passed to the get() method
+    // To complete the padding customization, the paddingTop parameter must be passed to desired fragment (alongside niInput and pinLength)
+    // If there's no paddingTop parameter sent, there will be no paddingTop.
+    private val paddingTop: Int
+        get() = 100
+
     // Create an instance of NICardManagement. Callback for completion handler are provided here
     private val niCardManagementForms = NICardManagementForms(
         this,
-        displayCardDetailsOnCompletion = getCompletionHandler("displayCardDetailsForm"),
-        setPinOnCompletion = getCompletionHandler("setPinForm"),
-        changePinOnCompletion = getCompletionHandler("changePinForm")
+        displayCardDetailsOnCompletion = getCompletionHandler("displayCardDetailsForm")
     )
 
-    niCardManagementForms.displayCardDetailsForm(
-        niInput,
-        backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
-        title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
-        config = CardElementsConfig.default(
-            copyTargets = listOf<CardMaskableElement>(
-                CardMaskableElement.CARDNUMBER,
-                CardMaskableElement.CARDHOLDER,
-            ),
-            copyTemplate = "Card number: %s\nName: %s"
-        )
-    )
-    // Build NIInput Object
-    niCardManagementForms.displayCardDetailsForm(niInput)
-    // Build NIInput Object & PIN Length
-    niCardManagementForms.setPinForm(niInput, pinLength)
-    // Build NIInput Object & PIN Length
-    niCardManagementForms.changePinForm(niInput, pinLength)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initializeUI()
+    }
 
+    private fun initializeUI() {
+        binding.apply {
+            recyclerView.apply {
+                layoutManager = LinearLayoutManager(context)
+                adapter = EntriesListAdapter()
+                setHasFixedSize(true)
+            }
+
+            cardDetailsButton.setOnClickListener {
+                // Build NIInput Object
+                niCardManagementForms.displayCardDetailsForm(
+                    niInput,
+                    backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
+                    title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
+                    config = CardElementsConfig.default(
+                        copyTargets = listOf<CardMaskableElement>(
+                            CardMaskableElement.CARDNUMBER,
+                            CardMaskableElement.CARDHOLDER,
+                        ),
+                        copyTemplate = "Card number: %s\nName: %s"
+                    )
+                )
+            }
+
+            setPinButton.setOnClickListener {
+                // provide padding for pin forms
+                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+                dialog.show(supportFragmentManager, SetPinFragment.TAG)
+            }
+
+            verifyPinButton.setOnClickListener {
+                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
+            }
+
+            changePinButton.setOnClickListener {
+                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
+            }
+        }
+    }
+
+    // 
     private fun getCompletionHandler(formName: String): OnSuccessErrorCancelCompletion =
         { success, error, canceled ->
             if (canceled) {
@@ -61,6 +105,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+    companion object {
+        const val TAG = "MainActivity"
+    }
 }
 ```
 
@@ -91,22 +139,7 @@ data class NIConnectionProperties(
     val token: String
 ) : Serializable
 
-/*
-@fonts: Allows redefinition of font size for every label
-@cardAttributes: Allows redefinition of the background image with customer own design and whether the sensitive data should be visible by default or hidden behind an 'Eye' icon to reveal on demand.
-@setPinMessageAttributes, 
-@verifyPinMessageAttributes,
-@changePinMessageAttributes : Allows displaying of a custom layout on completion, for success/error screen
-@theme : Allow to display the status bar following your current theme setting
-*/
 data class NIDisplayAttributes(
-    // the next three parameter are optional
-    // if set an custom layout will be displayed on completion, and the component will navigate
-    // back on "doneButton" specified as an @IdRes val buttonResId: Int
-    val setPinMessageAttributes: PinMessageAttributes? = null,
-    val verifyPinMessageAttributes: PinMessageAttributes? = null,
-    val changePinMessageAttributes: PinMessageAttributes? = null,
-
     // This parameter is optional.
     // If not set the SDK will follow your parent app day/night mode based on OS settings or as requested by your app.
     // The recommended way for using this parameter is to leave it unset, unless you have some special requirements.
@@ -114,34 +147,50 @@ data class NIDisplayAttributes(
     val theme: NITheme? = null
 ): Serializable
 
-enum class NITheme: Serializable {
-    LIGHT, DARK_APP_COMPAT, DARK_MATERIAL
-}
-
+// Provide texts for labels, 
+// styles and grapphic resources for UI elements, 
+// layout information for positioning of UI elements
 data class CardElementsConfig(
-    val cardNumber: CardElementsItemConfig? = null,
-    val expiry: CardElementsItemConfig? = null,
-    val cvv: CardElementsItemConfig? = null,
-    val cardHolder: CardElementsItemConfig? = null,
+    var cardNumber: CardElementsItemConfig? = null,
+    var expiry: CardElementsItemConfig? = null,
+    var cvv: CardElementsItemConfig? = null,
+    var cardHolder: CardElementsItemConfig? = null,
     // common mask button - toggle all elements together
-    val commonMaskButton: CardElementMaskButton? = null, // common show details button
+    var commonMaskButton: CardElementMaskButton? = null, // common show details button
     // define initial state of masking
-    val shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
+    var shouldBeMaskedDefault: List<CardMaskableElement> = listOf(
         CardMaskableElement.CARDNUMBER,
         CardMaskableElement.EXPIRY,
         CardMaskableElement.CVV,
         CardMaskableElement.CARDHOLDER,
     ),
     // if not null - standard progressIndicator shows progress
-    val progressBar: CardProgressBarConfig? = null,
-): Serializable 
-
-data class PinMessageAttributes(
-    val successAttributes: SuccessErrorScreenAttributes,
-    val errorAttributes: SuccessErrorScreenAttributes
+    var progressBar: CardProgressBarConfig? = null,
 ): Serializable
 
-data class SuccessErrorScreenAttributes(
+data class CardPresenterConfig(
+    var cardNumber: CardPresenterElementConfig?,
+    var expiry: CardPresenterElementConfig?,
+    var cvv: CardPresenterElementConfig?,
+    var cardHolder: CardPresenterElementConfig?,
+    var shouldBeMaskedDefault: List<CardMaskableElement>
+): Serializable
+
+// Provide strings for PIN management screens
+// optionally set layoutId in `PinResultAttributes` for showing PIN operation results screen
+data class PinManagementResources (
+    var setPin: PinManagementSetPinResources,
+    var verifyPin: PinManagementVerifyPinResources,
+    var changePin: PinManagementChangePinResources,
+    var viewPin: PinManagementViewPinResources,
+): Serializable
+
+data class PinResultAttributes(
+    val successScreen: PinResultScreenAttributes,
+    val errorScreen: PinResultScreenAttributes
+): Serializable
+
+data class PinResultScreenAttributes(
     @LayoutRes val layoutId: Int,
     @IdRes val buttonResId: Int
 ): Serializable
@@ -346,7 +395,7 @@ presenter.fetch()
 </androidx.constraintlayout.widget.ConstraintLayout>
 ```
 
-### Verify PIN from an activity
+### PIN management
 ```kotlin
 class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractionListener{
 
@@ -386,11 +435,40 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
                 }
             }
 
+            val pinFlowResources = PinManagementResources.default(
+                setPinResultAttributes = makePinResultAttributes(),
+                verifyPinMessageAttributes = makePinResultAttributes(),
+                changePinResultAttributes = makePinResultAttributes(),
+            )
+            setPinButton.setOnClickListener {
+                // provide padding for pin forms
+                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+                dialog.show(supportFragmentManager, SetPinFragment.TAG)
+            }
+
             verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragmentFromActivity.newInstance(niInput, pinLength)
-                dialog.show(supportFragmentManager, VerifyPinFragmentFromActivity.TAG)
+                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
+            }
+
+            changePinButton.setOnClickListener {
+                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
             }
         }
+    }
+
+    private fun makePinResultAttributes(): PinResultAttributes {
+        return PinResultAttributes(
+            successScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_success,
+                buttonResId = R.id.doneButton
+            ),
+            errorScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_error,
+                buttonResId = R.id.doneButton
+            )
+        )
     }
 
     private fun makeInputObject(): NIInput {
@@ -403,16 +481,7 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
             ),
             displayAttributes = NIDisplayAttributes(
-                verifyPinMessageAttributes = PinMessageAttributes(
-                    successAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_success,
-                        buttonResId = R.id.doneButton
-                    ),
-                    errorAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_error,
-                        buttonResId = R.id.doneButton
-                    )
-                )
+                //theme = NITheme.DARK_APP_COMPAT
             )
         )
     }
@@ -433,10 +502,12 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
 
 }
 ```
-The activity should implement VerifyPinFragment.OnFragmentInteractionListener interface in order to receive
-the success/error operation callback, then you have to prepare an NIInput and NIPinFormType objects.
-In the current example the VerifyPinFragmentFromActivity component is displayed on screen using the
-verifyPinButton.setOnClickListener {}.
+The activity should implement 
+VerifyPinFragment.OnFragmentInteractionListener,
+SetPinFragment.OnFragmentInteractionListener,
+ChangePinFragment.OnFragmentInteractionListener,
+interface in order to receive
+the success/error operation callback
 A description of the NIPinFormType is as following:
 
 ```kotlin
@@ -452,94 +523,11 @@ and a pinLength parameter example could be :
 ```kotlin
 pinLength = NIPinFormType.FOUR_DIGITS
 ```
-The NIInput class has an optional "val displayAttributes: NIDisplayAttributes? = null" constructor
-parameter, which in turn has an optional "val verifyPinMessageAttributes: PinMessageAttributes? = null"
-parameter of type PinMessageAttributes.
-
-If you do not specify an "verifyPinMessageAttributes" the VerifyPin component will navigate back
-automatically after completion, but if you give these "verifyPinMessageAttributes" optional parameter
-to the NIInput object, the component will display for you a custom success and error layout,
+Check an optional `PinResultAttributes` - If you do not specify an attributes the PinManagement component will navigate back
+automatically after completion, 
+otherwise the component will display for you a custom success and error layout,
 and will navigate back on "buttonResId" button setOnClickListener{}, giving the user the opportunity
 to display a custom success/error layout with a "done" button.
-
-### Verify PIN from a fragment
-```kotlin
-class MainFragment : Fragment(), VerifyPinFragment.OnFragmentInteractionListener {
-
-    private var _binding: FragmentMainBinding? = null
-    private val binding: FragmentMainBinding
-        get() = _binding!!
-
-    private lateinit var niInput: NIInput
-    private lateinit var niPinFormType: NIPinFormType
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
-            niInput = it
-        } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
-
-        arguments?.getSerializableCompat<NIPinFormType>(Extra.EXTRA_NI_PIN_FORM_TYPE)?.let {
-            niPinFormType = it
-        } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        binding.verifyPinButton.setOnClickListener {
-            val dialog = VerifyPinFragmentFromFragment.newInstance(niInput, niPinFormType)
-            dialog.show(childFragmentManager, VerifyPinFragmentFromFragment.TAG)
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-    
-
-    override fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse) {
-        response.isSuccess?.let {
-            Log.d(MainActivity.TAG, "VerifyPinFragmentFromFragment ${it.message}")
-        }
-
-        response.isError?.let {
-            Log.d(MainActivity.TAG, "VerifyPinFragmentFromFragment ${it.error}  ${it.errorMessage}")
-        }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(input: NIInput, type: NIPinFormType) = MainFragment().apply {
-            arguments = Bundle().apply {
-                putSerializable(Extra.EXTRA_NI_INPUT, input)
-                putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
-            }
-        }
-
-        const val TAG = "MainFragment"
-    }
-}
-```
-When using VerifyPin component from a fragment, the fragment should implement VerifyPinFragment.OnFragmentInteractionListener
-in order to receive the success/error callback. Please take note of using SetPinFragmentFromFragment
-component and offer a childFragmentManager parameter value to the dialog.show() method:
-
-```kotlin
-binding.setPinButton.setOnClickListener {
-            val dialog = SetPinFragmentFromFragment.newInstance(niInput, niPinFormType)
-            dialog.show(childFragmentManager, SetPinFragmentFromFragment.TAG)
-        }
-```
-All other aspects are the same as for SetPinFragmentFromActivity component
 
 ### ProGuard rules
 If you are using minifyEnabled true for your build configuration:

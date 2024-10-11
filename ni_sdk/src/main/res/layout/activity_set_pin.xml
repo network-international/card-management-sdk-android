@@ -38,8 +38,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="@{context.getString(viewModel.navTitle)}"/>
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -49,7 +48,6 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center_horizontal"
-                android:text="@{context.getString(viewModel.screenTitle)}"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="?textColorCustom"

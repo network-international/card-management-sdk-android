@@ -23,10 +23,6 @@
     <string name="custom_component_used_from_host_activity">Custom component</string>
     <string name="card_details_from_custom_component">Card details</string>
     <string name="theme_day_night_mode">Theme Day/Night</string>
-    <string name="language">Language</string>
-    <string name="english">English</string>
-    <string name="arabic">Arabic</string>
-    <string name="none">None</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hello_blank_activity">Hello blank Activity</string>

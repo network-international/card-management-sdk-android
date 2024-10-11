@@ -7,7 +7,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.databinding.FragmentCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
-import ae.network.nicardmanagementsdk.presentation.extension_methods.setCardElementText
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setConstraints
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setContentDescrText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
@@ -161,7 +161,7 @@ class CardDetailsFragment : Fragment() {
         elementsConfig.let { cnf ->
             cnf.cardHolder?.let { elm ->
                 elm.label?.let {
-                    binding.cardHolderNameLabelTextView.setCardElementText(it.text)
+                    binding.cardHolderNameLabelTextView.setUIElementText(it.text)
                     it.appearanceResId?.let { binding.cardHolderNameLabelTextView.setTextAppearance(it) }
                     binding.cardHolderNameLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -184,7 +184,7 @@ class CardDetailsFragment : Fragment() {
             }
             cnf.cardNumber?.let { elm ->
                 elm.label?.let {
-                    binding.cardNumberLabelTextView.setCardElementText(it.text)
+                    binding.cardNumberLabelTextView.setUIElementText(it.text)
                     it.appearanceResId?.let { binding.cardNumberLabelTextView.setTextAppearance(it) }
                     binding.cardNumberLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -207,7 +207,7 @@ class CardDetailsFragment : Fragment() {
             }
             cnf.cvv?.let { elm ->
                 elm.label?.let {
-                    binding.cvvCodeLabelTextView.setCardElementText(it.text)
+                    binding.cvvCodeLabelTextView.setUIElementText(it.text)
                     it.appearanceResId?.let { binding.cvvCodeLabelTextView.setTextAppearance(it) }
                     binding.cvvCodeLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
@@ -230,7 +230,7 @@ class CardDetailsFragment : Fragment() {
             }
             cnf.expiry?.let { elm ->
                 elm.label?.let {
-                    binding.expiryDateLabelTextView.setCardElementText(it.text)
+                    binding.expiryDateLabelTextView.setUIElementText(it.text)
                     it.appearanceResId?.let { binding.expiryDateLabelTextView.setTextAppearance(it) }
                     binding.expiryDateLabelTextView.setConstraints(it.layout, binding.constraintLayout)
                 }
