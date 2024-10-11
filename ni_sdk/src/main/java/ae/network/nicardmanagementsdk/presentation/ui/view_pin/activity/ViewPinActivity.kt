@@ -2,30 +2,57 @@ package ae.network.nicardmanagementsdk.presentation.ui.view_pin.activity
 
 import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.NIInput
+import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
+import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
 import ae.network.nicardmanagementsdk.databinding.ActivityViewPinBinding
 import ae.network.nicardmanagementsdk.di.Injector
+import ae.network.nicardmanagementsdk.helpers.ThemeHelper
+import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
-import ae.network.nicardmanagementsdk.presentation.ui.base_class.BaseActivityWithPinForm
 import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragment
-import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragmentFromActivity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class ViewPinActivity : BaseActivityWithPinForm<ViewPinViewModel>(), ViewPinFragment.OnFragmentInteractionListener {
+class ViewPinActivity : AppCompatActivity(), ViewPinFragment.OnFragmentInteractionListener {
 
-    override lateinit var viewModel: ViewPinViewModel
+    lateinit var viewModel: ViewPinViewModel
+    lateinit var niInput: NIInput
+    lateinit var texts: PinManagementResources
+    lateinit var niPinFormType: NIPinFormType
     private lateinit var binding: ActivityViewPinBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setResult(Activity.RESULT_CANCELED)
+        intent.getSerializableExtraCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
+            niInput = it
+        } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_INPUT} is missing")
+
+        intent.getSerializableExtraCompat<NIPinFormType>(Extra.EXTRA_NI_PIN_FORM_TYPE)?.let {
+            niPinFormType = it
+        } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_TYPE} is missing")
+
+        intent.getSerializableExtraCompat<PinManagementResources>(Extra.EXTRA_NI_PIN_FORM_RESOURCES)?.let {
+            texts = it
+        } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_RESOURCES} is missing")
+
+        setTheme(ThemeHelper().getThemeResId(niInput))
+
         setArchitectureComponents()
         initializeUI()
+    }
+
+    private fun navigateBack() {
+        onBackPressedDispatcher.onBackPressed()
     }
 
     private fun setArchitectureComponents() {
@@ -40,9 +67,9 @@ class ViewPinActivity : BaseActivityWithPinForm<ViewPinViewModel>(), ViewPinFrag
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
-        val viewPinFragment = ViewPinFragmentFromActivity.newInstance(niInput)
+        val viewPinFragment = ViewPinFragment.newInstance(niInput, texts)
         supportFragmentManager.beginTransaction().apply {
-            add(binding.viewPinContainer.id, viewPinFragment, ViewPinFragmentFromActivity.TAG)
+            add(binding.viewPinContainer.id, viewPinFragment, ViewPinFragment.TAG)
             commit()
         }
     }

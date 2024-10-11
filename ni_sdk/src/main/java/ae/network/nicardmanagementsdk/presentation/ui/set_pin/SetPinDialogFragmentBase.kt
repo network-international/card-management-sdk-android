@@ -4,16 +4,16 @@ import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
-import ae.network.nicardmanagementsdk.api.models.input.PinMessageAttributes
+import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
+import ae.network.nicardmanagementsdk.api.models.input.PinResultAttributes
 import ae.network.nicardmanagementsdk.api.models.output.NICancelledResponse
 import ae.network.nicardmanagementsdk.databinding.ActivitySetPinBinding
-import ae.network.nicardmanagementsdk.helpers.LanguageHelper
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
 import ae.network.nicardmanagementsdk.presentation.adapters.BulletListAdapter
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
+import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +21,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import java.util.*
 
 abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragment() {
 
@@ -36,6 +35,7 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         isCancelled = NICancelledResponse()
     )
     lateinit var niInput: NIInput
+    lateinit var texts: PinManagementResources
     abstract var viewModel: T
     private var density = context?.resources?.displayMetrics?.density
     private var paddingDp: Int = 0
@@ -56,6 +56,9 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         arguments?.getSerializableCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_INPUT} is missing")
+        arguments?.getSerializableCompat<PinManagementResources>(Extra.EXTRA_NI_PIN_FORM_RESOURCES)?.let {
+            texts = it
+        } ?: throw RuntimeException("${this::class.java.simpleName} arguments serializable ${Extra.EXTRA_NI_PIN_FORM_RESOURCES} is missing")
 
         setStyle(STYLE_NO_FRAME, ThemeHelper().getThemeResId(niInput))
 
@@ -82,6 +85,12 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
     }
 
     protected open fun initializeUI() {
+        viewModel.navTitle.observe(viewLifecycleOwner) { title ->
+            binding.customBackNavigationView.setUIElementText(title)
+        }
+        viewModel.screenTitle.observe(viewLifecycleOwner) { title ->
+            binding.titleTextView.setUIElementText(title)
+        }
         binding.customBackNavigationView.setOnBackButtonClickListener {
             dismiss()
         }
@@ -107,14 +116,12 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
 
             paddingTop = paddingDp
         }
-
-        viewModel.updateNIInput(niInput)
     }
 
-    protected fun showSuccessErrorFragment(pinMessageAttributes: PinMessageAttributes, isSuccess: Boolean) {
-        pinMessageAttributes.let {
-            val layoutId = if (isSuccess) it.successAttributes.layoutId else it.errorAttributes.layoutId
-            val buttonId = if (isSuccess) it.successAttributes.buttonResId else it.errorAttributes.buttonResId
+    protected fun showSuccessErrorFragment(pinResultAttributes: PinResultAttributes, isSuccess: Boolean) {
+        pinResultAttributes.let {
+            val layoutId = if (isSuccess) it.successScreen.layoutId else it.errorScreen.layoutId
+            val buttonId = if (isSuccess) it.successScreen.buttonResId else it.errorScreen.buttonResId
             val fragment = SuccessErrorFragment.newInstance(layoutId, buttonId)
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.setPinRootLayout, fragment, SuccessErrorFragment.TAG)
@@ -129,18 +136,15 @@ abstract class SetPinDialogFragmentBase<T : SetPinViewModelBase> : DialogFragmen
         }
     }
 
-    protected fun createPinBundle(input: NIInput, type: NIPinFormType): Bundle = Bundle().apply {
-        putSerializable(Extra.EXTRA_NI_INPUT, input)
-        putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
-    }
-
     protected fun createPinWithPaddingBundle(
         input: NIInput,
         type: NIPinFormType,
+        texts: PinManagementResources,
         padding: Int = 0
     ): Bundle = Bundle().apply {
         putSerializable(Extra.EXTRA_NI_INPUT, input)
         putSerializable(Extra.EXTRA_NI_PIN_FORM_TYPE, type)
         putSerializable(Extra.EXTRA_SET_PIN_FRAGMENT_TOP_PADDING, padding)
+        putSerializable(Extra.EXTRA_NI_PIN_FORM_RESOURCES, texts)
     }
 }

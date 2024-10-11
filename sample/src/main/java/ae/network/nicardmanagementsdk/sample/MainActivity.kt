@@ -1,6 +1,5 @@
 package ae.network.nicardmanagementsdk.sample
 
-import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.implementation.NICardManagementForms
 import ae.network.nicardmanagementsdk.api.implementation.OnSuccessErrorCancelCompletion
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
@@ -8,11 +7,8 @@ import ae.network.nicardmanagementsdk.api.models.input.*
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragment
-import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragmentFromActivity
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinFragment
-import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinFragmentFromActivity
 import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinFragment
-import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinFragmentFromActivity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -26,7 +22,6 @@ import ae.network.nicardmanagementsdk.sample.adapters.EntriesListAdapter
 import com.example.nicardmanagementapp.databinding.ActivityMainBinding
 import ae.network.nicardmanagementsdk.sample.models.EntriesItemModel
 import ae.network.nicardmanagementsdk.sample.models.SampleAppFormEntryEnum.*
-import android.widget.Toast
 
 class MainActivity : AppCompatActivity(),
     SetPinFragment.OnFragmentInteractionListener,
@@ -81,21 +76,6 @@ class MainActivity : AppCompatActivity(),
                 }
             }
 
-            enToggleButton.setOnClickListener {
-                arToggleButton.isChecked = false
-                noneToggleButton.isChecked = false
-            }
-
-            arToggleButton.setOnClickListener {
-                enToggleButton.isChecked = false
-                noneToggleButton.isChecked = false
-            }
-
-            noneToggleButton.setOnClickListener {
-                enToggleButton.isChecked = false
-                arToggleButton.isChecked = false
-            }
-
             cardDetailsButton.setOnClickListener {
                 // update text in config if needed,
                 // val config = CardElementsConfig.default ...
@@ -130,20 +110,25 @@ class MainActivity : AppCompatActivity(),
                 supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
             }
 
+            val pinFlowResources = PinManagementResources.default(
+                setPinResultAttributes = makePinResultAttributes(),
+                verifyPinMessageAttributes = makePinResultAttributes(),
+                changePinResultAttributes = makePinResultAttributes(),
+            )
             setPinButton.setOnClickListener {
                 // provide padding for pin forms
-                val dialog = SetPinFragmentFromActivity.newInstance(niInput, pinLength, padding = 100)
-                dialog.show(supportFragmentManager, SetPinFragmentFromActivity.TAG)
+                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+                dialog.show(supportFragmentManager, SetPinFragment.TAG)
             }
 
             verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragmentFromActivity.newInstance(niInput, pinLength)
-                dialog.show(supportFragmentManager, VerifyPinFragmentFromActivity.TAG)
+                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
             }
 
             changePinButton.setOnClickListener {
-                val dialog = ChangePinFragmentFromActivity.newInstance(niInput, pinLength)
-                dialog.show(supportFragmentManager, ChangePinFragmentFromActivity.TAG)
+                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
             }
         }
     }
@@ -178,6 +163,19 @@ class MainActivity : AppCompatActivity(),
             }
         }
 
+    private fun makePinResultAttributes(): PinResultAttributes {
+        return PinResultAttributes(
+            successScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_success,
+                buttonResId = R.id.doneButton
+            ),
+            errorScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_error,
+                buttonResId = R.id.doneButton
+            )
+        )
+    }
+
     private fun makeInputObject(): NIInput {
         return NIInput(
             bankCode = viewModel.entriesItemModels.first { model -> model.id == BANK_CODE }.value,
@@ -188,36 +186,6 @@ class MainActivity : AppCompatActivity(),
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
             ),
             displayAttributes = NIDisplayAttributes(
-                setPinMessageAttributes = PinMessageAttributes(
-                    successAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_success,
-                        buttonResId = R.id.doneButton
-                    ),
-                    errorAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_error,
-                        buttonResId = R.id.doneButton
-                    )
-                ),
-                verifyPinMessageAttributes = PinMessageAttributes(
-                    successAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_success,
-                        buttonResId = R.id.doneButton
-                    ),
-                    errorAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_error,
-                        buttonResId = R.id.doneButton
-                    )
-                ),
-                changePinMessageAttributes = PinMessageAttributes(
-                    successAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_success,
-                        buttonResId = R.id.doneButton
-                    ),
-                    errorAttributes = SuccessErrorScreenAttributes(
-                        layoutId = R.layout.activity_error,
-                        buttonResId = R.id.doneButton
-                    )
-                ),
                 //theme = NITheme.DARK_APP_COMPAT
             )
         )
@@ -229,31 +197,31 @@ class MainActivity : AppCompatActivity(),
 
     override fun onChangePinFragmentCompletion(response: SuccessErrorCancelResponse) {
         response.isSuccess?.let {
-            Log.d(TAG, "ChangePinFragmentFromActivity ${it.message}")
+            Log.d(TAG, "ChangePinFragment ${it.message}")
         }
 
         response.isError?.let {
-            Log.d(TAG, "ChangePinFragmentFromActivity ${it.errorMessage}")
+            Log.d(TAG, "ChangePinFragment ${it.errorMessage}")
         }
     }
 
     override fun onSetPinFragmentCompletion(response: SuccessErrorCancelResponse) {
         response.isSuccess?.let {
-            Log.d(TAG, "SetPinFragmentFromActivity ${it.message}")
+            Log.d(TAG, "SetPinFragment ${it.message}")
         }
 
         response.isError?.let {
-            Log.d(TAG, "SetPinFragmentFromActivity ${it.errorMessage}")
+            Log.d(TAG, "SetPinFragment ${it.errorMessage}")
         }
     }
 
     override fun onVerifyPinFragmentCompletion(response: SuccessErrorCancelResponse) {
         response.isSuccess?.let {
-            Log.d(TAG, "VerifyPinFragmentFromActivity ${it.message}")
+            Log.d(TAG, "VerifyPinFragment ${it.message}")
         }
 
         response.isError?.let {
-            Log.d(TAG, "VerifyPinFragmentFromActivity ${it.errorMessage}")
+            Log.d(TAG, "VerifyPinFragment ${it.errorMessage}")
         }
     }
 

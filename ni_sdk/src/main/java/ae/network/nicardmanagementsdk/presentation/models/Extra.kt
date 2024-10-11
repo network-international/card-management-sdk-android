@@ -7,6 +7,7 @@ object Extra {
     const val EXTRA_NI_CARD_NAVIGATION_TITLE = "CardDetailsNavigationTitle"
     const val EXTRA_NI_CARD_ELEMENTS_CONFIG = "CardElementsConfig"
 
+    const val EXTRA_NI_PIN_FORM_RESOURCES = "PinManagementResources"
     const val EXTRA_NI_PIN_FORM_TYPE = "NIPinFormType"
     const val EXTRA_NI_SUCCESS_RESPONSE = "NISuccessResponse"
     const val EXTRA_NI_ERROR_RESPONSE = "NIErrorResponse"
