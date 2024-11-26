@@ -3,6 +3,7 @@ package ae.network.nicardmanagementsdk.network
 import ae.network.nicardmanagementsdk.api.models.input.NIConnectionProperties
 import ae.network.nicardmanagementsdk.helpers.UrlHelper
 import ae.network.nicardmanagementsdk.network.retrofit_api.*
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,10 +19,28 @@ class Network(connectionProperties: NIConnectionProperties) {
         safeBaseUrl = UrlHelper().baseUrlCheck(connectionProperties)
         // change logging level for debugging
         logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
-        okHttpClient = OkHttpClient.Builder()
+        val clientBuilder = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
-            .addInterceptor(logInterceptor)
+
+        // Add http headers
+        if (!connectionProperties.extraNetworkHeaders.isNullOrEmpty()) {
+            clientBuilder.addInterceptor { chain: Interceptor.Chain ->
+                val original = chain.request()
+                val modified = original.newBuilder()
+                connectionProperties.extraNetworkHeaders.forEach { entry ->
+                    if (original.header(entry.key) == null) {
+                        modified.addHeader(entry.key, entry.value)
+                    }
+                }
+                val request = modified.build()
+                chain.proceed(request)
+            }
+        }
+        // logger
+        clientBuilder.addInterceptor(logInterceptor)
+
+        okHttpClient = clientBuilder
             .build()
     }
 
