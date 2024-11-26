@@ -133,10 +133,12 @@ data class NIInput(
 /*
 @rootUrl: The URL which will prefix any of our API calls pointing to your implementation of proxy services. e.g. https://api.mybank.com/ will result in: https://api.mybank.com/cards/secured
 @token: The oAuth2 token used to identify this App with the customers endpoint (Not Network International) which will be passed in the Authorization header field.
+@extraNetworkHeaders: Map<String, String> key-value pairs that will be used as additional http headers
 */
 data class NIConnectionProperties(
     val rootUrl: String,
-    val token: String
+    val token: String,
+    val extraNetworkHeaders: Map<String, String>? = null
 ) : Serializable
 
 data class NIDisplayAttributes(
@@ -479,6 +481,10 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
             connectionProperties = NIConnectionProperties(
                 viewModel.entriesItemModels.first { model -> model.id == ROOT_URL }.value,
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
+                extraNetworkHeaders = hashMapOf(
+                    "extraHeader1" to "DemoExtraHttpHeaderValue",
+                    "Content-Type" to "will be ignored for existing header" // this will be ignored
+                )
             ),
             displayAttributes = NIDisplayAttributes(
                 //theme = NITheme.DARK_APP_COMPAT

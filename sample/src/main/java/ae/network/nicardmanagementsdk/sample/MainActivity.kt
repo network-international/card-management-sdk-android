@@ -184,6 +184,10 @@ class MainActivity : AppCompatActivity(),
             connectionProperties = NIConnectionProperties(
                 viewModel.entriesItemModels.first { model -> model.id == ROOT_URL }.value,
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
+                extraNetworkHeaders = hashMapOf(
+                    "extraHeader1" to "DemoExtraHttpHeaderValue",
+                    "Content-Type" to "will be ignored for existing header" // this will be ignored
+                )
             ),
             displayAttributes = NIDisplayAttributes(
                 //theme = NITheme.DARK_APP_COMPAT
