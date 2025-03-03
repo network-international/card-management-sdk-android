@@ -24,7 +24,6 @@ import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.marginBottom
 import androidx.core.view.marginLeft
 import androidx.core.view.marginRight
@@ -50,13 +49,13 @@ fun Context.getThemeColor(
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Serializable> Intent.getSerializableExtraCompat(key: String): T? {
-    return getSerializableExtra(key)?.let { it as T }
+    return this.getSerializableExtra(key)?.let { it as T }
 
 }
 
 @Suppress("UNCHECKED_CAST")
 fun <T : Serializable> Bundle.getSerializableCompat(key: String): T? {
-    return getSerializable(key)?.let { it as T }
+    return this.getSerializable(key)?.let { it as T }
 
 }
 
