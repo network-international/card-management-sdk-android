@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.7.20'
-        VisionCameraCodeScanner_targetSdkVersion = 31
-        VisionCameraCodeScanner_compileSdkVersion = 31
+        kotlin_version = '1.9.20' //Android Studio contains 1.9.0 and higher, latest 2.1.10
+        VisionCameraCodeScanner_targetSdkVersion = 35
+        VisionCameraCodeScanner_compileSdkVersion = 35
     }
     repositories {
         google()
@@ -11,11 +11,11 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.4.2'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+        classpath 'com.android.tools.build:gradle:8.8.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
-task clean(type: Delete) {
+tasks.register('clean', Delete) {
     delete rootProject.buildDir
 }

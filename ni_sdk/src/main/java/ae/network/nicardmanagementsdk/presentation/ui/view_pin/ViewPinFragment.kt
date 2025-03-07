@@ -61,10 +61,10 @@ class ViewPinFragment : Fragment() {
     }
 
     private fun checkSubscriber(context: Context) {
-        if (context is OnFragmentInteractionListener) {
-            listener = context
+        listener = if (context is OnFragmentInteractionListener) {
+            context
         } else if (parentFragment is OnFragmentInteractionListener) {
-            listener = parentFragment as OnFragmentInteractionListener
+            parentFragment as OnFragmentInteractionListener
         } else {
             throw RuntimeException("Must implement ViewPinFragment.OnFragmentInteractionListener")
         }
@@ -132,11 +132,9 @@ class ViewPinFragment : Fragment() {
 
                 timer = object : CountDownTimer(startTime!!, COUNTDOWN_INTERVAL) {
                     override fun onTick(millisUntilFinished: Long) {
-                        if (pinViewBinding != null) {
-                            pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
-                            val secondsToInt = (millisUntilFinished / 1000).toInt()
-                            pinViewBinding.countdownTimerTextView.setUIElementText(viewModel.timerStringTemplate, secondsToInt)
-                        }
+                        pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
+                        val secondsToInt = (millisUntilFinished / 1000).toInt()
+                        pinViewBinding.countdownTimerTextView.setUIElementText(viewModel.timerStringTemplate, secondsToInt)
                     }
 
                     override fun onFinish() {
