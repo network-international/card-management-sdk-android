@@ -549,4 +549,14 @@ you have to add the following line of code to your proguard-rules.pro configurat
 
 ```groovy
 -keep class org.bouncycastle.** { *; }
+-keepclassmembers class ae.network.nicardmanagementsdk.** { *; }
 ```
+If some of your third party libraries relies on reflection so proguard is breaking it.
+If you add that line in your proguard file, you should have the Class name and line number instead of `Unkown Source` in the stack trace:
+```groovy
+-keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile, LineNumberTable, *Annotation*, EnclosingMethod
+```
+
+#### R8 full mode ProGuard Troubleshooting
+find instructions in documentation
+https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md#troubleshooting

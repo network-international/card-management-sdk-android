@@ -14,8 +14,8 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
@@ -53,8 +53,9 @@ class CardDetailsFragmentViewModel(
     var shouldBeMaskedDefault: List<CardMaskableElement> = CardMaskableElementEntries.all().toMutableList()
 
 
-    val cardDetailsLiveData: LiveData<CardDetailsModel> = Transformations.map(maskedElementsLiveData) {
-        it?.let {
+    val cardDetailsLiveData: LiveData<CardDetailsModel>
+        get () = maskedElementsLiveData.map {
+        it.let {
             if (it.containsAll(CardMaskableElementEntries.all())) {
                 cardDetailsMasked
             } else if (it.isEmpty()) {
