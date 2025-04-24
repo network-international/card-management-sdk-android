@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
 
     // BouncyCastle - SelfSignedCertificate
-    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.67'
+    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.80'
 }
 
 
