@@ -56,9 +56,9 @@ class CardDetailsFragment : Fragment() {
     @StringRes private var copyToClipboardMessage: Int = R.string.copied_to_clipboard_en
     private var listener: CardDetailsFragmentListener? = null
 
-    private var isFetchRequested = false
+    //private var isFetchRequested = false
     // override
-    fun checkSubscriber(context: Context) {
+    private fun checkSubscriber(context: Context) {
         listener = if (parentFragment is CardDetailsFragmentListener) {
             parentFragment as CardDetailsFragmentListener
         } else if (context is CardDetailsFragmentListener) {
@@ -86,7 +86,6 @@ class CardDetailsFragment : Fragment() {
         arguments?.getSerializableCompat<Int>(Extra.EXTRA_NI_COPY_CLIPBOARD_TEXT)?.let {
             copyToClipboardMessage = it
         }
-
     }
 
     override fun onCreateView(
@@ -287,7 +286,7 @@ class CardDetailsFragment : Fragment() {
             binding.cvvCodeTextView.text = model.cVV2
             binding.cardHolderNameTextView.text = model.cardholderName
         }
-        viewModel.copiedTextMessageSingleLiveEvent.observe(this) { resId ->
+        viewModel.copiedTextMessageSingleLiveEvent.observe(viewLifecycleOwner) { resId ->
             resId?.let {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
@@ -297,7 +296,7 @@ class CardDetailsFragment : Fragment() {
         elementsConfig.progressBar?.let {
             binding.progressBarHolder.visibility = View.VISIBLE
         }
-        viewModel.onResultSingleLiveEvent.observe(this) { successErrorResponse ->
+        viewModel.onResultSingleLiveEvent.observe(viewLifecycleOwner) { successErrorResponse ->
             binding.progressBarHolder.visibility = View.GONE
             successErrorResponse?.let {
                 listener?.onCardDetailsFragmentCompletion(it)
