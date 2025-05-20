@@ -92,7 +92,8 @@ class MainActivity : AppCompatActivity(),
                             CardMaskableElement.CARDHOLDER,
                         ),
                         copyTemplate = "Card number: %s\nName: %s"
-                    )
+                    ),
+                    padding = 100
                 )
             }
 
@@ -122,12 +123,12 @@ class MainActivity : AppCompatActivity(),
             }
 
             verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
                 dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
             }
 
             changePinButton.setOnClickListener {
-                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
+                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
                 dialog.show(supportFragmentManager, ChangePinFragment.TAG)
             }
         }

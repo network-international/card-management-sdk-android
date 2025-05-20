@@ -7,6 +7,7 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.databinding.ActivityCardDetailsBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
+import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableCompat
 import ae.network.nicardmanagementsdk.presentation.extension_methods.getSerializableExtraCompat
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragment
@@ -32,6 +33,7 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
     private var backgroundImage: Int? = null
     private var navTitle: Int? = null
     private lateinit var config: CardElementsConfig
+    private var paddingDp: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +54,9 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
             config = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG} is missing")
 
+        intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_FRAGMENT_TOP_PADDING)?.let {
+            paddingDp = it
+        }
         setArchitectureComponents()
         initializeUI()
     }
@@ -90,6 +95,9 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
         supportFragmentManager.beginTransaction().apply {
             add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
+        }
+        binding.apply {
+            paddingTop = paddingDp
         }
     }
 

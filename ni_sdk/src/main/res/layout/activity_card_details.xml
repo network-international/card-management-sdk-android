@@ -9,14 +9,23 @@
         <variable
             name="viewModel"
             type="ae.network.nicardmanagementsdk.presentation.ui.card_details.CardDetailsViewModel" />
+        <variable
+            name="paddingTop"
+            type="int" />
     </data>
+    <FrameLayout
+        android:layoutDirection="ltr"
+        android:id="@+id/cardDetailsRootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@{paddingTop}"
+        tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layoutDirection="ltr"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?backgroundColorCustom"
-        tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto"
         tools:context=".presentation.ui.card_details.CardDetailsActivity">
 
         <ae.network.nicardmanagementsdk.presentation.views.CustomBackNavigationView
@@ -52,4 +61,5 @@
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
 </layout>

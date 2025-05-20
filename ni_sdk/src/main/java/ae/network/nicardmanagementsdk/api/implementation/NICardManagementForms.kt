@@ -40,21 +40,24 @@ class NICardManagementForms(
         input: NIInput,
         @DrawableRes backgroundImage: Int?,
         @StringRes title: Int?,
-        config: CardElementsConfig
+        config: CardElementsConfig,
+        padding: Int
     ) {
         displayCardResultLauncher?.launch(Intent(activity, CardDetailsActivity::class.java).apply {
             putExtra(Extra.EXTRA_NI_INPUT, input)
             putExtra(Extra.EXTRA_NI_CARD_BACKGROUND, backgroundImage)
             putExtra(Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG, config)
             putExtra(Extra.EXTRA_NI_CARD_NAVIGATION_TITLE, title)
+            putExtra(Extra.EXTRA_NI_FRAGMENT_TOP_PADDING, padding)
         })
     }
 
-    override fun displayViewPinForm(input: NIInput, pinFormType: NIPinFormType, texts: PinManagementResources) {
+    override fun displayViewPinForm(input: NIInput, pinFormType: NIPinFormType, texts: PinManagementResources, padding: Int) {
         displayCardResultLauncher?.launch(Intent(activity, ViewPinActivity::class.java).apply {
             putExtra(Extra.EXTRA_NI_INPUT, input)
             putExtra(Extra.EXTRA_NI_PIN_FORM_TYPE, pinFormType)
             putExtra(Extra.EXTRA_NI_PIN_FORM_RESOURCES, texts)
+            putExtra(Extra.EXTRA_NI_FRAGMENT_TOP_PADDING, padding)
         })
     }
 

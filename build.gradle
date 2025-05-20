@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '1.9.20' //Android Studio contains 1.9.0 and higher, latest 2.1.10
+        kotlin_version = '1.9.20' //Android Studio 2024 contains 1.9.0 and higher, latest 2.1.10
         VisionCameraCodeScanner_targetSdkVersion = 35
         VisionCameraCodeScanner_compileSdkVersion = 35
     }
