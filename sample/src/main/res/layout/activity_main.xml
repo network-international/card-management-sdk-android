@@ -25,6 +25,7 @@
                 android:id="@+id/titleTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
                 android:text="@string/card_management_sample_app"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:textStyle="bold"
@@ -137,7 +138,6 @@
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/themeLabelTextView"
                 app:layout_constraintTop_toTopOf="@+id/themeLabelTextView" />
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
