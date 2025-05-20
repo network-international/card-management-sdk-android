@@ -10,12 +10,13 @@ import androidx.annotation.StringRes
 interface NICardManagementFormsAPI {
 
     fun displayCardDetailsForm(
-        input: NIInput, @DrawableRes backgroundImage: Int?, @StringRes title: Int?, config: CardElementsConfig
+        input: NIInput, @DrawableRes backgroundImage: Int?, @StringRes title: Int?, config: CardElementsConfig, padding: Int = 0
     )
 
     fun displayViewPinForm(
         input: NIInput,
         pinFormType: NIPinFormType,
-        texts: PinManagementResources
+        texts: PinManagementResources,
+        padding: Int = 0
     )
 }
