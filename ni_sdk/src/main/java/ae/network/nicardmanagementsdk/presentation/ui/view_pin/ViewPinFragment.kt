@@ -1,6 +1,5 @@
 package ae.network.nicardmanagementsdk.presentation.ui.view_pin
 
-import ae.network.nicardmanagementsdk.R
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
@@ -18,7 +17,6 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
@@ -30,9 +28,8 @@ class ViewPinFragment : Fragment() {
 
     private lateinit var niInput: NIInput
     private lateinit var texts: PinManagementResources
-    private var _pinViewBinding: FragmentViewPinBinding? = null
-    private val pinViewBinding: FragmentViewPinBinding
-        get() = _pinViewBinding!!
+    private var _binding: FragmentViewPinBinding? = null
+    private val binding get() = _binding!!
     private var startTime: Long? = null
     private var strokeColor: String? = null
     private lateinit var timer: CountDownTimer
@@ -53,9 +50,7 @@ class ViewPinFragment : Fragment() {
         }
 
         const val TAG = "ViewPinFragment"
-        private const val BLACK = "#FF000000" //- fromActivity
-        //const val BLACK = "#00000000" - fromFragment
-
+        private const val BLACK = "#FF000000"
         const val COUNTDOWN_INTERVAL = 1000L
 
     }
@@ -102,25 +97,14 @@ class ViewPinFragment : Fragment() {
         val factory =
             Injector.getInstance(requireContext()).provideViewPinFragmentViewModelFactory(niInput, timerTemplate)
         viewModel = ViewModelProvider(this, factory)[ViewPinFragmentViewModel::class.java]
-        _pinViewBinding =
-            DataBindingUtil.inflate(inflater, R.layout.fragment_view_pin, container, false)
-        pinViewBinding.lifecycleOwner = this
-        pinViewBinding.viewModel = viewModel
-        return pinViewBinding.root
+        _binding = FragmentViewPinBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         initializeUI()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _pinViewBinding = null
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     private fun initializeUI() {
@@ -132,17 +116,21 @@ class ViewPinFragment : Fragment() {
 
                 timer = object : CountDownTimer(startTime!!, COUNTDOWN_INTERVAL) {
                     override fun onTick(millisUntilFinished: Long) {
-                        pinViewBinding.countdownTimerTextView.visibility = View.VISIBLE
+                        binding.countdownTimerTextView.visibility = View.VISIBLE
                         val secondsToInt = (millisUntilFinished / 1000).toInt()
-                        pinViewBinding.countdownTimerTextView.setUIElementText(viewModel.timerStringTemplate, secondsToInt)
+                        binding.countdownTimerTextView.setUIElementText(viewModel.timerStringTemplate, secondsToInt)
                     }
 
                     override fun onFinish() {
                         setPinMasked(pinLength)
-                        pinViewBinding.countdownTimerTextView.visibility = View.INVISIBLE
+                        binding.countdownTimerTextView.visibility = View.INVISIBLE
                     }
                 }.start()
             }
+        }
+
+        viewModel.isVisibleProgressBar.observe(viewLifecycleOwner) { isVisible ->
+            binding.progressBar.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
         }
         if (viewModel.getPinClearLiveData.value == null) {
             viewModel.getPin()
@@ -151,247 +139,179 @@ class ViewPinFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        timer.cancel()
+        if (::timer.isInitialized) {
+            timer.cancel()
+        }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+    /**
+     * Set PIN view visibility based on PIN length
+     */
     private fun setPinView(pinLength: Int) {
         when (pinLength) {
             5 -> {
-                pinViewBinding.defaultPinView.root.visibility = View.GONE
-                pinViewBinding.fiveDigitPinView.root.visibility = View.VISIBLE
-                pinViewBinding.fiveDigitPinView.pinFirstDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.pinSecondDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.pinThirdDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.pinForthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.pinFifthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.view.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.view2.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.view3.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.view4.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.mainContent.background =
-                    buildViewPinBackground(strokeColor!!)
+                binding.defaultPinView.root.visibility = View.GONE
+                binding.fiveDigitPinView.root.visibility = View.VISIBLE
+                setupFiveDigitView()
             }
             6 -> {
-                pinViewBinding.defaultPinView.root.visibility = View.GONE
-                pinViewBinding.sixDigitPinView.root.visibility = View.VISIBLE
-                pinViewBinding.sixDigitPinView.pinFirstDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.pinSecondDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.pinThirdDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.pinForthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.pinFifthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.pinSixthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.view.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.view2.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.view3.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.view4.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.sixDigitPinView.view5.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fiveDigitPinView.mainContent.background =
-                    buildViewPinBackground(strokeColor!!)
+                binding.defaultPinView.root.visibility = View.GONE
+                binding.sixDigitPinView.root.visibility = View.VISIBLE
+                setupSixDigitView()
             }
             else -> {
-                pinViewBinding.defaultPinView.root.visibility = View.GONE
-                pinViewBinding.fourDigitPinView.root.visibility = View.VISIBLE
-                pinViewBinding.fourDigitPinView.pinFirstDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.pinSecondDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.pinThirdDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.pinForthDigit.setTextColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.view.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.view2.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.view3.setBackgroundColor(
-                    Color.parseColor(
-                        strokeColor
-                    )
-                )
-                pinViewBinding.fourDigitPinView.mainContent.background =
-                    buildViewPinBackground(strokeColor!!)
+                binding.defaultPinView.root.visibility = View.GONE
+                binding.fourDigitPinView.root.visibility = View.VISIBLE
+                setupFourDigitView()
             }
         }
-        pinViewBinding.countdownTimerTextView.setTextColor(Color.parseColor(strokeColor))
+        binding.countdownTimerTextView.setTextColor(Color.parseColor(strokeColor))
     }
 
+    /**
+     * Setup styling for 4-digit PIN view
+     */
+    private fun setupFourDigitView() {
+        val color = Color.parseColor(strokeColor)
+        binding.fourDigitPinView.apply {
+            pinFirstDigit.setTextColor(color)
+            pinSecondDigit.setTextColor(color)
+            pinThirdDigit.setTextColor(color)
+            pinForthDigit.setTextColor(color)
+
+            view.setBackgroundColor(color)
+            view2.setBackgroundColor(color)
+            view3.setBackgroundColor(color)
+
+            mainContent.background = buildViewPinBackground(strokeColor!!)
+        }
+    }
+
+    /**
+     * Setup styling for 5-digit PIN view
+     */
+    private fun setupFiveDigitView() {
+        val color = Color.parseColor(strokeColor)
+        binding.fiveDigitPinView.apply {
+            pinFirstDigit.setTextColor(color)
+            pinSecondDigit.setTextColor(color)
+            pinThirdDigit.setTextColor(color)
+            pinForthDigit.setTextColor(color)
+            pinFifthDigit.setTextColor(color)
+
+            view.setBackgroundColor(color)
+            view2.setBackgroundColor(color)
+            view3.setBackgroundColor(color)
+            view4.setBackgroundColor(color)
+
+            mainContent.background = buildViewPinBackground(strokeColor!!)
+        }
+    }
+
+    /**
+     * Setup styling for 6-digit PIN view
+     */
+    private fun setupSixDigitView() {
+        val color = Color.parseColor(strokeColor)
+        binding.sixDigitPinView.apply {
+            pinFirstDigit.setTextColor(color)
+            pinSecondDigit.setTextColor(color)
+            pinThirdDigit.setTextColor(color)
+            pinForthDigit.setTextColor(color)
+            pinFifthDigit.setTextColor(color)
+            pinSixthDigit.setTextColor(color)
+
+            view.setBackgroundColor(color)
+            view2.setBackgroundColor(color)
+            view3.setBackgroundColor(color)
+            view4.setBackgroundColor(color)
+            view5.setBackgroundColor(color)
+
+            mainContent.background = buildViewPinBackground(strokeColor!!)
+        }
+    }
+
+    /**
+     * Display clear PIN digits
+     */
     private fun setPinClear(pinLength: Int) {
+        val pinValue = viewModel.getPinClearLiveData.value ?: return
+
         when (pinLength) {
             5 -> {
-                pinViewBinding.fiveDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(0).toString()
-                pinViewBinding.fiveDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(1).toString()
-                pinViewBinding.fiveDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(2).toString()
-                pinViewBinding.fiveDigitPinView.pinForthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(3).toString()
-                pinViewBinding.fiveDigitPinView.pinFifthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(4).toString()
+                binding.fiveDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                    pinFifthDigit.text = pinValue.getOrNull(4)?.toString() ?: ""
+                }
             }
             6 -> {
-                pinViewBinding.sixDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(0).toString()
-                pinViewBinding.sixDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(1).toString()
-                pinViewBinding.sixDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(2).toString()
-                pinViewBinding.sixDigitPinView.pinForthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(3).toString()
-                pinViewBinding.sixDigitPinView.pinFifthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(4).toString()
-                pinViewBinding.sixDigitPinView.pinSixthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(5).toString()
+                binding.sixDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                    pinFifthDigit.text = pinValue.getOrNull(4)?.toString() ?: ""
+                    pinSixthDigit.text = pinValue.getOrNull(5)?.toString() ?: ""
+                }
             }
             else -> {
-                pinViewBinding.fourDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(0).toString()
-                pinViewBinding.fourDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(1).toString()
-                pinViewBinding.fourDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(2).toString()
-                pinViewBinding.fourDigitPinView.pinForthDigit.text =
-                    viewModel.getPinClearLiveData.value?.get(3).toString()
+                binding.fourDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                }
             }
         }
     }
 
 
+    /**
+     * Display masked PIN digits
+     */
     private fun setPinMasked(pinLength: Int) {
+        val pinValue = viewModel.getPinMaskedLiveData.value ?: return
+
         when (pinLength) {
             5 -> {
-                pinViewBinding.fiveDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(0).toString()
-                pinViewBinding.fiveDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(1).toString()
-                pinViewBinding.fiveDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(2).toString()
-                pinViewBinding.fiveDigitPinView.pinForthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(3).toString()
-                pinViewBinding.fiveDigitPinView.pinFifthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(4).toString()
+                binding.fiveDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                    pinFifthDigit.text = pinValue.getOrNull(4)?.toString() ?: ""
+                }
             }
             6 -> {
-                pinViewBinding.sixDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(0).toString()
-                pinViewBinding.sixDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(1).toString()
-                pinViewBinding.sixDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(2).toString()
-                pinViewBinding.sixDigitPinView.pinForthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(3).toString()
-                pinViewBinding.sixDigitPinView.pinFifthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(4).toString()
-                pinViewBinding.sixDigitPinView.pinSixthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(5).toString()
+                binding.sixDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                    pinFifthDigit.text = pinValue.getOrNull(4)?.toString() ?: ""
+                    pinSixthDigit.text = pinValue.getOrNull(5)?.toString() ?: ""
+                }
             }
             else -> {
-                pinViewBinding.fourDigitPinView.pinFirstDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(0).toString()
-                pinViewBinding.fourDigitPinView.pinSecondDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(1).toString()
-                pinViewBinding.fourDigitPinView.pinThirdDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(2).toString()
-                pinViewBinding.fourDigitPinView.pinForthDigit.text =
-                    viewModel.getPinMaskedLiveData.value?.get(3).toString()
+                binding.fourDigitPinView.apply {
+                    pinFirstDigit.text = pinValue.getOrNull(0)?.toString() ?: ""
+                    pinSecondDigit.text = pinValue.getOrNull(1)?.toString() ?: ""
+                    pinThirdDigit.text = pinValue.getOrNull(2)?.toString() ?: ""
+                    pinForthDigit.text = pinValue.getOrNull(3)?.toString() ?: ""
+                }
             }
         }
     }

@@ -63,9 +63,6 @@ class SetPinFragment : SetPinDialogFragmentBase<SetPinViewModel>() {
             notMatchTitleText
         )
         viewModel = ViewModelProvider(this, factory)[SetPinViewModel::class.java]
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.context = requireContext()
     }
 
     override fun initializeUI() {

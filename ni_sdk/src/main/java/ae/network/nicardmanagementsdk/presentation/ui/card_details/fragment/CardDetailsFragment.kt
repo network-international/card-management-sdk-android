@@ -22,7 +22,6 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.updatePadding
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 
@@ -94,9 +93,9 @@ class CardDetailsFragment : Fragment() {
     ): View {
         val factory = Injector.getInstance(requireActivity()).provideCardDetailsFragmentViewModelFactory(niInput)
         viewModel = ViewModelProvider(this, factory)[CardDetailsFragmentViewModel::class.java]
-        _binding = DataBindingUtil.inflate(inflater, R.layout.fragment_card_details, container, false)
-        binding.lifecycleOwner = this
-        //binding.viewModel = viewModel
+        _binding = FragmentCardDetailsBinding.inflate(layoutInflater)
+            //DataBindingUtil.inflate(inflater, R.layout.fragment_card_details, container, false)
+
         return binding.root
     }
 

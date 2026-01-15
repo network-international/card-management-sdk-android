@@ -9,12 +9,12 @@ import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.Card
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinFragment
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinFragment
 import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinFragment
+import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragment
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nicardmanagementapp.R
@@ -37,104 +37,24 @@ class MainActivity : AppCompatActivity(),
 
     private val niCardManagementForms = NICardManagementForms(
         this,
-        displayCardDetailsOnCompletion = getCompletionHandler("displayCardDetailsForm")
+        displayCardDetailsOnCompletion = getCompletionHandler()
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setArchitectureComponents()
-        initializeUI()
-        setViewModelData()
-    }
-
-    private fun setArchitectureComponents() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-    }
-
-    private fun initializeUI() {
-        binding.apply {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = EntriesListAdapter()
-                setHasFixedSize(true)
-
-                this@MainActivity.viewModel.entriesItemsLiveData.observe(this@MainActivity) { itemModels ->
-                    itemModels?.let {
-                        (adapter as EntriesListAdapter).setItems(it)
-                    }
-                }
-            }
-
-            themeSwitch.setOnCheckedChangeListener { _, isChecked ->
-                when (isChecked) {
-                    true -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
-                    else -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
-                }
-            }
-
-            cardDetailsButton.setOnClickListener {
-                // update text in config if needed,
-                // val config = CardElementsConfig.default ...
-                // config.cardNumber?.label?.text  = CardElementText.String("My card #")
-                // update position if needed - attach element to bottom-left corner
-                // config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
-                niCardManagementForms.displayCardDetailsForm(
-                    niInput,
-                    backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
-                    title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
-                    config = CardElementsConfig.default(
-                        copyTargets = listOf<CardMaskableElement>(
-                            CardMaskableElement.CARDNUMBER,
-                            CardMaskableElement.CARDHOLDER,
-                        ),
-                        copyTemplate = "Card number: %s\nName: %s"
-                    ),
-                    padding = 100
-                )
-            }
-
-            cardDetailsFragmentButton.setOnClickListener {
-                // check CardUsageDemoActivity for card view configuration
-                startActivity(Intent(this@MainActivity, CardUsageDemoActivity::class.java).apply {
-                    putExtra(Extra.EXTRA_NI_INPUT, niInput)
-                    putExtra(Extra.EXTRA_NI_PIN_FORM_TYPE, pinLength)
-                })
-            }
-
-            cardDetailsDialogButton.setOnClickListener {
-                // check CardBottomSheetDialogFragment for card view configuration
-                val dialog = CardBottomSheetDialogFragment.newInstance(niInput)
-                supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
-            }
-
-            val pinFlowResources = PinManagementResources.default(
-                setPinResultAttributes = makePinResultAttributes(),
-                verifyPinMessageAttributes = makePinResultAttributes(),
-                changePinResultAttributes = makePinResultAttributes(),
-            )
-            setPinButton.setOnClickListener {
-                // provide padding for pin forms
-                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
-                dialog.show(supportFragmentManager, SetPinFragment.TAG)
-            }
-
-            verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
-                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
-            }
-
-            changePinButton.setOnClickListener {
-                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
-                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        // setupObservers
+        viewModel.entriesItemsLiveData.observe(this) { itemModels ->
+            itemModels?.let {
+                (binding.recyclerView.adapter as EntriesListAdapter).setItems(it)
             }
         }
-    }
 
-    private fun setViewModelData() {
+        initializeUI()
+
         if (viewModel.entriesItemModels.isEmpty()) {
             val entries = listOf(
                 EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "D2C"),
@@ -150,8 +70,84 @@ class MainActivity : AppCompatActivity(),
         }
     }
 
-    private fun getCompletionHandler(formName: String): OnSuccessErrorCancelCompletion =
+    private fun initializeUI() {
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = EntriesListAdapter()
+            setHasFixedSize(true)
+        }
+
+        val pinFlowResources = PinManagementResources.default(
+            setPinResultAttributes = makePinResultAttributes(),
+            verifyPinMessageAttributes = makePinResultAttributes(),
+            changePinResultAttributes = makePinResultAttributes(),
+        )
+        binding.setPinButton.setOnClickListener {
+            // provide padding for pin forms
+            val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+            dialog.show(supportFragmentManager, SetPinFragment.TAG)
+        }
+
+        binding.verifyPinButton.setOnClickListener {
+            val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+            dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
+        }
+
+        binding.changePinButton.setOnClickListener {
+            val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+            dialog.show(supportFragmentManager, ChangePinFragment.TAG)
+        }
+
+        binding.viewPinButton.setOnClickListener {
+            niCardManagementForms.displayViewPinForm(niInput,pinLength, pinFlowResources, padding = 100 )
+        }
+        //======
+        binding.themeSwitch.setOnCheckedChangeListener { _, isChecked ->
+            when (isChecked) {
+                true -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+                else -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            }
+        }
+
+        binding.cardDetailsButton.setOnClickListener {
+            // update text in config if needed,
+            // val config = CardElementsConfig.default ...
+            // config.cardNumber?.label?.text  = CardElementText.String("My card #")
+            // update position if needed - attach element to bottom-left corner
+            // config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
+            niCardManagementForms.displayCardDetailsForm(
+                niInput,
+                backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
+                title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
+                config = CardElementsConfig.default(
+                    copyTargets = listOf<CardMaskableElement>(
+                        CardMaskableElement.CARDNUMBER,
+                        CardMaskableElement.CARDHOLDER,
+                    ),
+                    copyTemplate = "Card number: %s\nName: %s"
+                ),
+                padding = 100
+            )
+        }
+
+        binding.cardDetailsFragmentButton.setOnClickListener {
+            // check CardUsageDemoActivity for card view configuration
+            startActivity(Intent(this@MainActivity, CardUsageDemoActivity::class.java).apply {
+                putExtra(Extra.EXTRA_NI_INPUT, niInput)
+                putExtra(Extra.EXTRA_NI_PIN_FORM_TYPE, pinLength)
+            })
+        }
+
+        binding.cardDetailsDialogButton.setOnClickListener {
+            // check CardBottomSheetDialogFragment for card view configuration
+            val dialog = CardBottomSheetDialogFragment.newInstance(niInput)
+            supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
+        }
+    }
+
+    private fun getCompletionHandler(): OnSuccessErrorCancelCompletion =
         { success, error, canceled ->
+            val formName = "displayCardDetailsForm"
             if (canceled) {
                 Log.d(TAG, "$formName canceled by the user")
             } else {
