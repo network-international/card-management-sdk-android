@@ -58,9 +58,6 @@ class ChangePinFragment : SetPinDialogFragmentBase<ChangePinViewModel>() {
         val notMatchTitleText = texts.changePin.notMatchTitleText
         val factory = Injector.getInstance(requireContext()).provideChangePinViewModelFactory(niInput, navTitleText, screenTitleText, newPinTitleText, approvePinTitleText, notMatchTitleText)
         viewModel = ViewModelProvider(this, factory)[ChangePinViewModel::class.java]
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.context = requireContext()
     }
 
     override fun initializeUI() {

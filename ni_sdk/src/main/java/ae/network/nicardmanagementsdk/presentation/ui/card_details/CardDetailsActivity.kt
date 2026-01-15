@@ -17,39 +17,45 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
 class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
 
     private lateinit var binding: ActivityCardDetailsBinding
     lateinit var viewModel: CardDetailsViewModel
+
     lateinit var niInput: NIInput
+
     @DrawableRes
     private var backgroundImage: Int? = null
+
     private var navTitle: Int? = null
     private lateinit var config: CardElementsConfig
     private var paddingDp: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Moved form BaseActivity
+
+        // Moved from BaseActivity
         setResult(Activity.RESULT_CANCELED)
+
         intent.getSerializableExtraCompat<NIInput>(Extra.EXTRA_NI_INPUT)?.let {
             niInput = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_INPUT} is missing")
+
         setTheme(ThemeHelper().getThemeResId(niInput))
 
         intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_CARD_BACKGROUND)?.let {
             backgroundImage = it
         }
+
         intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_CARD_NAVIGATION_TITLE)?.let {
             navTitle = it
         }
+
         intent.getSerializableExtraCompat<CardElementsConfig>(Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG)?.let {
             config = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_CARD_ELEMENTS_CONFIG} is missing")
@@ -57,11 +63,12 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
         intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_FRAGMENT_TOP_PADDING)?.let {
             paddingDp = it
         }
+
         setArchitectureComponents()
         initializeUI()
     }
 
-    // Moved form BaseActivity
+    // Moved from BaseActivity
     protected fun navigateBack() {
         onBackPressedDispatcher.onBackPressed()
     }
@@ -69,36 +76,46 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
     private fun setArchitectureComponents() {
         val factory = Injector.getInstance(this).provideCardDetailsViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[CardDetailsViewModel::class.java]
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_card_details)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+
+        // Replace DataBindingUtil.setContentView with ViewBinding.inflate
+        binding = ActivityCardDetailsBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // REMOVED: binding.lifecycleOwner = this (not needed with ViewBinding)
+        // REMOVED: binding.viewModel = viewModel (not needed with ViewBinding)
     }
 
     private fun initializeUI() {
+        // Set navigation title programmatically
         navTitle?.let {
             val title = binding.customBackNavigationView.context.getString(it)
             binding.customBackNavigationView.setTitle(title)
         }
+
+        // Setup back button click listener
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
-        // backgroundImage
-        backgroundImage?.let { it ->
-            binding.cardBackgroundImageView.setImageResource(it)
+
+        // Set background image programmatically (replaces DataBinding)
+        backgroundImage?.let { imageRes ->
+            binding.cardBackgroundImageView.setImageResource(imageRes)
         }
+
+        // Add CardDetailsFragment
         val cardDetailsFragment = CardDetailsFragment.newInstance(
             niInput,
-            // Only show a toast for Android 12 and lower.
             copyToClipboardMessage = R.string.copied_to_clipboard_en,
             config
         )
+
         supportFragmentManager.beginTransaction().apply {
             add(binding.cardContainer.id, cardDetailsFragment, CardDetailsFragment.TAG)
             commit()
         }
-        binding.apply {
-            paddingTop = paddingDp
-        }
+
+        // Set padding programmatically (replaces: binding.apply { paddingTop = paddingDp })
+        binding.cardDetailsRootLayout.setPadding(0, paddingDp, 0, 0)
     }
 
     override fun onCardDetailsFragmentCompletion(response: SuccessErrorResponse) {
@@ -110,6 +127,7 @@ class CardDetailsActivity : AppCompatActivity(), CardDetailsFragmentListener {
                 }
             )
         }
+
         response.isError?.let {
             lifecycleScope.launch {
                 setResult(

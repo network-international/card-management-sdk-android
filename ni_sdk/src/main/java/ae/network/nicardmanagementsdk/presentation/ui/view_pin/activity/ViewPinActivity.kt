@@ -5,6 +5,7 @@ import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
 import ae.network.nicardmanagementsdk.api.models.input.PinManagementResources
+import ae.network.nicardmanagementsdk.databinding.ActivityCardDetailsBinding
 import ae.network.nicardmanagementsdk.databinding.ActivityViewPinBinding
 import ae.network.nicardmanagementsdk.di.Injector
 import ae.network.nicardmanagementsdk.helpers.ThemeHelper
@@ -15,7 +16,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
@@ -27,6 +27,8 @@ class ViewPinActivity : AppCompatActivity(), ViewPinFragment.OnFragmentInteracti
     lateinit var niInput: NIInput
     lateinit var texts: PinManagementResources
     lateinit var niPinFormType: NIPinFormType
+
+    private var paddingDp: Int = 0
     private lateinit var binding: ActivityViewPinBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,10 @@ class ViewPinActivity : AppCompatActivity(), ViewPinFragment.OnFragmentInteracti
             texts = it
         } ?: throw RuntimeException("${this::class.java.simpleName} intent serializable ${Extra.EXTRA_NI_PIN_FORM_RESOURCES} is missing")
 
+        intent.getSerializableExtraCompat<Int>(Extra.EXTRA_NI_FRAGMENT_TOP_PADDING)?.let {
+            paddingDp = it
+        }
+
         setTheme(ThemeHelper().getThemeResId(niInput))
 
         setArchitectureComponents()
@@ -58,15 +64,17 @@ class ViewPinActivity : AppCompatActivity(), ViewPinFragment.OnFragmentInteracti
     private fun setArchitectureComponents() {
         val factory = Injector.getInstance(this).provideViewPinViewModelFactory()
         viewModel = ViewModelProvider(this, factory)[ViewPinViewModel::class.java]
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_view_pin)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+        binding = ActivityViewPinBinding.inflate(layoutInflater)
+        setContentView(binding.root)
     }
 
     private fun initializeUI() {
         binding.customBackNavigationView.setOnBackButtonClickListener {
             finish()
         }
+        // Set padding programmatically (replaces: binding.apply { paddingTop = paddingDp })
+        binding.viewPinRootLayout.setPadding(0, paddingDp, 0, 0)
+
         val viewPinFragment = ViewPinFragment.newInstance(niInput, texts)
         supportFragmentManager.beginTransaction().apply {
             add(binding.viewPinContainer.id, viewPinFragment, ViewPinFragment.TAG)

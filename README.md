@@ -18,96 +18,124 @@ https://jitpack.io/#network-international/card-management-sdk-android
 Check Sample application for details
 Kotlin:
 ```kotlin
-class MainActivity : AppCompatActivity() {
+// See full version in repository
+class MainActivity : AppCompatActivity(),
+    SetPinFragment.OnFragmentInteractionListener,
+    VerifyPinFragment.OnFragmentInteractionListener,
+    ChangePinFragment.OnFragmentInteractionListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
     private val niInput: NIInput
+        get() = makeInputObject()
     private val pinLength: NIPinFormType
-    private val pinFlowResources = PinManagementResources.default(
-        setPinResultAttributes = makePinResultAttributes(),
-        verifyPinMessageAttributes = makePinResultAttributes(),
-        changePinResultAttributes = makePinResultAttributes(),
-    )
-    
-    // Optional paddingTop, can only be applied for Set/Change/Verify PIN screens.
-    // The value (of Int type) must be passed to the get() method
-    // To complete the padding customization, the paddingTop parameter must be passed to desired fragment (alongside niInput and pinLength)
-    // If there's no paddingTop parameter sent, there will be no paddingTop.
-    private val paddingTop: Int
-        get() = 100
+        get() = viewModel.getPINLength()
 
-    // Create an instance of NICardManagement. Callback for completion handler are provided here
     private val niCardManagementForms = NICardManagementForms(
         this,
-        displayCardDetailsOnCompletion = getCompletionHandler("displayCardDetailsForm")
+        displayCardDetailsOnCompletion = getCompletionHandler()
     )
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         initializeUI()
     }
 
     private fun initializeUI() {
-        binding.apply {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = EntriesListAdapter()
-                setHasFixedSize(true)
-            }
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = EntriesListAdapter()
+            setHasFixedSize(true)
+        }
 
-            cardDetailsButton.setOnClickListener {
-                // Build NIInput Object
-                niCardManagementForms.displayCardDetailsForm(
-                    niInput,
-                    backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
-                    title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
-                    config = CardElementsConfig.default(
-                        copyTargets = listOf<CardMaskableElement>(
-                            CardMaskableElement.CARDNUMBER,
-                            CardMaskableElement.CARDHOLDER,
-                        ),
-                        copyTemplate = "Card number: %s\nName: %s"
-                    )
-                )
-            }
+        val pinFlowResources = PinManagementResources.default(
+            setPinResultAttributes = makePinResultAttributes(),
+            verifyPinMessageAttributes = makePinResultAttributes(),
+            changePinResultAttributes = makePinResultAttributes(),
+        )
+        binding.setPinButton.setOnClickListener {
+            // provide padding for pin forms
+            val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+            dialog.show(supportFragmentManager, SetPinFragment.TAG)
+        }
 
-            setPinButton.setOnClickListener {
-                // provide padding for pin forms
-                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
-                dialog.show(supportFragmentManager, SetPinFragment.TAG)
-            }
+        binding.cardDetailsButton.setOnClickListener {
+            // update text in config if needed,
+            // val config = CardElementsConfig.default ...
+            // config.cardNumber?.label?.text  = CardElementText.String("My card #")
+            // update position if needed - attach element to bottom-left corner
+            // config.cardNumber?.label?.layout = CardElementLayout(bottom = 0, left = 0)
+            niCardManagementForms.displayCardDetailsForm(
+                niInput,
+                backgroundImage = ae.network.nicardmanagementsdk.R.drawable.bg_default_mc,
+                title = ae.network.nicardmanagementsdk.R.string.card_details_title_en,
+                config = CardElementsConfig.default(
+                    copyTargets = listOf<CardMaskableElement>(
+                        CardMaskableElement.CARDNUMBER,
+                        CardMaskableElement.CARDHOLDER,
+                    ),
+                    copyTemplate = "Card number: %s\nName: %s"
+                ),
+                padding = 100
+            )
+        }
 
-            verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
-                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
-            }
-
-            changePinButton.setOnClickListener {
-                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
-                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
-            }
+        binding.cardDetailsDialogButton.setOnClickListener {
+            // check CardBottomSheetDialogFragment for card view configuration
+            val dialog = CardBottomSheetDialogFragment.newInstance(niInput)
+            supportFragmentManager.let { dialog.show(it, CardBottomSheetDialogFragment.TAG) }
         }
     }
 
-    // 
-    private fun getCompletionHandler(formName: String): OnSuccessErrorCancelCompletion =
+    private fun getCompletionHandler(): OnSuccessErrorCancelCompletion =
         { success, error, canceled ->
+            val formName = "displayCardDetailsForm"
             if (canceled) {
                 Log.d(TAG, "$formName canceled by the user")
             } else {
                 success?.let {
-                    Log.d(TAG, "$formName OK")
+                    Log.d(TAG, "$formName ${it.message}")
                 }
                 error?.let {
-                    Log.d(TAG, "$formName execution has error")
+                    Log.d(TAG, "$formName ${it.error}  ${it.errorMessage}")
                 }
             }
         }
 
-    companion object {
-        const val TAG = "MainActivity"
+    private fun makePinResultAttributes(): PinResultAttributes {
+        return PinResultAttributes(
+            successScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_success,
+                buttonResId = R.id.doneButton
+            ),
+            errorScreen = PinResultScreenAttributes(
+                layoutId = R.layout.activity_error,
+                buttonResId = R.id.doneButton
+            )
+        )
+    }
+
+    private fun makeInputObject(): NIInput {
+        return NIInput(
+            bankCode = viewModel.entriesItemModels.first { model -> model.id == BANK_CODE }.value,
+            cardIdentifierId = viewModel.entriesItemModels.first { model -> model.id == CARD_ID }.value,
+            cardIdentifierType = viewModel.entriesItemModels.first { model -> model.id == CARD_TYPE }.value,
+            connectionProperties = NIConnectionProperties(
+                viewModel.entriesItemModels.first { model -> model.id == ROOT_URL }.value,
+                viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
+                extraNetworkHeaders = hashMapOf(
+                    "extraHeader1" to "DemoExtraHttpHeaderValue"
+                )
+            ),
+            displayAttributes = NIDisplayAttributes(
+                //theme = NITheme.DARK_APP_COMPAT
+            )
+        )
     }
 }
 ```
@@ -399,6 +427,7 @@ presenter.fetch()
 
 ### PIN management
 ```kotlin
+// See full version in repository
 class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractionListener{
 
     private lateinit var binding: ActivityMainBinding
@@ -412,51 +441,25 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setArchitectureComponents()
-        initializeUI()
-    }
+        val pinFlowResources = PinManagementResources.default(
+            setPinResultAttributes = makePinResultAttributes(),
+            verifyPinMessageAttributes = makePinResultAttributes(),
+            changePinResultAttributes = makePinResultAttributes(),
+        )
+        setPinButton.setOnClickListener {
+            // provide padding for pin forms
+            val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
+            dialog.show(supportFragmentManager, SetPinFragment.TAG)
+        }
 
-    private fun setArchitectureComponents() {
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-    }
+        verifyPinButton.setOnClickListener {
+            val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
+            dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
+        }
 
-    private fun initializeUI() {
-        binding.apply {
-            recyclerView.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = EntriesListAdapter()
-                setHasFixedSize(true)
-
-                this@MainActivity.viewModel.entriesItemsLiveData.observe(this@MainActivity) { itemModels ->
-                    itemModels?.let {
-                        (adapter as EntriesListAdapter).setItems(it)
-                    }
-                }
-            }
-
-            val pinFlowResources = PinManagementResources.default(
-                setPinResultAttributes = makePinResultAttributes(),
-                verifyPinMessageAttributes = makePinResultAttributes(),
-                changePinResultAttributes = makePinResultAttributes(),
-            )
-            setPinButton.setOnClickListener {
-                // provide padding for pin forms
-                val dialog = SetPinFragment.newInstance(niInput, pinLength, pinFlowResources, padding = 100)
-                dialog.show(supportFragmentManager, SetPinFragment.TAG)
-            }
-
-            verifyPinButton.setOnClickListener {
-                val dialog = VerifyPinFragment.newInstance(niInput, pinLength, pinFlowResources)
-                dialog.show(supportFragmentManager, VerifyPinFragment.TAG)
-            }
-
-            changePinButton.setOnClickListener {
-                val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
-                dialog.show(supportFragmentManager, ChangePinFragment.TAG)
-            }
+        changePinButton.setOnClickListener {
+            val dialog = ChangePinFragment.newInstance(niInput, pinLength, pinFlowResources)
+            dialog.show(supportFragmentManager, ChangePinFragment.TAG)
         }
     }
 
@@ -472,30 +475,6 @@ class MainActivity : AppCompatActivity(), VerifyPinFragment.OnFragmentInteractio
             )
         )
     }
-
-    private fun makeInputObject(): NIInput {
-        return NIInput(
-            bankCode = viewModel.entriesItemModels.first { model -> model.id == BANK_CODE }.value,
-            cardIdentifierId = viewModel.entriesItemModels.first { model -> model.id == CARD_ID }.value,
-            cardIdentifierType = viewModel.entriesItemModels.first { model -> model.id == CARD_TYPE }.value,
-            connectionProperties = NIConnectionProperties(
-                viewModel.entriesItemModels.first { model -> model.id == ROOT_URL }.value,
-                viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
-                extraNetworkHeaders = hashMapOf(
-                    "extraHeader1" to "DemoExtraHttpHeaderValue",
-                    "Content-Type" to "will be ignored for existing header" // this will be ignored
-                )
-            ),
-            displayAttributes = NIDisplayAttributes(
-                //theme = NITheme.DARK_APP_COMPAT
-            )
-        )
-    }
-
-    companion object {
-        const val TAG = "SDKLogMessage"
-    }
-
     override fun onVerifyPinFragmentCompletion(response: SuccessErrorResponse) {
         response.isSuccess?.let {
             Log.d(TAG, "VerifyPinFragmentFromActivity ${it.message}")
@@ -549,6 +528,8 @@ you have to add the following line of code to your proguard-rules.pro configurat
 
 ```groovy
 -keep class org.bouncycastle.** { *; }
+
+-keep class ae.network.nicardmanagementsdk.** { *; }
 -keepclassmembers class ae.network.nicardmanagementsdk.** { *; }
 ```
 If some of your third party libraries relies on reflection so proguard is breaking it.

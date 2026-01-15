@@ -1,146 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+<!--    tools:context=".MainActivity"-->
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/card_management_sample_app"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <data>
-        <variable
-            name="viewModel"
-            type="ae.network.nicardmanagementsdk.sample.MainViewModel" />
-    </data>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <Button
+        android:id="@+id/cardDetailsButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/card_details"
+        app:layout_constraintBottom_toTopOf="@+id/cardDetailsFragmentButton"
+        app:layout_constraintEnd_toEndOf="@+id/cardDetailsFragmentButton"
+        app:layout_constraintStart_toStartOf="@+id/cardDetailsFragmentButton"
+        app:layout_constraintTop_toBottomOf="@+id/themeSwitch"
+        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusableInTouchMode="true"
-            android:padding="16dp"
-            tools:context="ae.network.nicardmanagementsdk.sample.MainActivity">
+    <Button
+        android:id="@+id/cardDetailsFragmentButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/card_details_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/cardDetailsDialogButton"
+        app:layout_constraintEnd_toEndOf="@+id/setPinButton"
+        app:layout_constraintStart_toStartOf="@+id/setPinButton"
+        app:layout_constraintTop_toBottomOf="@+id/cardDetailsButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:text="@string/card_management_sample_app"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/cardDetailsDialogButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/card_details_dialog"
+        app:layout_constraintBottom_toTopOf="@+id/setPinButton"
+        app:layout_constraintEnd_toEndOf="@+id/setPinButton"
+        app:layout_constraintStart_toStartOf="@+id/setPinButton"
+        app:layout_constraintTop_toBottomOf="@+id/cardDetailsFragmentButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
+    <Button
+        android:id="@+id/setPinButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/set_pin"
+        app:layout_constraintBottom_toTopOf="@+id/verifyPinButton"
+        app:layout_constraintEnd_toEndOf="@+id/verifyPinButton"
+        app:layout_constraintStart_toStartOf="@+id/verifyPinButton"
+        app:layout_constraintTop_toBottomOf="@+id/cardDetailsFragmentButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/cardDetailsButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/card_details"
-                app:layout_constraintBottom_toTopOf="@+id/cardDetailsFragmentButton"
-                app:layout_constraintEnd_toEndOf="@+id/cardDetailsFragmentButton"
-                app:layout_constraintStart_toStartOf="@+id/cardDetailsFragmentButton"
-                app:layout_constraintTop_toBottomOf="@+id/themeSwitch"
-                app:layout_constraintVertical_bias="1.0"
-                app:layout_constraintVertical_chainStyle="packed"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+    <Button
+        android:id="@+id/verifyPinButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/verify_pin"
+        app:layout_constraintBottom_toTopOf="@+id/changePinButton"
+        app:layout_constraintEnd_toEndOf="@+id/changePinButton"
+        app:layout_constraintStart_toStartOf="@+id/changePinButton"
+        app:layout_constraintTop_toBottomOf="@+id/setPinButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/cardDetailsFragmentButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/card_details_fragment"
-                app:layout_constraintBottom_toTopOf="@+id/cardDetailsDialogButton"
-                app:layout_constraintEnd_toEndOf="@+id/setPinButton"
-                app:layout_constraintStart_toStartOf="@+id/setPinButton"
-                app:layout_constraintTop_toBottomOf="@+id/cardDetailsButton"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+    <Button
+        android:id="@+id/changePinButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/change_pin"
+        app:layout_constraintBottom_toTopOf="@+id/viewPinButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/verifyPinButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/cardDetailsDialogButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/card_details_dialog"
-                app:layout_constraintBottom_toTopOf="@+id/setPinButton"
-                app:layout_constraintEnd_toEndOf="@+id/setPinButton"
-                app:layout_constraintStart_toStartOf="@+id/setPinButton"
-                app:layout_constraintTop_toBottomOf="@+id/cardDetailsFragmentButton"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+    <Button
+        android:id="@+id/viewPinButton"
+        style="@style/Widget.App.SDKTaskButtons"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/view_pin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changePinButton"
+        tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
-            <Button
-                android:id="@+id/setPinButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/set_pin"
-                app:layout_constraintBottom_toTopOf="@+id/verifyPinButton"
-                app:layout_constraintEnd_toEndOf="@+id/verifyPinButton"
-                app:layout_constraintStart_toStartOf="@+id/verifyPinButton"
-                app:layout_constraintTop_toBottomOf="@+id/cardDetailsFragmentButton"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+    <TextView
+        android:id="@+id/themeLabelTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/theme_day_night_mode"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
-            <Button
-                android:id="@+id/verifyPinButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/verify_pin"
-                app:layout_constraintBottom_toTopOf="@+id/changePinButton"
-                app:layout_constraintEnd_toEndOf="@+id/changePinButton"
-                app:layout_constraintStart_toStartOf="@+id/changePinButton"
-                app:layout_constraintTop_toBottomOf="@+id/setPinButton"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
-            <Button
-                android:id="@+id/changePinButton"
-                style="@style/Widget.App.SDKTaskButtons"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@string/change_pin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/verifyPinButton"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
-            <TextView
-                android:id="@+id/themeLabelTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/theme_day_night_mode"
-                app:layout_constraintStart_toStartOf="@+id/recyclerView"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/themeSwitch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                app:layout_constraintBottom_toBottomOf="@+id/themeLabelTextView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/themeLabelTextView"
-                app:layout_constraintTop_toTopOf="@+id/themeLabelTextView" />
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/themeSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/themeLabelTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/themeLabelTextView"
+        app:layout_constraintTop_toTopOf="@+id/themeLabelTextView" />
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>
