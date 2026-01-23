@@ -1,6 +1,7 @@
 package ae.network.nicardmanagementsdk.presentation.ui.view_pin.activity
 
 import ae.network.nicardmanagementsdk.R
+import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.NIPinFormType
@@ -15,7 +16,10 @@ import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.delay
@@ -83,22 +87,9 @@ class ViewPinActivity : AppCompatActivity(), ViewPinFragment.OnFragmentInteracti
     }
 
     override fun onViewPinFragmentCompletion(response: SuccessErrorResponse) {
-        response.isSuccess?.let {
-            setResult(
-                Activity.RESULT_OK,
-                Intent().apply {
-                    putExtra(Extra.EXTRA_NI_SUCCESS_RESPONSE, it)
-                }
-            )
-        }
         response.isError?.let {
             lifecycleScope.launch {
-                setResult(
-                    Activity.RESULT_OK,
-                    Intent().apply {
-                        putExtra(Extra.EXTRA_NI_ERROR_RESPONSE, it)
-                    }
-                )
+                Toast.makeText(baseContext, "Got error", Toast.LENGTH_SHORT).show()
                 delay(500)
                 navigateBack()
             }
