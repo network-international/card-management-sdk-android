@@ -3,6 +3,7 @@ package ae.network.nicardmanagementsdk.sample
 import ae.network.nicardmanagementsdk.api.implementation.NICardManagementForms
 import ae.network.nicardmanagementsdk.api.implementation.OnSuccessErrorCancelCompletion
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorCancelResponse
+import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.*
 import ae.network.nicardmanagementsdk.presentation.models.Extra
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardMaskableElement
@@ -26,7 +27,8 @@ import ae.network.nicardmanagementsdk.sample.models.SampleAppFormEntryEnum.*
 class MainActivity : AppCompatActivity(),
     SetPinFragment.OnFragmentInteractionListener,
     VerifyPinFragment.OnFragmentInteractionListener,
-    ChangePinFragment.OnFragmentInteractionListener {
+    ChangePinFragment.OnFragmentInteractionListener,
+    ViewPinFragment.OnFragmentInteractionListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
@@ -57,11 +59,11 @@ class MainActivity : AppCompatActivity(),
 
         if (viewModel.entriesItemModels.isEmpty()) {
             val entries = listOf(
-                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "D2C"),
-                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "22344402126097490505"),
+                EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "****"),
+                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "51100300114969767989"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
-                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.network.global/sdk/v2"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICItNzBNYURtTkxYYW1OR294SGFLWjliM0V3TmdvQ1JOOW5HenlSSFZJN3ZjIn0.eyJleHAiOjE3MjcyNTMxNzUsImlhdCI6MTcyNzI1MTM3NSwianRpIjoiZDVkYzEyYzctM2JiNS00NTBjLWI2NGItNDk5MGUyYjhhZjUwIiwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS1ub25wcm9kLm5ldHdvcmsuZ2xvYmFsL2F1dGgvcmVhbG1zL05JLU5vblByb2QiLCJzdWIiOiI0NGYxMTFlZi02MTEyLTRmY2ItYjkzYS03MDJiZjljZTIwZTQiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiIyMDYxOGYxMC03MmM2LTRhM2MtYWFhNC1kMzM2MWY1MmZhOGY1NjMyMDciLCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImNsaWVudElkIjoiMjA2MThmMTAtNzJjNi00YTNjLWFhYTQtZDMzNjFmNTJmYThmNTYzMjA3Iiwib3JnX2lkIjoiRDJDIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic2VydmljZS1hY2NvdW50LTIwNjE4ZjEwLTcyYzYtNGEzYy1hYWE0LWQzMzYxZjUyZmE4ZjU2MzIwNyJ9.Lo38nkElA1ojIdOO5VjuP8R2rdwRDssO3E0H2YcrG-_0qSxrJxyfL8io3BLue6EsnZPZnAmz4wWIW6qB2fx5dlGqnyFRSIKEgEmOYYqxLSKFr8K6TznA40bABWScKIMECXZ4ANNdvCznp9KouWk6RVlYCKapAZOFYy52G9MhdzL6RjkhbrZZCcTnyNyOCQitf_O78qa-8PKj_y9gxYrKNSyqQZBnEvJc6rafaBkZjsX2qSyGunczNOQroljyy2I2liOu7bbasCPEGf9s-XKC3Kyy8AqRhc1midmDmffd0htvl2Uunwsq3uZoROVQi-qOfXGqnv3cEDBtm3xq---AwA"),
+                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://apiuat.za.network.global/sdk/v2"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhVS1uNnVldXVNNWpfSU5XU1htcVc0NVBLY1psaDE3d2Q0WDRuRVFNVktFIn0.eyJleHAiOjE3NjkxNzExOTMsImlhdCI6MTc2OTE2OTM5MywianRpIjoiYTM5OTYxMTMtYmM2Yy00MzJlLWE1NzktNzUzMDg1ZWVlMTM3IiwiaXNzIjoiaHR0cHM6Ly8xMC4yMTMuMzUuNzQvYXV0aC9yZWFsbXMvTkktTm9uUHJvZCIsInN1YiI6ImI3ZWFiN2U5LWM3NTctNDVlMS1hNDY1LTk4ZDVkZmZhMjMxNyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFmYTI1NzZhLWVmMjgtNGRlZi1iYzFhLWRmYWE2YTQ3Y2JmYzI5Iiwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJjbGllbnRJZCI6ImFmYTI1NzZhLWVmMjgtNGRlZi1iYzFhLWRmYWE2YTQ3Y2JmYzI5Iiwib3JnX2lkIjoiRE1OVCIsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1hZmEyNTc2YS1lZjI4LTRkZWYtYmMxYS1kZmFhNmE0N2NiZmMyOSJ9.a8q3a_IACdbIOzwipKEubzghA-Lw03fI1Oag8Ibua5RZJgt614U9mArLGHwmF8mau6qjqJ2hc9D8F3GL7XXnJs3VMkXd_wRRIWjNvocQXGngC3CyMECsFgp8uUeK9P2wBUQPS_vjqCYWaawmsittmD_Kp5Dxwg90TrPferrv2P6klUNuY5U7ogvWIMaCiLaUZeDPvpOKGjACMoDOCQtjhjKja4bUcDlhTJuUMXspZC8qmLJDcfVzfZ08YQ2y9FOAX-3zRKHhuchPG24OKAmwuQsDTVZORBI_r51P7mUM6uBLGMr0lOHdFNH9ED8t0B7pWOBSD6QYhC-7e6AR113yKg"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))
@@ -183,7 +185,6 @@ class MainActivity : AppCompatActivity(),
                 viewModel.entriesItemModels.first { model -> model.id == TOKEN }.value,
                 extraNetworkHeaders = hashMapOf(
                     "extraHeader1" to "DemoExtraHttpHeaderValue",
-                    "Content-Type" to "will be ignored for existing header" // this will be ignored
                 )
             ),
             displayAttributes = NIDisplayAttributes(
@@ -223,6 +224,16 @@ class MainActivity : AppCompatActivity(),
 
         response.isError?.let {
             Log.d(TAG, "VerifyPinFragment ${it.errorMessage}")
+        }
+    }
+
+    override fun onViewPinFragmentCompletion(response: SuccessErrorResponse) {
+        response.isSuccess?.let {
+            Log.d(TAG, "ViewPinFragment ${it.message}")
+        }
+
+        response.isError?.let {
+            Log.d(TAG, "ViewPinFragment ${it.errorMessage}")
         }
     }
 

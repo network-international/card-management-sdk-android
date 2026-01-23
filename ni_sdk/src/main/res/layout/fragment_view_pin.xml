@@ -51,17 +51,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <include
-            android:id="@+id/defaultPinView"
-            layout="@layout/pin_code_view_with_background"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -76,17 +65,26 @@
         app:layout_constraintTop_toBottomOf="@+id/pinViewSection"
         app:layout_constraintVertical_bias="0.05"/>
 
-    <ProgressBar
-        style="?android:attr/progressBarStyle"
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:theme="@style/ThemeOverlay.NICardManagementSDK.ProgressBar"
+
+
+    <FrameLayout
+        android:id="@+id/customProgressBarHolder"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintBottom_toBottomOf="@+id/pinViewSection"
-        app:layout_constraintEnd_toEndOf="@+id/pinViewSection"
-        app:layout_constraintStart_toStartOf="@+id/pinViewSection"
-        app:layout_constraintTop_toTopOf="@+id/pinViewSection"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:theme="@style/NICardManagementSDK.ProgressBar.Gray" />
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
