@@ -60,10 +60,10 @@ class MainActivity : AppCompatActivity(),
         if (viewModel.entriesItemModels.isEmpty()) {
             val entries = listOf(
                 EntriesItemModel(BANK_CODE, getString(R.string.bank_code_txt), "****"),
-                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "51100300114969767989"),
+                EntriesItemModel(CARD_ID, getString(R.string.card_identifier_id_txt), "1111222233334444"),
                 EntriesItemModel(CARD_TYPE, getString(R.string.card_identifier_type_txt), "EXID"),
-                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://apiuat.za.network.global/sdk/v2"),
-                EntriesItemModel(TOKEN, getString(R.string.token_txt), "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhVS1uNnVldXVNNWpfSU5XU1htcVc0NVBLY1psaDE3d2Q0WDRuRVFNVktFIn0.eyJleHAiOjE3NjkxNzExOTMsImlhdCI6MTc2OTE2OTM5MywianRpIjoiYTM5OTYxMTMtYmM2Yy00MzJlLWE1NzktNzUzMDg1ZWVlMTM3IiwiaXNzIjoiaHR0cHM6Ly8xMC4yMTMuMzUuNzQvYXV0aC9yZWFsbXMvTkktTm9uUHJvZCIsInN1YiI6ImI3ZWFiN2U5LWM3NTctNDVlMS1hNDY1LTk4ZDVkZmZhMjMxNyIsInR5cCI6IkJlYXJlciIsImF6cCI6ImFmYTI1NzZhLWVmMjgtNGRlZi1iYzFhLWRmYWE2YTQ3Y2JmYzI5Iiwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJjbGllbnRJZCI6ImFmYTI1NzZhLWVmMjgtNGRlZi1iYzFhLWRmYWE2YTQ3Y2JmYzI5Iiwib3JnX2lkIjoiRE1OVCIsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1hZmEyNTc2YS1lZjI4LTRkZWYtYmMxYS1kZmFhNmE0N2NiZmMyOSJ9.a8q3a_IACdbIOzwipKEubzghA-Lw03fI1Oag8Ibua5RZJgt614U9mArLGHwmF8mau6qjqJ2hc9D8F3GL7XXnJs3VMkXd_wRRIWjNvocQXGngC3CyMECsFgp8uUeK9P2wBUQPS_vjqCYWaawmsittmD_Kp5Dxwg90TrPferrv2P6klUNuY5U7ogvWIMaCiLaUZeDPvpOKGjACMoDOCQtjhjKja4bUcDlhTJuUMXspZC8qmLJDcfVzfZ08YQ2y9FOAX-3zRKHhuchPG24OKAmwuQsDTVZORBI_r51P7mUM6uBLGMr0lOHdFNH9ED8t0B7pWOBSD6QYhC-7e6AR113yKg"),
+                EntriesItemModel(ROOT_URL, getString(R.string.root_url_txt), "https://api-uat.network.global/sdk/v2"),
+                EntriesItemModel(TOKEN, getString(R.string.token_txt), "***"),
                 EntriesItemModel(PIN_LENGTH, getString(R.string.pin_length_txt), NIPinFormType.FOUR_DIGITS.name, getString(
                     R.string.pin_length_placeholder
                 ))
