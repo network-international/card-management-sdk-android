@@ -46,8 +46,8 @@
     // view pin fragment
     <string name="view_pin_title">View PIN</string>
     <string name="get_pin_description">Your PIN for the card ending %1$s</string>
-    <string name="get_pin_countdown_timer_text_en">PIN will be hidden in %1$d seconds</string>
-    <string name="get_pin_countdown_timer_text_ar">سيتم إخفاء الرقم السري للبطاقة خلال %1$d ثواني</string>
+    <string name="get_pin_countdown_timer_text_en">PIN will be hidden in %d seconds</string>
+    <string name="get_pin_countdown_timer_text_ar">سيتم إخفاء الرقم السري للبطاقة خلال %d ثواني</string>
 
     // non translatable strings
     <string name="app_name" translatable="false">NICardManagementSDK</string>

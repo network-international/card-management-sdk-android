@@ -180,10 +180,12 @@ fun TextView.setUIElementText(data: UIElementText) {
     }
 }
 
-fun TextView.setUIElementText(data: UIElementText, vararg args: Any?) {
+fun TextView.setUIElementText(data: UIElementText, arg: Int) {
     // resources.getString(R.string.get_pin_countdown_timer_text_ar, time)
-    when(data) {
-        is UIElementText.Int -> this.text = this.resources.getString(data.value, args)
-        is UIElementText.String -> this.text = String.format(data.value, args)
+    val template: String = when(data) {
+        is UIElementText.Int -> this.resources.getString(data.value)
+        is UIElementText.String -> data.value
     }
+    val result = template.format(arg)
+    this.text = result
 }

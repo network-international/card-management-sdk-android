@@ -3,6 +3,7 @@ package ae.network.nicardmanagementsdk.presentation.ui.view_pin
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.UIElementText
+import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
 import ae.network.nicardmanagementsdk.core.IViewPinCore
@@ -46,7 +47,17 @@ class ViewPinFragmentViewModel(
                 pinMaskedLiveData.value = pinMasked
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
                 hasPinData.value = true
+                //Log.d("ViewPinViewModel::", pinClear)
+            } else if (result.error != null) {
+                onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
+                hasPinData.value = false
+                // simulate success
+//                pinClearLiveData.value = "555555"
+//                pinMaskedLiveData.value = "******"
+//                onResultSingleLiveEvent.value = SuccessErrorResponse(NISuccessResponse(), isError = null)
+//                hasPinData.value = true
             } else {
+                hasPinData.value = false
                 Log.d("ViewPinViewModel::", "result.pin is null")
             }
         }

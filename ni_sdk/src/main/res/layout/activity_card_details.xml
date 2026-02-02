@@ -1,25 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <import type="android.view.View" />
-        <variable
-            name="viewModel"
-            type="ae.network.nicardmanagementsdk.presentation.ui.card_details.CardDetailsViewModel" />
-        <variable
-            name="paddingTop"
-            type="int" />
-    </data>
-    <FrameLayout
-        android:layoutDirection="ltr"
-        android:id="@+id/cardDetailsRootLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@{paddingTop}"
-        tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layoutDirection="ltr"
+    android:id="@+id/cardDetailsRootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:theme="@style/ThemeOverlay.NICardManagementSDK.DialogTheme.Auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layoutDirection="ltr"
@@ -50,7 +38,8 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/blue1"
             tools:minHeight="209dp">
-            <!--        Put desired background image here-->
+
+            <!-- Put desired background image here-->
             <ImageView
                 android:id="@+id/cardBackgroundImageView"
                 android:layout_width="match_parent"
@@ -58,8 +47,9 @@
                 android:contentDescription="@string/background_card_image_content_description"
                 android:scaleType="fitXY"
                 tools:ignore="ImageContrastCheck" />
+
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
-</layout>
+
+</FrameLayout>
