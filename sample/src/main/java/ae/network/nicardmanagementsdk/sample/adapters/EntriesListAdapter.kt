@@ -11,7 +11,7 @@ class EntriesListAdapter : RecyclerView.Adapter<EntriesListAdapter.EntriesListVi
 
     private var items: List<EntriesItemModel> = listOf()
 
-    inner class EntriesListViewHolder(val binding: EntriesItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class EntriesListViewHolder(val binding: EntriesItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EntriesListViewHolder {
         val binding = EntriesItemBinding.inflate(
@@ -24,7 +24,9 @@ class EntriesListAdapter : RecyclerView.Adapter<EntriesListAdapter.EntriesListVi
 
     override fun onBindViewHolder(holder: EntriesListViewHolder, position: Int) {
         val currentItem = items[position]
-        holder.binding.itemModel = currentItem
+        holder.binding.entryLabelTextView.text = currentItem.label
+        holder.binding.entryValueEditText.hint = currentItem.placeHolder
+        holder.binding.entryValueEditText.setText(currentItem.value)
     }
 
     override fun getItemCount(): Int {

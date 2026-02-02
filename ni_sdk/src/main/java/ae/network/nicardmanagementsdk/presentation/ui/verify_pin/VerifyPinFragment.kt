@@ -59,9 +59,6 @@ class VerifyPinFragment : SetPinDialogFragmentBase<VerifyPinViewModel>() {
 
         val factory = Injector.getInstance(requireContext()).provideVerifyPinViewModelFactory(niInput, navTitleText, screenTitleText, secondStepTitleText, notMatchTitleText)
         viewModel = ViewModelProvider(this, factory)[VerifyPinViewModel::class.java]
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
-        binding.context = requireContext()
     }
 
     override fun initializeUI() {
