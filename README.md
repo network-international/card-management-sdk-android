@@ -6,7 +6,20 @@ The current supported features are:
 2. Set PIN : Displays a PIN pad to allow cardholder to set a PIN on their new card. The PIN is end to end encrypted to securely transport this sensitive information
 3. Change PIN: Displays two PIN pad to allow the cardholder to change their PIN by providing old & new PIN. The PINs are end to end encrypted to securely transport this sensitive information
 
+### Toolchain
+- compileSdk 36
+- targetSdk 36
+- kotlin_version = '2.1.10'
+- AGP 8.13.2
+- Gradle 8.13
 
+```
+buildFeatures {
+        buildConfig true
+        dataBinding = false  // DISABLE DataBinding
+        viewBinding = true   // ENABLE ViewBinding
+    }
+```
 
 ## Integration
 
