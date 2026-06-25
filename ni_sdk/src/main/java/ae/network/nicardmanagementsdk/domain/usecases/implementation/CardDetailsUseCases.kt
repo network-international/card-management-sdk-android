@@ -48,17 +48,12 @@ class CardDetailsUseCases(
         )
 
         return NICardDetailsResponse(
-            clearPan.toSpacedPAN(),
-            response.maskedPan.toSpacedPAN(),
-            response.expiry.toDateString(), // "${expiry?.substring(2..3)}/${expiry?.substring(0..1)}",
+            clearPan,
+            response.maskedPan,
+            response.expiry,
             clearCvv,
             response.clearCardholderName
         )
     }
 
 }
-
-// Helper
-fun String.toDateString(): String =
-    if (this.length < 4) this
-    else "${this.substring(2..3)}/${this.substring(0..1)}"
