@@ -5,6 +5,8 @@ import ae.network.nicardmanagementsdk.api.models.output.CardDetailsResponse
 import ae.network.nicardmanagementsdk.api.models.output.NICardDetailsResponse
 import ae.network.nicardmanagementsdk.core.security.CryptoManager
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.ICardDetailsUseCases
+import ae.network.nicardmanagementsdk.helpers.toDateString
+import ae.network.nicardmanagementsdk.helpers.toSpacedPAN
 import ae.network.nicardmanagementsdk.repository.interfaces.ICardDetailsRepository
 import java.security.KeyPair
 
@@ -47,9 +49,9 @@ class CardDetailsUseCases(
         )
 
         return NICardDetailsResponse(
-            clearPan,
-            response.maskedPan,
-            response.expiry,
+            clearPan.toSpacedPAN(),
+            response.maskedPan.toSpacedPAN(),
+            response.expiry.toDateString(),
             clearCvv,
             response.clearCardholderName
         )
