@@ -22,8 +22,8 @@ data class CardDetailsResponse(
 
 fun NICardDetailsResponse.asClearViewModel(): CardDetailsModel {
     return CardDetailsModel(
-        clearPan?.toSpacedPAN(),
-        "${expiry?.substring(2..3)}/${expiry?.substring(0..1)}",
+        clearPan, //?.toSpacedPAN(),
+        expiry, // "${expiry?.substring(2..3)}/${expiry?.substring(0..1)}",
         clearCVV2,
         clearCardholderName?.trim()
     )
@@ -31,7 +31,7 @@ fun NICardDetailsResponse.asClearViewModel(): CardDetailsModel {
 
 fun NICardDetailsResponse.asMaskedViewModel(): CardDetailsModel {
     return CardDetailsModel(
-        maskedPan?.toSpacedPAN(),
+        maskedPan, //?.toSpacedPAN(),
         "**/**",
         "***",
         clearCardholderName?.toStarMaskedString(2)

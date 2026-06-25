@@ -18,7 +18,7 @@ class Network(connectionProperties: NIConnectionProperties) {
     init {
         safeBaseUrl = UrlHelper().baseUrlCheck(connectionProperties)
         // change logging level for debugging
-        logInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        logInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE)
         val clientBuilder = OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)

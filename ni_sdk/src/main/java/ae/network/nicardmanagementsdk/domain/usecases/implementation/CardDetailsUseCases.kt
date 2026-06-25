@@ -7,6 +7,7 @@ import ae.network.nicardmanagementsdk.core.security.CryptoManager
 import ae.network.nicardmanagementsdk.domain.usecases.interfaces.ICardDetailsUseCases
 import ae.network.nicardmanagementsdk.repository.interfaces.ICardDetailsRepository
 import java.security.KeyPair
+import ae.network.nicardmanagementsdk.helpers.toSpacedPAN
 
 class CardDetailsUseCases(
     private val cardDetailsRepository: ICardDetailsRepository
@@ -47,12 +48,17 @@ class CardDetailsUseCases(
         )
 
         return NICardDetailsResponse(
-            clearPan,
-            response.maskedPan,
-            response.expiry,
+            clearPan.toSpacedPAN(),
+            response.maskedPan.toSpacedPAN(),
+            response.expiry.toDateString(), // "${expiry?.substring(2..3)}/${expiry?.substring(0..1)}",
             clearCvv,
             response.clearCardholderName
         )
     }
 
 }
+
+// Helper
+fun String.toDateString(): String =
+    if (this.length < 4) this
+    else "${this.substring(2..3)}/${this.substring(0..1)}"
