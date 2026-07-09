@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name" translatable="false">NICardManagementApp</string>
+    <string name="card_management_sample_app" translatable="false">Card Management Sample App</string>
+
+    // Main screen buttons values
+    <string name="view_pin" translatable="false">View PIN</string>
+    <string name="change_pin" translatable="false">Change PIN</string>
+    <string name="set_pin" translatable="false">Set PIN</string>
+    <string name="verify_pin" translatable="false">Verify PIN</string>
+    <string name="card_details" translatable="false">Card Details</string>
+    <string name="card_details_fragment" translatable="false">Card Details Fragment</string>
+
+    // Main screen entries labels
+    <string name="card_identifier_id_txt">Card Identifier ID</string>
+    <string name="card_identifier_type_txt">Card Identifier Type</string>
+    <string name="root_url_txt">Root URL</string>
+    <string name="token_txt">Token</string>
+    <string name="bank_code_txt">Bank code</string>
+    <string name="pin_length_txt">PIN length</string>
+
+    // Main screen entries placeholder
+    <string name="pin_length_placeholder" translatable="false">PIN length</string>
+    <string name="custom_component_used_from_host_activity">Custom component used from an Activity</string>
+    <string name="custom_component_used_from_host_fragment">Custom component</string>
+    <string name="card_details_from_custom_component" translatable="false">Card details</string>
+    <string name="theme_day_night_mode" translatable="false">Theme Day/Night</string>
+    <string name="language" translatable="false">Language</string>
+    <string name="english" translatable="false">English</string>
+    <string name="arabic" translatable="false">Arabic</string>
+    <string name="none" translatable="false">None</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="hello_blank_activity" translatable="false">Hello blank Activity</string>
+    <string name="success_message" translatable="false">Success screen!</string>
+    <string name="error_message" translatable="false">Error screen!</string>
+    <string name="done" translatable="false">Done</string>
+    <string name="another_activity_destination" translatable="false">Another Activity destination\n after success/error operation</string>
+
+</resources>

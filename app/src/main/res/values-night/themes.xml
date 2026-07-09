@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!--Default Top Level application theme-->
+    <style name="Theme.NICardManagementApp.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">@color/gray_850</item>
+    </style>
+
+</resources>
