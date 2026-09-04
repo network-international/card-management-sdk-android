@@ -25,22 +25,28 @@ data class NIErrorResponse(
                         } else if (errorBodyMessage.isNotEmpty()){
                             it.value = errorBodyMessage
                         } else {
-                            it.value = e.localizedMessage as String
+                            it.value = e.localizedMessage ?: "HTTP Error with no message"
                         }
                     }
                 }
 
                 is IOException -> NISDKErrors.NETWORK_ERROR.also {
-                    it.value = e.localizedMessage as String
+                    it.value = getCauseChainMessage(e)
                 }
 
                 else -> NISDKErrors.GENERAL_ERROR.also {
-                    it.value = e.localizedMessage as String
+                    it.value = getCauseChainMessage(e)
                 }
             }
             return NIErrorResponse(
                 niSDKError
             )
+        }
+
+        private fun getCauseChainMessage(e: Throwable): String {
+            return generateSequence(e) { it.cause }
+                .map { "${it::class.java.simpleName}: ${it.message ?: "no message"}" }
+                .joinToString(" | caused by ")
         }
     }
 }
