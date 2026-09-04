@@ -29,6 +29,17 @@ https://jitpack.io/#network-international/card-management-sdk-android
 
 ### Sample usage:
 Check Sample application for details
+
+### Run the sample app
+
+If an emulator or device is already running, you can install and launch the sample app with:
+
+```bash
+bash scripts/run-sample-app.sh
+```
+
+The script resolves the Android SDK from `ANDROID_HOME`, `ANDROID_SDK_ROOT`, or `local.properties`, clears `/data/local/tmp` on the connected device, installs `:sample:installDebug`, and launches `ae.network.nicardmanagementsdk.sample.MainActivity`.
+
 Kotlin:
 ```kotlin
 // See full version in repository
@@ -528,29 +539,56 @@ and will navigate back on "buttonResId" button setOnClickListener{}, giving the 
 to display a custom success/error layout with a "done" button.
 
 ### ProGuard rules
-If you are using minifyEnabled true for your build configuration:
-```groovy
-buildTypes {
-        release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
-```
-you have to add the following line of code to your proguard-rules.pro configuration file, in order to successfully generate the X.509 certificate:
+
+**The ProGuard rules for this SDK are now shipped automatically** in the library's `consumer-rules.pro` file. When your app minifies with R8 or ProGuard, these rules are automatically applied and no manual configuration is required.
+
+If you are using `minifyEnabled true` for your build configuration, the following rules are already included:
 
 ```groovy
 -keep class org.bouncycastle.** { *; }
+-dontwarn org.bouncycastle.**
+-keepclassmembers class * extends java.security.Provider { <init>(...); }
 
 -keep class ae.network.nicardmanagementsdk.** { *; }
 -keepclassmembers class ae.network.nicardmanagementsdk.** { *; }
-```
-If some of your third party libraries relies on reflection so proguard is breaking it.
-If you add that line in your proguard file, you should have the Class name and line number instead of `Unkown Source` in the stack trace:
-```groovy
+
 -keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile, LineNumberTable, *Annotation*, EnclosingMethod
 ```
 
-#### R8 full mode ProGuard Troubleshooting
-find instructions in documentation
+These rules are necessary because the SDK uses BouncyCastle to generate a self-signed X.509 certificate via reflection. If BouncyCastle classes are renamed or removed during minification, the provider will fail with:
+```
+CertificateException: No provider succeeded to generate a self-signed certificate. 
+Root cause: <actual cause with minification hint>
+```
+
+#### Using DexGuard (GuardSquare)
+
+If you use **DexGuard** for advanced obfuscation (beyond R8), the above `-keep` rules are **NOT sufficient** because DexGuard can encrypt and reflection-obfuscate even kept classes. You must also add these exclusions to your DexGuard configuration:
+
+```
+-dontencryptclasses org.bouncycastle.**
+-dontencryptclasses ae.network.nicardmanagementsdk.**
+-dontencryptstrings org.bouncycastle.**
+-dontencryptstrings ae.network.nicardmanagementsdk.**
+-dontevaluatestrings org.bouncycastle.**
+-dontevaluatestrings ae.network.nicardmanagementsdk.**
+-dontobfuscatestrings org.bouncycastle.**
+-dontobfuscatestrings ae.network.nicardmanagementsdk.**
+-keep class org.bouncycastle.** { *; }
+-keep class ae.network.nicardmanagementsdk.** { *; }
+-keepattributes Exceptions, InnerClasses, Signature, Deprecated, SourceFile, LineNumberTable, *Annotation*, EnclosingMethod
+-keepresources META-INF/services/**
+```
+
+#### Debugging ProGuard/R8/DexGuard issues
+
+If certificate generation fails despite following the above guidance, enable the debug log to see the root cause:
+
+```bash
+adb logcat -s SelfSignedCertificate:D
+```
+
+This will show the actual exception that led to the failure, making diagnosis much faster.
+
+For more details on R8 compatibility, see:
 https://r8.googlesource.com/r8/+/refs/heads/master/compatibility-faq.md#troubleshooting

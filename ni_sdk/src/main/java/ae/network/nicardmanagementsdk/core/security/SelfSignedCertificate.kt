@@ -52,7 +52,10 @@ class SelfSignedCertificate(
                 t2
             )
             throw CertificateException(
-                "No provider succeeded to generate a self-signed certificate. See debug log for the root cause.",
+                "No provider succeeded to generate a self-signed certificate. " +
+                "Root cause: ${t2::class.java.name}: ${t2.message}. " +
+                "If this application is minified, verify that org.bouncycastle.** is kept " +
+                "and is not encrypted or reflection-obfuscated.",
                 t2
             )
         }
