@@ -23,8 +23,7 @@
 # Please remove this if anything goes wrong to see the actually warnings
 -dontwarn javax.naming.**
 
- -keep class org.bouncycastle.** { *; }
- # use broad rules for SDK dependency
- # Starting with AGP 8.0, R8 "Full Mode" (non-compatibility mode) is enabled by default. This mode performs more aggressive optimizations.
- -keep class ae.network.nicardmanagementsdk.** { *; }
- -keepclassmembers class ae.network.nicardmanagementsdk.** { *; }
+# NOTE: Consumer ProGuard rules from ni_sdk library (consumer-rules.pro)
+# will be automatically applied by AGP. This file should remain empty
+# to serve as a regression test - the library's consumer rules must be
+# sufficient to prevent minification failures.
