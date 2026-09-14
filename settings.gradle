@@ -11,3 +11,4 @@ dependencyResolutionManagement {
 rootProject.name = "NICardManagementSDK"
 include ':ni_sdk'
 include ':sample'
+include ':app'
