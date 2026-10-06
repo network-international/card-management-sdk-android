@@ -1,12 +1,9 @@
 package ae.network.nicardmanagementsdk.presentation.ui.view_pin
 
-import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
+import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.UIElementText
-import ae.network.nicardmanagementsdk.api.models.output.NISuccessResponse
-import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
-import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
-import ae.network.nicardmanagementsdk.core.IViewPinCore
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -16,13 +13,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
 class ViewPinFragmentViewModel(
-    private val viewPinCore: IViewPinCore,
+    private val niInput: NIInput,
     val timerStringTemplate: UIElementText
 ) : ViewModel() {
-    // ex bViewModel
     val isVisibleProgressBar = MutableLiveData(false)
 
-    val onResultSingleLiveEvent = SingleLiveEvent<SuccessErrorResponse>()
+    val onResultSingleLiveEvent = SingleLiveEvent<ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse>()
 
     private val pinClearLiveData = MutableLiveData<String>()
     private val pinMaskedLiveData = MutableLiveData<String>()
@@ -38,24 +34,17 @@ class ViewPinFragmentViewModel(
     fun getPin() {
         viewModelScope.launch {
             isVisibleProgressBar.value = true
-            val result = viewPinCore.makeNetworkRequest()
+            val result = NICardManagement.getPin(niInput)
             isVisibleProgressBar.value = false
             if (result.pin != null) {
-                val pinClear = result.pin.asClearViewModel().encryptedPin
-                val pinMasked = result.pin.asMaskedViewModel().encryptedPin
+                val pinClear = result.pin!!.pin
                 pinClearLiveData.value = pinClear
-                pinMaskedLiveData.value = pinMasked
+                pinMaskedLiveData.value = "*".repeat(pinClear.length)
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
                 hasPinData.value = true
-                //Log.d("ViewPinViewModel::", pinClear)
             } else if (result.error != null) {
                 onResultSingleLiveEvent.value = result.asSuccessErrorResponse()
                 hasPinData.value = false
-                // simulate success
-//                pinClearLiveData.value = "555555"
-//                pinMaskedLiveData.value = "******"
-//                onResultSingleLiveEvent.value = SuccessErrorResponse(NISuccessResponse(), isError = null)
-//                hasPinData.value = true
             } else {
                 hasPinData.value = false
                 Log.d("ViewPinViewModel::", "result.pin is null")

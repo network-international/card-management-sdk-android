@@ -5,14 +5,6 @@ import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import java.io.Serializable
 
-data class NIInput(
-    val bankCode: String,
-    val cardIdentifierId: String,
-    val cardIdentifierType: String,
-    val connectionProperties: NIConnectionProperties,
-    val displayAttributes: NIDisplayAttributes? = null
-) : Serializable
-
 data class PinResultAttributes(
     val successScreen: PinResultScreenAttributes,
     val errorScreen: PinResultScreenAttributes

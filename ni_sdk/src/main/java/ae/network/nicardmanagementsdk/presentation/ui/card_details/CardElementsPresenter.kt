@@ -1,5 +1,6 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details
 
+import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.models.input.UIElementText
@@ -8,8 +9,6 @@ import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
-import ae.network.nicardmanagementsdk.core.GetCardDetailsCoreComponent
-import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.extension_methods.setUIElementText
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
@@ -123,8 +122,7 @@ class CardElementsPresenter(
 //                return@launch
 //            }
 
-            val getCardDetailsCoreComponent: IGetCardDetailsCore = GetCardDetailsCoreComponent.fromFactory(niInput)
-            val result = getCardDetailsCoreComponent.makeNetworkRequest()
+            val result = NICardManagement.getCardDetails(niInput)
             result.details?.let {
                 cardDetailsClear = it.asClearViewModel()
                 cardDetailsMasked = it.asMaskedViewModel()
