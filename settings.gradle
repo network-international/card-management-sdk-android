@@ -9,26 +9,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "NICardManagementSDK"
-
-def coreCandidates = []
-if (settings.hasProperty("core.dir")) {
-    coreCandidates.add(file(settings["core.dir"]))
-}
-coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core/android"))
-coreCandidates.add(file("${rootDir}/../card-management-sdk-core/android"))
-
-def coreAndroid = coreCandidates.find { it.exists() && new File(it, "settings.gradle.kts").exists() }
-if (coreAndroid == null) {
-    throw new GradleException(
-            "Android Core checkout not found. Clone card-management-sdk-core and pass -Pcore.dir=/path/to/card-management-sdk-core/android"
-    )
-}
-
-includeBuild(coreAndroid) {
-    dependencySubstitution {
-        substitute module("ae.network.nicardmanagementsdk:ni-card-management-sdk-core") using project(":core")
-    }
-}
-
 include ':ni_sdk'
 include ':sample'

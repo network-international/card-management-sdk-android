@@ -2,12 +2,13 @@ package ae.network.nicardmanagementsdk.di
 
 import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.input.UIElementText
+import ae.network.nicardmanagementsdk.core.*
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.CardDetailsViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment.CardDetailsFragmentViewModel
+import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragmentViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.change_pin.ChangePinViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.set_pin.SetPinViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.verify_pin.VerifyPinViewModel
-import ae.network.nicardmanagementsdk.presentation.ui.view_pin.ViewPinFragmentViewModel
 import ae.network.nicardmanagementsdk.presentation.ui.view_pin.activity.ViewPinViewModel
 import android.content.Context
 
@@ -32,52 +33,57 @@ class Injector private constructor(context: Context) {
         }
     }
 
-    fun provideCardDetailsFragmentViewModelFactory(niInput: NIInput): ViewModelFactory<CardDetailsFragmentViewModel> {
+    fun provideCardDetailsFragmentViewModelFactory(niInput : NIInput): ViewModelFactory<CardDetailsFragmentViewModel> {
         return ViewModelFactory {
-            CardDetailsFragmentViewModel(niInput)
+            val getCardDetailsCoreComponent = GetCardDetailsCoreComponent.fromFactory(niInput)
+            CardDetailsFragmentViewModel(getCardDetailsCoreComponent)
         }
     }
 
     fun provideSetPinViewModelFactory(
-        niInput: NIInput,
-        navTitleText: UIElementText,
-        screenTitleText: UIElementText,
-        secondStepTitleText: UIElementText,
-        notMatchTitleText: UIElementText,
+        niInput : NIInput,
+        navTitleText: UIElementText, // = UIElementText.Int(R.string.set_pin_title_en)
+        screenTitleText: UIElementText, // = UIElementText.Int(R.string.set_pin_description_enter_pin_en)
+        secondStepTitleText: UIElementText, // R.string.set_pin_description_re_enter_pin_en
+        notMatchTitleText: UIElementText, // R.string.set_pin_description_pin_not_match_en
     ): ViewModelFactory<SetPinViewModel> {
         return ViewModelFactory {
-            SetPinViewModel(niInput, navTitleText, screenTitleText, secondStepTitleText, notMatchTitleText)
+            val setPinCoreComponent = SetPinCoreComponent.fromFactory(niInput)
+            SetPinViewModel(setPinCoreComponent, navTitleText, screenTitleText, secondStepTitleText, notMatchTitleText)
         }
     }
 
     fun provideVerifyPinViewModelFactory(
-        niInput: NIInput,
-        navTitleText: UIElementText,
-        screenTitleText: UIElementText,
-        secondStepTitleText: UIElementText,
-        notMatchTitleText: UIElementText,
+        niInput : NIInput,
+        navTitleText: UIElementText, // = UIElementText.Int(R.string.verify_pin_title_en)
+        screenTitleText: UIElementText, // = UIElementText.Int(R.string.verify_pin_description_en)
+        secondStepTitleText: UIElementText, // R.string.set_pin_description_re_enter_pin_en
+        notMatchTitleText: UIElementText, // R.string.set_pin_description_pin_not_match_en
     ): ViewModelFactory<VerifyPinViewModel> {
         return ViewModelFactory {
-            VerifyPinViewModel(niInput, navTitleText, screenTitleText, secondStepTitleText, notMatchTitleText)
+            val verifyPinCoreComponent = VerifyPinCoreComponent.fromFactory(niInput)
+            VerifyPinViewModel(verifyPinCoreComponent, navTitleText, screenTitleText, secondStepTitleText, notMatchTitleText)
         }
     }
 
     fun provideChangePinViewModelFactory(
-        niInput: NIInput,
-        navTitleText: UIElementText,
-        screenTitleText: UIElementText,
-        newPinTitleText: UIElementText,
-        approvePinTitleText: UIElementText,
-        notMatchTitleText: UIElementText,
+        niInput : NIInput,
+        navTitleText: UIElementText, // = UIElementText.Int(R.string.change_pin_title_en)
+        screenTitleText: UIElementText, // = UIElementText.Int(R.string.change_pin_description_enter_current_pin_en)
+        newPinTitleText: UIElementText, // = UIElementText.Int(R.string.change_pin_description_enter_new_pin_en))
+        approvePinTitleText: UIElementText, // R.string.set_pin_description_re_enter_pin_en
+        notMatchTitleText: UIElementText, // R.string.set_pin_description_pin_not_match_en
     ): ViewModelFactory<ChangePinViewModel> {
         return ViewModelFactory {
-            ChangePinViewModel(niInput, navTitleText, screenTitleText, newPinTitleText, approvePinTitleText, notMatchTitleText)
+            val changePinCoreComponent = ChangePinCoreComponent.fromFactory(niInput)
+            ChangePinViewModel(changePinCoreComponent, navTitleText, screenTitleText, newPinTitleText, approvePinTitleText, notMatchTitleText)
         }
     }
 
     fun provideViewPinFragmentViewModelFactory(niInput: NIInput, timerStringTemplate: UIElementText): ViewModelFactory<ViewPinFragmentViewModel> {
         return ViewModelFactory {
-            ViewPinFragmentViewModel(niInput, timerStringTemplate)
+            val viewPinComponent = ViewPinCoreComponent.fromFactory(niInput)
+            ViewPinFragmentViewModel(viewPinComponent, timerStringTemplate)
         }
     }
 

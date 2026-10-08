@@ -54,8 +54,6 @@ android {
 }
 
 dependencies {
-    api "ae.network.nicardmanagementsdk:ni-card-management-sdk-core:0.1.0-dev"
-
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.10.0"
     implementation "androidx.core:core-ktx:1.17.0"
 
@@ -63,7 +61,14 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.2.1"
     implementation "com.google.android.material:material:1.13.0"
 
-    testImplementation "junit:junit:4.13.2"
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:3.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:3.0.0'
+    // okhttp3
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.3.2'
+
+    // BouncyCastle - SelfSignedCertificate
+    implementation 'org.bouncycastle:bcpkix-jdk15to18:1.83'
 }
 
 

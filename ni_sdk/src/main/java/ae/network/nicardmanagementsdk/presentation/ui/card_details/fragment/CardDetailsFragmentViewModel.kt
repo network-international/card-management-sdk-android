@@ -1,12 +1,11 @@
 package ae.network.nicardmanagementsdk.presentation.ui.card_details.fragment
 
-import ae.network.nicardmanagementsdk.api.implementation.NICardManagement
 import ae.network.nicardmanagementsdk.api.interfaces.SuccessErrorResponse
 import ae.network.nicardmanagementsdk.api.interfaces.asSuccessErrorResponse
-import ae.network.nicardmanagementsdk.api.models.input.NIInput
 import ae.network.nicardmanagementsdk.api.models.output.asClearPanNonSpaced
 import ae.network.nicardmanagementsdk.api.models.output.asClearViewModel
 import ae.network.nicardmanagementsdk.api.models.output.asMaskedViewModel
+import ae.network.nicardmanagementsdk.core.IGetCardDetailsCore
 import ae.network.nicardmanagementsdk.presentation.components.SingleLiveEvent
 import ae.network.nicardmanagementsdk.presentation.models.CardDetailsModel
 import android.content.ClipData
@@ -40,7 +39,7 @@ class CardMaskableElementEntries {
 
 
 class CardDetailsFragmentViewModel(
-    private val niInput: NIInput,
+    private val getCardDetailsCoreComponent: IGetCardDetailsCore
 ) : ViewModel() {
 
     private lateinit var cardDetailsClear: CardDetailsModel
@@ -126,7 +125,7 @@ class CardDetailsFragmentViewModel(
             return
         }
         viewModelScope.launch {
-            val result = NICardManagement.getCardDetails(niInput)
+            val result = getCardDetailsCoreComponent.makeNetworkRequest()
             result.details?.let {
                 cardDetailsClear = it.asClearViewModel()
                 cardDetailsMasked = it.asMaskedViewModel()

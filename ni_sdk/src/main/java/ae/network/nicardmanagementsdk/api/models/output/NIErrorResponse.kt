@@ -1,0 +1,64 @@
+package ae.network.nicardmanagementsdk.api.models.output
+
+import retrofit2.HttpException
+import java.io.IOException
+import java.io.Serializable
+
+data class NIErrorResponse(
+    val error: NISDKErrors,
+    val errorMessage: String = error.value
+): Serializable {
+    companion object {
+        fun fromException(e: Exception): NIErrorResponse {
+            val niSDKError =  when (e) {
+
+                is HttpException -> {
+                    NISDKErrors.NETWORK_ERROR.also {
+                        val errorBodyMessage = e.response()?.errorBody()?.string()?.let { s ->
+                            "${e.localizedMessage} : $s"
+                        } ?: ""
+                        
+                        val startIndex = errorBodyMessage.indexOf("{") // -1 if not found
+                        if (startIndex > 0 && errorBodyMessage.length > startIndex) {
+                            val errorBodyMessageWithoutHttpCode = errorBodyMessage.substring(startIndex)
+                            it.value = errorBodyMessageWithoutHttpCode
+                        } else if (errorBodyMessage.isNotEmpty()){
+                            it.value = errorBodyMessage
+                        } else {
+                            it.value = e.localizedMessage ?: "HTTP Error with no message"
+                        }
+                    }
+                }
+
+                is IOException -> NISDKErrors.NETWORK_ERROR.also {
+                    it.value = getCauseChainMessage(e)
+                }
+
+                else -> NISDKErrors.GENERAL_ERROR.also {
+                    it.value = getCauseChainMessage(e)
+                }
+            }
+            return NIErrorResponse(
+                niSDKError
+            )
+        }
+
+        private fun getCauseChainMessage(e: Throwable): String {
+            return generateSequence(e) { it.cause }
+                .map { "${it::class.java.simpleName}: ${it.message ?: "no message"}" }
+                .joinToString(" | caused by ")
+        }
+    }
+}
+
+enum class NISDKErrors(var value: String): Serializable {
+    GENERAL_ERROR("SDK General Error"),
+    NAV_ERROR("Form not allowed pushing on navigation controller"),
+
+    NETWORK_ERROR("Network Error"),
+    PARSING_ERROR("SDK Parsing Error"),
+
+    RSAKEY_ERROR("Couldn't  get or generate Public Key"),
+    PINBLOCK_ERROR("PIN Block Error"),
+    PINBLOCK_ENCRYPTION_ERROR("PIN Block Encryption Error")
+}
