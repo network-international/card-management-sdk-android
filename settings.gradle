@@ -5,30 +5,27 @@ dependencyResolutionManagement {
         mavenCentral()
         maven { url 'https://jitpack.io' }
         // Core 0.1.0 drop vendored from temporary GitHub Release core-0.1.0
+        // (GitHub Packages optional later — needs write:packages / read:packages)
         maven { url uri("${rootDir}/ni_sdk/libs-maven") }
     }
 }
 
 rootProject.name = "NICardManagementSDK"
 
-def coreCandidates = []
+// Phase 5: public UI resolves Core as a binary. Local Core includeBuild is opt-in only.
 if (settings.hasProperty("core.dir")) {
-    coreCandidates.add(file(settings["core.dir"]))
-}
-coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core/android"))
-coreCandidates.add(file("${rootDir}/../card-management-sdk-core/android"))
-coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core.worktrees/rc-core-0.1.0-1fd3/android"))
-
-def coreAndroid = coreCandidates.find { it.exists() && new File(it, "settings.gradle.kts").exists() }
-if (coreAndroid != null) {
-    println("Using local Core includeBuild at ${coreAndroid}")
+    def coreAndroid = file(settings["core.dir"])
+    if (!coreAndroid.exists() || !new File(coreAndroid, "settings.gradle.kts").exists()) {
+        throw new GradleException("core.dir=${coreAndroid} is not a Core android/ checkout")
+    }
+    println("Using local Core includeBuild at ${coreAndroid} (-Pcore.dir)")
     includeBuild(coreAndroid) {
         dependencySubstitution {
             substitute module("ae.network.nicardmanagementsdk:ni-card-management-sdk-core") using project(":core")
         }
     }
 } else {
-    println("Using vendored Core 0.1.0 from ni_sdk/libs-maven (GitHub Release core-0.1.0)")
+    println("Using Core 0.1.0 from ni_sdk/libs-maven (Release akiselevn/card-management-sdk-core@core-0.1.0)")
 }
 
 include ':ni_sdk'

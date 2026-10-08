@@ -23,7 +23,16 @@ buildFeatures {
 
 ## Integration
 
-The UI module (`:ni_sdk`) depends on private **Core** (`ae.network.nicardmanagementsdk:ni-card-management-sdk-core`). Pinned to Core **0.1.0** (temporary host: GitHub Release `akiselevn/card-management-sdk-core-0.1.0`, vendored under `ni_sdk/libs-maven`). Optional local override: sibling Core checkout or `-Pcore.dir=` via `includeBuild`. API-only apps should depend on Core alone.
+This repository is the public **UI** SDK (forms / presentation). Programmatic card ops live in private **Core**.
+
+| Consumer | Depend on |
+| --- | --- |
+| UI apps (card forms) | this Android UI SDK (`:ni_sdk`) — Core is transitive |
+| API-only apps | **Core alone** (`ae.network.nicardmanagementsdk:ni-card-management-sdk-core`) — not this UI repo |
+
+**Core pin (2.4.0 RC):** `0.1.0` from temporary host [`akiselevn/card-management-sdk-core`](https://github.com/akiselevn/card-management-sdk-core) Release [`core-0.1.0`](https://github.com/akiselevn/card-management-sdk-core/releases/tag/core-0.1.0), vendored under `ni_sdk/libs-maven` so CI/forks build without Packages credentials. Maintainer override: `-Pcore.dir=/path/to/card-management-sdk-core/android`.
+
+When GitHub Packages is enabled, replace the vendored drop with registry credentials (`CORE_MAVEN_URL` / `GITHUB_TOKEN` with `read:packages`).
 
 ### Basics
 After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
