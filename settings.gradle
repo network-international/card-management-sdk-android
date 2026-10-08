@@ -3,8 +3,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
         maven { url 'https://jitpack.io' }
+        // Core 0.1.0 drop vendored from temporary GitHub Release core-0.1.0
+        maven { url uri("${rootDir}/ni_sdk/libs-maven") }
     }
 }
 
@@ -16,18 +17,18 @@ if (settings.hasProperty("core.dir")) {
 }
 coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core/android"))
 coreCandidates.add(file("${rootDir}/../card-management-sdk-core/android"))
+coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core.worktrees/rc-core-0.1.0-1fd3/android"))
 
 def coreAndroid = coreCandidates.find { it.exists() && new File(it, "settings.gradle.kts").exists() }
-if (coreAndroid == null) {
-    throw new GradleException(
-            "Android Core checkout not found. Clone card-management-sdk-core and pass -Pcore.dir=/path/to/card-management-sdk-core/android"
-    )
-}
-
-includeBuild(coreAndroid) {
-    dependencySubstitution {
-        substitute module("ae.network.nicardmanagementsdk:ni-card-management-sdk-core") using project(":core")
+if (coreAndroid != null) {
+    println("Using local Core includeBuild at ${coreAndroid}")
+    includeBuild(coreAndroid) {
+        dependencySubstitution {
+            substitute module("ae.network.nicardmanagementsdk:ni-card-management-sdk-core") using project(":core")
+        }
     }
+} else {
+    println("Using vendored Core 0.1.0 from ni_sdk/libs-maven (GitHub Release core-0.1.0)")
 }
 
 include ':ni_sdk'

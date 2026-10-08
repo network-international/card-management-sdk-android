@@ -23,7 +23,7 @@ buildFeatures {
 
 ## Integration
 
-The UI module (`:ni_sdk`) depends on private **Core** (`ae.network.nicardmanagementsdk:ni-card-management-sdk-core`). Local builds use Gradle `includeBuild` of a sibling `card-management-sdk-core` checkout (`../card-management-sdk-core/card-management-sdk-core/android` or `-Pcore.dir=`). API-only apps should depend on Core alone.
+The UI module (`:ni_sdk`) depends on private **Core** (`ae.network.nicardmanagementsdk:ni-card-management-sdk-core`). Pinned to Core **0.1.0** (temporary host: GitHub Release `akiselevn/card-management-sdk-core-0.1.0`, vendored under `ni_sdk/libs-maven`). Optional local override: sibling Core checkout or `-Pcore.dir=` via `includeBuild`. API-only apps should depend on Core alone.
 
 ### Basics
 After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
