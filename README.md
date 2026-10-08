@@ -36,7 +36,13 @@ Check Sample application for details
 
 ### Run the sample app
 
-If an emulator or device is already running, you can install and launch the sample app with:
+The `:sample` module depends on `:ni_sdk`, which already pulls Core **0.1.0** from `ni_sdk/libs-maven` (no separate Core checkout or token for a normal sample build).
+
+```bash
+./gradlew :sample:assembleDebug
+```
+
+If an emulator or device is already running, install and launch with:
 
 ```bash
 bash scripts/run-sample-app.sh
