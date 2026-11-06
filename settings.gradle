@@ -9,5 +9,29 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "NICardManagementSDK"
+
+def coreCandidates = []
+if (settings.hasProperty("core.dir")) {
+    coreCandidates.add(file(settings["core.dir"]))
+}
+coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core/android"))
+coreCandidates.add(file("${rootDir}/../card-management-sdk-core/android"))
+coreCandidates.add(file("${rootDir}/../card-management-sdk-core/card-management-sdk-core.worktrees/rc-core-0.1.0-1fd3/android"))
+
+def coreAndroid = coreCandidates.find { it.exists() && new File(it, "settings.gradle.kts").exists() }
+def forceMavenCore = settings.hasProperty("core.maven") && settings["core.maven"].toString() == "true"
+
+// Local Core checkout for development; ship builds resolve ae.network:ni-card-management-sdk-core from Maven Central.
+if (!forceMavenCore && coreAndroid != null) {
+    includeBuild(coreAndroid) {
+        dependencySubstitution {
+            substitute module("ae.network:ni-card-management-sdk-core") using project(":core")
+        }
+    }
+    println("Using local Core includeBuild: ${coreAndroid}")
+} else {
+    println("Using Maven Central Core (ae.network:ni-card-management-sdk-core)")
+}
+
 include ':ni_sdk'
 include ':sample'
