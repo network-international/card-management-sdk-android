@@ -23,6 +23,10 @@ buildFeatures {
 
 ## Integration
 
+The UI module (`:ni_sdk`) depends on public **Core** (`ae.network:ni-card-management-sdk-core:0.1.1`). Ship builds resolve from Maven Central. Local Core checkout is auto-`includeBuild` when present (override with `-Pcore.dir=`; force Maven with `-Pcore.maven=true`).
+
+Programmatic (non-UI) card operations: see the [Core README](https://github.com/network-international/card-management-sdk-core) (`NICardManagement` façade).
+
 ### Basics
 After you have installed the SDK, by following one of the above set of steps, you can import the SDK into your Android app and used it.
 https://jitpack.io/#network-international/card-management-sdk-android
